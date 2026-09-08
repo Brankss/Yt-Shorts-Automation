@@ -2,10 +2,15 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
+      {
+        "version": "3.0.0",
+        "change": "Timing is derived from the voiceover instead of fixed. The timer is 5.0s and starts when the question stops. Tick and chime are the owner's own files. The reveal is silent. Percentages are authored, and labelled as authored.",
+        "reason": "A fixed 8.5s block had the timer running while the question was still being asked, so the viewer was being timed on a choice they had not finished hearing. Deriving the block from the measured question fixes that and costs only that block lengths now vary — 59.05s for episode 1, still inside the 41-60s band."
+      },
       {
         "version": "2.1.0",
         "change": "Voiceover generated and wired in. Kokoro (af_heart, offline), two clips per block.",
@@ -47,44 +52,43 @@
     "left": 40
   },
   "timeline": {
-    "block_ms": 8500,
+    "block_length": "variable — derived from the question, not fixed",
+    "formula_s": "lead_in 0.2 + spoken question (measured) + timer 5.0 + hold 2.5 + exit 0.35",
+    "lead_in_s": 0.2,
+    "timer_s": 5.0,
+    "hold_s": 2.5,
+    "exit_s": 0.35,
     "blocks": 5,
-    "end_card_ms": 3500,
-    "total_ms": 46000,
-    "total_frames": 1380,
-    "block_phases": [
+    "end_card_s": 3.5,
+    "computed_by": "scripts/build_episode.py, from vo.setup_duration measured by make_voiceover.py",
+    "why_variable": "The timer starts when the question stops speaking, never before. A fixed block would either cut a long question short or leave a short one sitting in silence, and the viewer would be deciding while still being told what the choice is.",
+    "phases": [
       {
         "name": "enter",
-        "start_ms": 0,
-        "end_ms": 350,
-        "note": "captions and images push in from opposite directions; the colour fields do not animate"
+        "note": "captions and images push in over 0.35s; the colour fields do not animate"
       },
       {
-        "name": "decide",
-        "start_ms": 350,
-        "end_ms": 4000,
-        "note": "nothing moves. The voiceover asks, and the viewer chooses. There is no on-screen timer."
+        "name": "question",
+        "note": "the voice asks. Nothing moves and no timer runs — being told the choice and being timed on it are two different moments."
+      },
+      {
+        "name": "timer",
+        "note": "5.0s of the supplied tick. Audible only: no on-screen countdown competes with reading two options."
       },
       {
         "name": "reveal",
-        "start_ms": 4000,
-        "end_ms": 4400,
-        "note": "percentages slam in, the losing field darkens"
+        "note": "percentages slam in with the chime, the losing field darkens. No voiceover."
       },
       {
         "name": "hold",
-        "start_ms": 4400,
-        "end_ms": 8150,
-        "note": "result holds; the voiceover lands its reaction line here"
+        "note": "2.5s, silent, long enough for the chime to ring out"
       },
       {
         "name": "exit",
-        "start_ms": 8150,
-        "end_ms": 8500,
         "note": "hard push out"
       }
     ],
-    "rationale": "41-60s is the only duration band that performs in this niche (median 26,239 views against 751 for 16-25s). 5 blocks x 8.5s + 3.5s end card = 46s sits in the middle of it."
+    "band_note": "41-60s is the only duration band that performs in this niche (median 26,239 views against 751 for 16-25s and 8,834 above 60s). Both make_voiceover.py and build_episode.py warn when an episode falls outside it — with five blocks the questions have roughly 3.4s each of headroom before it does."
   },
   "layout": {
     "field_a": {
@@ -224,23 +228,23 @@
       "required": true,
       "tone": "fast, dry, mildly provocative; never explains the joke",
       "rate": 1.05,
-      "lines_per_block": 2,
+      "lines_per_block": 1,
       "line_1_at_ms": 200,
-      "line_2_at_ms": 4400,
       "max_words_line_1": 14,
-      "max_words_line_2": 10,
       "stem_note": "Line 1 speaks the stem and both fragments — 'would you rather never feel pain again, or sadness again'. The screen only ever shows the fragments, so the voiceover is what makes the dilemma a sentence. This is why voiceover is required rather than a nice-to-have: without it the two captions are not a question.",
       "engine": {
         "name": "Kokoro",
         "package": "kokoro-onnx",
-        "voice": "af_heart",
-        "speed": 1.05,
+        "voice": "am_adam",
+        "speed": 1.0,
         "weights": "~/.cache/kokoro (338MB, outside the repo, never committed)",
         "generate": "python3 scripts/make_voiceover.py content/episodes/epNNN.json",
         "why": "Every hosted TTS is unreachable from these sessions — HeyGen, Microsoft's Edge voices, Google Translate and ElevenLabs all answer 403 through the egress proxy. GitHub release assets do get through, which is where Kokoro publishes its weights, so this is the one free route that works here. Generation itself touches no network."
       },
       "voice_is_identity": "The voice is as binding as the palette. A channel is recognised by its sound before its layout, so af_heart does not change between episodes without the same argument any invariant would need.",
-      "timing_check": "make_voiceover.py measures every clip against its slot — 3.8s for a setup before the reveal at +4.0s, 4.1s for a reaction inside the 8.5s block — and exits non-zero rather than letting a line talk over its own answer."
+      "reveal_is_silent": true,
+      "silence_note": "Nothing is spoken over the reveal. The percentages land with the chime and are not explained, defended, or joked about — a line there would tell the viewer what to think about a number they are still reading.",
+      "timing_check": "make_voiceover.py measures each question and writes its length back into the episode file; build_episode.py derives every block's timing from it. Nothing about the schedule is guessed."
     },
     "music": {
       "bpm_range": [
@@ -252,25 +256,22 @@
       "note": "One track per 20-episode arc. Viewers ask for the song name in the comments; a stable track turns that into a recurring comment we can answer."
     },
     "sfx": {
-      "source": "synthesised by scripts/make_sfx.py, standard library only",
-      "source_note": "No ffmpeg, no sound library, and the asset providers are behind the same blocked egress as the images. Generating them turned out to be the better answer anyway: three short synthetic sounds are deterministic, weigh under 500KB, carry no licence, and are reproducible from one script instead of fetched and forgotten.",
+      "source": "supplied by the channel owner, converted to 48kHz mono WAV",
       "tick": {
-        "at": "each 1000ms of the decide phase, four per block",
-        "gain_db": -18,
+        "at": "the instant the question stops",
+        "duration_s": 5.0,
+        "gain": 0.5,
         "file": "assets/sfx-tick.wav",
-        "note": "Reinstated in 2.0.1 after being cut with the on-screen timer. The visual countdown had to go — the reference videos have none — but the urgency it carried is worth keeping, and in the ear it does not compete with reading two options. It also fills the decide phase, which is 3.65 seconds in which nothing on screen moves."
+        "trim": "The source runs 40.8s. Kept from its start and cut at 5.0s with a 100ms fade, so the tick pattern always begins where the owner's file begins."
       },
       "reveal": {
-        "at": "reveal start",
-        "gain_db": -10,
+        "at": "reveal",
+        "duration_s": 2.769,
+        "gain": 0.7,
         "file": "assets/sfx-reveal.wav",
-        "note": "A struck bell on a C major triad. The number landing is the payoff, so this is the brightest sound in the video and the only one that rings."
+        "trim": "none — it fits the 2.5s hold plus the exit"
       },
-      "transition": {
-        "at": "exit start",
-        "gain_db": -14,
-        "file": "assets/sfx-swoosh.wav"
-      }
+      "placement_note": "Audio is authored at the composition root with absolute times. A plain timed wrapper does not rebase media, so a scene-local data-start inside a block would still be read as root time and only look like it meant something else."
     },
     "placement_note": "Audio is authored at the composition root with absolute times. A plain timed wrapper does not rebase media, so a scene-local data-start inside a block would still be read as root time and only look like it meant something else."
   },
@@ -318,18 +319,20 @@
   },
   "reveal_mechanic": {
     "percentages_must_sum_to": 100,
-    "source": "community_poll",
+    "source": "authored",
     "allowed_sources": [
+      "authored",
       "community_poll",
+      "comment_poll",
       "prediction_no_number"
     ],
-    "fabrication": "forbidden",
-    "fabrication_note": "The top comment across every breakout video mined is people mocking percentages that do not add up ('How tf is 90 % and 15%', 148 likes). Invented survey numbers are both dishonest and, demonstrably, noticed. Percentages come from a real Community-tab poll on the previous episode, or the block states a prediction with no number at all.",
+    "fabrication": "allowed, and labelled",
+    "fabrication_note": "Changed in 3.0.0 at the channel owner's decision, against the evidence and with it recorded. The most-liked comment across every breakout video mined is people mocking percentages — 'How tf is 90 % and 15%', 148 likes — and the failure they catch is arithmetic, not provenance: numbers that do not add to 100. So the rule that survives is the one that matters in practice, and validate_content.py enforces it. A block that carries invented numbers says so in its own source field: 'authored' never masquerades as a counted result.",
     "target_split_range": [
       55,
       88
     ],
-    "split_note": "Under 55/45 reads as a coin flip and provokes nothing. Over 88/12 reads as a non-dilemma. The comment engine is the viewer discovering they are in a minority they did not expect to be in.",
+    "split_note": "Under 55/45 reads as a coin flip and provokes nothing. Over 88/12 reads as a non-dilemma. Authored splits are held to the same 55-88 band, and an episode should carry at least one deliberately lopsided result — the viewer discovering they are in a minority is the whole engine.",
     "at_least_one_counterintuitive_block": true
   },
   "end_card": {

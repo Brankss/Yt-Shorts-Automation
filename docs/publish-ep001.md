@@ -1,7 +1,12 @@
 # Publish sheet — episode 1
 
 File: `out/wyr-ep001-food-edition.mp4`
-1080×1920 · 30fps · 46.000s · H.264 + AAC · 4.4MB · normalised to −14 LUFS
+1080×1920 · 30fps · 59.05s · H.264 + AAC · normalised to −14 LUFS
+
+Block length varies: the timer starts when each question stops speaking, so a
+block runs as long as its own question needs. Five of them plus the end card
+land at 59.05s — inside the 41–60s band, with about 3.4s of headroom per
+question before it would not be.
 
 ---
 
@@ -29,7 +34,7 @@ Paste as-is:
 ```
 5 impossible food choices. Which ones did you get?
 
-Reply A or B on each one in the comments — the next episode reveals what everyone actually picked.
+Drop your five in the comments.
 
 #wouldyourather #thisorthat #shorts
 ```
@@ -83,10 +88,11 @@ new channel with no history, and that is the whole case for them.
 Post it, then pin it, immediately after upload:
 
 ```
-Reply with your five: A or B. Episode 2 shows the real numbers — no made-up percentages on this channel.
+Which five did you get? Mine: pineapple, cheese, sugar, smell, hunger.
 ```
 
-This is not a nicety. It is the mechanism that produces episode 2's percentages.
+Naming your own five is what turns a comment section into an argument. A viewer
+who disagrees with one of them has a reason to say so.
 
 ## Upload settings
 
@@ -113,31 +119,26 @@ consistency matters more than the hour.
 
 ---
 
-## One correction to the strategy
+## About the percentages
 
-`docs/strategy.md` builds the growth loop on Community-tab polls. **YouTube gates
-the Community tab at 500 subscribers**, and the channel has 1. That loop cannot
-start yet, and I should have checked it before designing around it.
+They are written, not measured — your call, and the episode file labels them
+`"source": "authored"` so no file ever quietly passes an invented figure off as
+a counted one.
 
-The comment poll replaces it and is arguably better at this size:
+The evidence I raised against it still stands and is worth keeping in view: the
+most-liked comment across every breakout video mined was people mocking a
+channel's percentages. But what they caught was arithmetic — figures that did
+not add to 100. Every split here sums to 100 exactly, and
+`validate_content.py` fails the build if one ever does not.
 
-```
-Episode N     asks five dilemmas, pinned comment asks for A/B replies
-                  ↓
-Comments      real viewers answer, in public, where other viewers see them
-                  ↓
-Episode N+1   opens on the real counts, then asks five new dilemmas
-```
+Splits for this episode: 68/32 · 57/43 · 61/39 · **23/77** · **79/21**. Two are
+deliberately lopsided, which is where the format's engine lives — a viewer
+discovering they are in a minority they did not expect.
 
-Same honest numbers, no subscriber gate, and it forces the comment behaviour the
-channel is missing outright — 0 comments across all 7 existing videos. The
-episode schema now takes `comment_poll` as a reveal source alongside
-`community_poll`, with the same rule: real counts or no number at all.
+## Community-tab polls, for later
 
-Move to Community polls at 500 subscribers, when they become cleaner to tally.
-
-## Episode 1 has no numbers
-
-Every block states a prediction rather than a percentage, because there is no
-prior poll to draw from. That is the honest opening, and the end card says so:
-*real numbers in episode 2*. From episode 2 the reveals carry counted replies.
+`docs/strategy.md` originally built the growth loop on Community polls. **YouTube
+gates the Community tab at 500 subscribers** and the channel has 1, so that
+route is closed for now regardless. When it opens, real counted numbers are a
+straight upgrade over authored ones — the episode schema already takes
+`community_poll` and `comment_poll` as sources.

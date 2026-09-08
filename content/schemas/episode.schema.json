@@ -81,9 +81,10 @@
                 "enum": [
                   "community_poll",
                   "comment_poll",
+                  "authored",
                   "prediction_no_number"
                 ],
-                "description": "Where the numbers came from. community_poll needs the Community tab, which YouTube gates at 500 subscribers; comment_poll counts A/B replies on the previous episode and works at any channel size; prediction_no_number carries no figure at all."
+                "description": "Where the numbers came from. community_poll needs the Community tab, which YouTube gates at 500 subscribers; comment_poll counts A/B replies on the previous episode; authored means written by us rather than measured — the channel owner's decision, and named explicitly so a file never quietly passes off an invented figure as a counted one; prediction_no_number carries no figure at all."
               },
               "a": {
                 "type": "integer",
@@ -131,6 +132,21 @@
                 "if": {
                   "properties": {
                     "source": {
+                      "const": "authored"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "a",
+                    "b"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "source": {
                       "const": "prediction_no_number"
                     }
                   }
@@ -160,11 +176,10 @@
           "vo": {
             "type": "object",
             "required": [
-              "setup",
-              "reaction"
+              "setup"
             ],
             "additionalProperties": false,
-            "description": "Two lines. Setup lands at 200ms, reaction at 4300ms once the numbers are on screen.",
+            "description": "The spoken line. Only a setup: the reveal carries no voiceover, so the percentages land in silence and nothing explains them away.",
             "properties": {
               "setup": {
                 "type": "string",
@@ -172,7 +187,11 @@
               },
               "reaction": {
                 "type": "string",
-                "description": "Max 10 words. Names the surprise in the result. Never restates the dilemma."
+                "description": "Deprecated. The reveal is silent — a line here is ignored by the composition and by the timing."
+              },
+              "setup_duration": {
+                "type": "number",
+                "description": "Measured length of the rendered setup clip, in seconds, written back by make_voiceover.py. The block's timing is derived from it: the timer starts when the question stops, never before."
               }
             }
           }

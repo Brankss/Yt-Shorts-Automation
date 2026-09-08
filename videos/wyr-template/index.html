@@ -8,7 +8,7 @@
          determinism rules and fails closed in a sandboxed renderer. -->
     <script src="vendor/gsap.min.js"></script>
     <style>
-      /* Values mirror dna/video-dna.json 2.0.0. The DNA is authoritative:
+      /* Values mirror dna/video-dna.json 3.0.0. The DNA is authoritative:
          if these drift from it, these are wrong. */
       :root {
         --a: #ff1e1e;
@@ -89,10 +89,7 @@
       .imgbox img { width: 420px; height: 420px; object-fit: contain; display: block; }
 
       /* Only drawn when a block has no image. The DNA requires one per option,
-         so this is meant to be visible and wrong, not a shippable state.
-         Deliberately textless: a label here would sit under the percentage and
-         trip the overlap and contrast gates on a condition that cannot occur
-         once a real image is in the slot. */
+         so this is meant to be visible and wrong, not a shippable state. */
       .slot {
         width: 380px;
         height: 380px;
@@ -116,7 +113,6 @@
       }
       #pct-a { top: 325px; }
       #pct-b { top: 1355px; }
-      .pct--label { font-size: 76px; -webkit-text-stroke-width: 8px; }
 
       #end-a, #end-b {
         position: absolute;
@@ -134,14 +130,18 @@
     </style>
   </head>
   <body>
-    <!-- Content slots. A build step replaces this island and nothing else;
-         the split, the timing and the type never vary between episodes.
-         Shape: content/schemas/episode.schema.json
+    <!-- Everything between the markers below is written by
+         scripts/build_episode.py from an episode file. Block length is not
+         fixed: the timer starts when the question stops speaking, so each
+         block runs as long as its own question needs and the times have to be
+         computed rather than authored.
 
          The screen shows only the two fragments. The stem that makes them a
-         question is spoken, never rendered — which is why the voiceover is
-         required rather than optional. -->
+         question is spoken and never rendered, which is why the voiceover is
+         structural rather than optional. The reveal is silent — the numbers
+         land with the chime and nothing explains them. -->
     <script type="application/json" id="episode-data">
+      <!-- EPISODE:START -->
       {
         "episode": 1,
         "blocks": [
@@ -153,8 +153,16 @@
             "image_a": "assets/noto-pineapple.svg",
             "image_b": "assets/noto-fish.svg",
             "reveal": {
-              "source": "prediction_no_number",
-              "prediction_favours": "a"
+              "source": "authored",
+              "a": 68,
+              "b": 32
+            },
+            "timing": {
+              "start": 0.0,
+              "length": 11.399,
+              "vo_at": 0.2,
+              "tick_at": 3.549,
+              "reveal_at": 8.549
             }
           },
           {
@@ -165,8 +173,16 @@
             "image_a": "assets/noto-chocolate-bar.svg",
             "image_b": "assets/noto-cheese-wedge.svg",
             "reveal": {
-              "source": "prediction_no_number",
-              "prediction_favours": "a"
+              "source": "authored",
+              "a": 57,
+              "b": 43
+            },
+            "timing": {
+              "start": 11.399,
+              "length": 11.207,
+              "vo_at": 11.599,
+              "tick_at": 14.756,
+              "reveal_at": 19.756
             }
           },
           {
@@ -177,8 +193,16 @@
             "image_a": "assets/noto-cut-of-meat.svg",
             "image_b": "assets/noto-candy.svg",
             "reveal": {
-              "source": "prediction_no_number",
-              "prediction_favours": "a"
+              "source": "authored",
+              "a": 61,
+              "b": 39
+            },
+            "timing": {
+              "start": 22.606,
+              "length": 10.93,
+              "vo_at": 22.806,
+              "tick_at": 25.686,
+              "reveal_at": 30.686
             }
           },
           {
@@ -189,8 +213,16 @@
             "image_a": "assets/noto-tongue.svg",
             "image_b": "assets/noto-nose.svg",
             "reveal": {
-              "source": "prediction_no_number",
-              "prediction_favours": "b"
+              "source": "authored",
+              "a": 23,
+              "b": 77
+            },
+            "timing": {
+              "start": 33.536,
+              "length": 10.738,
+              "vo_at": 33.736,
+              "tick_at": 36.424,
+              "reveal_at": 41.424
             }
           },
           {
@@ -201,16 +233,27 @@
             "image_a": "assets/noto-drooling-face.svg",
             "image_b": "assets/noto-face-savoring-food.svg",
             "reveal": {
-              "source": "prediction_no_number",
-              "prediction_favours": "a"
+              "source": "authored",
+              "a": 79,
+              "b": 21
+            },
+            "timing": {
+              "start": 44.274,
+              "length": 11.271,
+              "vo_at": 44.474,
+              "tick_at": 47.695,
+              "reveal_at": 52.695
             }
           }
         ],
         "end_card": {
-          "cta": "vote on the next five",
-          "next_teaser": "real numbers in episode 2"
-        }
+          "cta": "which ones did you get",
+          "next_teaser": "new five tomorrow"
+        },
+        "total": 59.045,
+        "end_card_at": 55.545
       }
+      <!-- EPISODE:END -->
     </script>
 
     <div
@@ -219,103 +262,71 @@
       data-start="0"
       data-width="1080"
       data-height="1920"
-      data-duration="46"
+      data-duration="59.045"
     >
       <div id="field-a" class="field"></div>
       <div id="field-b" class="field"></div>
 
-      <!-- Five blocks of 8.5s. The duration is not a style choice: 16-25s
-           videos median 751 views in this niche against 26,239 for 41-60s. -->
-      <section id="b1" class="clip" data-start="0"    data-duration="8.5"></section>
-      <section id="b2" class="clip" data-start="8.5"  data-duration="8.5"></section>
-      <section id="b3" class="clip" data-start="17"   data-duration="8.5"></section>
-      <section id="b4" class="clip" data-start="25.5" data-duration="8.5"></section>
-      <section id="b5" class="clip" data-start="34"   data-duration="8.5"></section>
-
-      <section id="or-holder" class="clip" data-start="0" data-duration="42.5">
+      <!-- BLOCKS:START -->
+      <section id="b1" class="clip" data-start="0.0" data-duration="11.399"></section>
+      <section id="b2" class="clip" data-start="11.399" data-duration="11.207"></section>
+      <section id="b3" class="clip" data-start="22.606" data-duration="10.93"></section>
+      <section id="b4" class="clip" data-start="33.536" data-duration="10.738"></section>
+      <section id="b5" class="clip" data-start="44.274" data-duration="11.271"></section>
+      <section id="or-holder" class="clip" data-start="0" data-duration="55.545">
         <div id="or">OR</div>
       </section>
-
-      <!-- Sound. Authored at the root with absolute times rather than inside the
-           block sections: a plain timed wrapper does not rebase media, so a
-           local data-start there would be read as root time anyway and only
-           look like it meant something else.
-
-           Levels come from the DNA in dB and are applied through data-volume:
-           tick -18dB = 0.126, reveal -10dB = 0.316, swoosh -14dB = 0.200.
-
-           The voiceover sits at the same level, two clips per block: the setup
-           at +0.2s speaks the stem and both fragments, and the reaction at
-           +4.4s lands on the result. The setup is the only place the dilemma
-           exists as a question — the screen never shows the stem. Generated by
-           scripts/make_voiceover.py, which refuses any line that would not
-           finish inside its slot. -->
-      <audio id="sfx-tick-1"   src="assets/sfx-tick.wav"   data-start="0.35"  data-volume="0.126"></audio>
-      <audio id="sfx-reveal-1" src="assets/sfx-reveal.wav" data-start="4"     data-volume="0.316"></audio>
-      <audio id="sfx-swoosh-1" src="assets/sfx-swoosh.wav" data-start="8.15"  data-volume="0.2"></audio>
-
-      <audio id="sfx-tick-2"   src="assets/sfx-tick.wav"   data-start="8.85"  data-volume="0.126"></audio>
-      <audio id="sfx-reveal-2" src="assets/sfx-reveal.wav" data-start="12.5"  data-volume="0.316"></audio>
-      <audio id="sfx-swoosh-2" src="assets/sfx-swoosh.wav" data-start="16.65" data-volume="0.2"></audio>
-
-      <audio id="sfx-tick-3"   src="assets/sfx-tick.wav"   data-start="17.35" data-volume="0.126"></audio>
-      <audio id="sfx-reveal-3" src="assets/sfx-reveal.wav" data-start="21"    data-volume="0.316"></audio>
-      <audio id="sfx-swoosh-3" src="assets/sfx-swoosh.wav" data-start="25.15" data-volume="0.2"></audio>
-
-      <audio id="sfx-tick-4"   src="assets/sfx-tick.wav"   data-start="25.85" data-volume="0.126"></audio>
-      <audio id="sfx-reveal-4" src="assets/sfx-reveal.wav" data-start="29.5"  data-volume="0.316"></audio>
-      <audio id="sfx-swoosh-4" src="assets/sfx-swoosh.wav" data-start="33.65" data-volume="0.2"></audio>
-
-      <audio id="sfx-tick-5"   src="assets/sfx-tick.wav"   data-start="34.35" data-volume="0.126"></audio>
-      <audio id="sfx-reveal-5" src="assets/sfx-reveal.wav" data-start="38"    data-volume="0.316"></audio>
-      <audio id="sfx-swoosh-5" src="assets/sfx-swoosh.wav" data-start="42.15" data-volume="0.2"></audio>
-
-      <audio id="vo-b1-setup"    src="assets/vo/ep001-b1-setup.wav"    data-start="0.2"  data-volume="1"></audio>
-      <audio id="vo-b1-reaction" src="assets/vo/ep001-b1-reaction.wav" data-start="4.4"  data-volume="1"></audio>
-      <audio id="vo-b2-setup"    src="assets/vo/ep001-b2-setup.wav"    data-start="8.7"  data-volume="1"></audio>
-      <audio id="vo-b2-reaction" src="assets/vo/ep001-b2-reaction.wav" data-start="12.9" data-volume="1"></audio>
-      <audio id="vo-b3-setup"    src="assets/vo/ep001-b3-setup.wav"    data-start="17.2" data-volume="1"></audio>
-      <audio id="vo-b3-reaction" src="assets/vo/ep001-b3-reaction.wav" data-start="21.4" data-volume="1"></audio>
-      <audio id="vo-b4-setup"    src="assets/vo/ep001-b4-setup.wav"    data-start="25.7" data-volume="1"></audio>
-      <audio id="vo-b4-reaction" src="assets/vo/ep001-b4-reaction.wav" data-start="29.9" data-volume="1"></audio>
-      <audio id="vo-b5-setup"    src="assets/vo/ep001-b5-setup.wav"    data-start="34.2" data-volume="1"></audio>
-      <audio id="vo-b5-reaction" src="assets/vo/ep001-b5-reaction.wav" data-start="38.4" data-volume="1"></audio>
-
-      <section id="end" class="clip" data-start="42.5" data-duration="3.5">
-        <div id="end-a">vote on the next five</div>
-        <div id="end-b">results in episode 8</div>
+      <section id="end" class="clip" data-start="55.545" data-duration="3.5">
+        <div id="end-a">which ones did you get</div>
+        <div id="end-b">new five tomorrow</div>
       </section>
+      <!-- BLOCKS:END -->
+
+      <!-- AUDIO:START -->
+      <audio id="vo-b1" src="assets/vo/ep001-b1-setup.wav" data-start="0.2" data-volume="1.0"></audio>
+      <audio id="sfx-tick-1" src="assets/sfx-tick.wav" data-start="3.549" data-volume="0.5"></audio>
+      <audio id="sfx-reveal-1" src="assets/sfx-reveal.wav" data-start="8.549" data-volume="0.7"></audio>
+      <audio id="vo-b2" src="assets/vo/ep001-b2-setup.wav" data-start="11.599" data-volume="1.0"></audio>
+      <audio id="sfx-tick-2" src="assets/sfx-tick.wav" data-start="14.756" data-volume="0.5"></audio>
+      <audio id="sfx-reveal-2" src="assets/sfx-reveal.wav" data-start="19.756" data-volume="0.7"></audio>
+      <audio id="vo-b3" src="assets/vo/ep001-b3-setup.wav" data-start="22.806" data-volume="1.0"></audio>
+      <audio id="sfx-tick-3" src="assets/sfx-tick.wav" data-start="25.686" data-volume="0.5"></audio>
+      <audio id="sfx-reveal-3" src="assets/sfx-reveal.wav" data-start="30.686" data-volume="0.7"></audio>
+      <audio id="vo-b4" src="assets/vo/ep001-b4-setup.wav" data-start="33.736" data-volume="1.0"></audio>
+      <audio id="sfx-tick-4" src="assets/sfx-tick.wav" data-start="36.424" data-volume="0.5"></audio>
+      <audio id="sfx-reveal-4" src="assets/sfx-reveal.wav" data-start="41.424" data-volume="0.7"></audio>
+      <audio id="vo-b5" src="assets/vo/ep001-b5-setup.wav" data-start="44.474" data-volume="1.0"></audio>
+      <audio id="sfx-tick-5" src="assets/sfx-tick.wav" data-start="47.695" data-volume="0.5"></audio>
+      <audio id="sfx-reveal-5" src="assets/sfx-reveal.wav" data-start="52.695" data-volume="0.7"></audio>
+      <!-- AUDIO:END -->
     </div>
 
     <script>
       // Static JSON in, fixed DOM out. No clocks, no randomness, no network:
       // the same episode file always produces the same frames.
-      const T = {
-        block: 8.5,
-        enter: 0.35,
-        revealAt: 4.0,
-        revealDur: 0.4,
-        exitAt: 8.15,
-        exitDur: 0.35,
-      };
+      const T = { enter: 0.35, reveal: 0.4, exit: 0.35 };
 
-      const data = JSON.parse(document.getElementById("episode-data").textContent);
+      // The island is wrapped in the builder's marker comments. Slice to the
+      // outermost braces rather than stripping them with a regex: an HTML
+      // comment delimiter written literally inside a <script> hits the parser's
+      // legacy comment handling and breaks the whole block.
+      const raw = document.getElementById("episode-data").textContent;
+      const data = JSON.parse(raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1));
       document.getElementById("end-a").textContent = data.end_card.cta;
       document.getElementById("end-b").textContent = data.end_card.next_teaser || "";
 
-      function caption(side, i, text) {
+      function caption(side, text) {
         const box = document.createElement("div");
         box.className = "cap";
         box.id = "cap-" + side + "-box";
         const span = document.createElement("span");
         span.className = "cap-text";
-        span.dataset.slot = "block" + (i + 1) + ".option_" + side;
         span.textContent = text;
         box.appendChild(span);
         return box;
       }
 
-      function image(side, i, src) {
+      function image(side, src) {
         const box = document.createElement("div");
         box.className = "imgbox";
         box.id = "img-" + side + "-box";
@@ -325,7 +336,6 @@
           img.alt = "";
           box.appendChild(img);
         } else {
-          // Loud on purpose: the DNA requires an image per option.
           const slot = document.createElement("div");
           slot.className = "slot";
           box.appendChild(slot);
@@ -333,17 +343,10 @@
         return box;
       }
 
-      function scrim(side) {
+      function layer(cls, side) {
         const el = document.createElement("div");
-        el.className = "scrim";
-        el.id = "scrim-" + side;
-        return el;
-      }
-
-      function percent(side) {
-        const el = document.createElement("div");
-        el.className = "pct";
-        el.id = "pct-" + side;
+        el.className = cls;
+        el.id = cls.replace(".", "") + "-" + side;
         return el;
       }
 
@@ -352,14 +355,14 @@
         // DOM order is z-order: pictures, then words, then the darkening, then
         // the numbers — which stay readable on the losing side too.
         s.append(
-          image("a", i, block.image_a),
-          caption("a", i, block.option_a),
-          image("b", i, block.image_b),
-          caption("b", i, block.option_b),
-          scrim("a"),
-          scrim("b"),
-          percent("a"),
-          percent("b")
+          image("a", block.image_a),
+          caption("a", block.option_a),
+          image("b", block.image_b),
+          caption("b", block.option_b),
+          layer("scrim", "a"),
+          layer("scrim", "b"),
+          layer("pct", "a"),
+          layer("pct", "b")
         );
       });
 
@@ -367,11 +370,10 @@
       const q = (i, sel) => "#b" + (i + 1) + " " + sel;
 
       data.blocks.forEach((block, i) => {
-        const t0 = i * T.block;
-        const poll = block.reveal.source === "community_poll";
-        const winner = poll
-          ? block.reveal.a >= block.reveal.b ? "a" : "b"
-          : block.reveal.prediction_favours;
+        const t0 = block.timing.start;
+        const tR = block.timing.reveal_at;
+        const tE = t0 + block.timing.length - T.exit;
+        const winner = block.reveal.a >= block.reveal.b ? "a" : "b";
 
         // Enter: words push toward the seam, pictures settle in.
         tl.fromTo(q(i, "#cap-a-box"), { y: -60, autoAlpha: 0 },
@@ -382,60 +384,48 @@
           { scale: 0.88, autoAlpha: 0 },
           { scale: 1, autoAlpha: 1, duration: T.enter, ease: "power3.out" }, t0);
 
-        // Nothing moves during the decide phase. The voice asks the question;
-        // an on-screen timer would only compete with it.
+        // Then nothing moves. The voice asks, the tick runs its five seconds,
+        // and the viewer chooses. No on-screen countdown competes with either.
         gsap.set([q(i, "#scrim-a"), q(i, "#scrim-b")], { autoAlpha: 0 });
-
-        const tR = t0 + T.revealAt;
 
         ["a", "b"].forEach((side) => {
           const won = side === winner;
           const pctEl = document.querySelector(q(i, "#pct-" + side));
-          const value = poll ? (side === "a" ? block.reveal.a : block.reveal.b) : null;
+          const value = block.reveal[side];
 
           // The picture drops back so the number reads over it.
           tl.to(q(i, "#img-" + side + "-box"),
-            { autoAlpha: 0.35, duration: T.revealDur, ease: "power2.out" }, tR);
+            { autoAlpha: 0.35, duration: T.reveal, ease: "power2.out" }, tR);
 
-          if (poll) {
-            const counter = { v: 0 };
-            tl.fromTo(pctEl, { scale: 1.35, autoAlpha: 0 },
-              { scale: 1, autoAlpha: 1, duration: T.revealDur, ease: "back.out(2)" }, tR);
-            tl.to(counter, {
-              v: value,
-              duration: T.revealDur,
-              ease: "none",
-              onUpdate: () => { pctEl.textContent = Math.round(counter.v) + "%"; },
-            }, tR);
-          } else if (won) {
-            // Episode 1 has no poll behind it, so the block names a favourite
-            // and shows no number rather than inventing one.
-            pctEl.className = "pct pct--label";
-            pctEl.textContent = "most people";
-            tl.fromTo(pctEl, { scale: 1.35, autoAlpha: 0 },
-              { scale: 1, autoAlpha: 1, duration: T.revealDur, ease: "back.out(2)" }, tR);
-          }
+          const counter = { v: 0 };
+          tl.fromTo(pctEl, { scale: 1.35, autoAlpha: 0 },
+            { scale: 1, autoAlpha: 1, duration: T.reveal, ease: "back.out(2)" }, tR);
+          tl.to(counter, {
+            v: value,
+            duration: T.reveal,
+            ease: "none",
+            onUpdate: () => { pctEl.textContent = Math.round(counter.v) + "%"; },
+          }, tR);
 
           if (!won) {
             tl.to(q(i, "#scrim-" + side),
-              { autoAlpha: 0.45, duration: T.revealDur, ease: "power2.out" }, tR);
+              { autoAlpha: 0.45, duration: T.reveal, ease: "power2.out" }, tR);
           }
         });
 
         // Exit: hard push, no transition effect.
-        const tE = t0 + T.exitAt;
-        tl.to(q(i, "#cap-a-box"), { y: -60, autoAlpha: 0, duration: T.exitDur, ease: "power2.in" }, tE);
-        tl.to(q(i, "#cap-b-box"), { y: 60, autoAlpha: 0, duration: T.exitDur, ease: "power2.in" }, tE);
+        tl.to(q(i, "#cap-a-box"), { y: -60, autoAlpha: 0, duration: T.exit, ease: "power2.in" }, tE);
+        tl.to(q(i, "#cap-b-box"), { y: 60, autoAlpha: 0, duration: T.exit, ease: "power2.in" }, tE);
         tl.to(q(i, "#img-a-box") + ", " + q(i, "#img-b-box") + ", " + q(i, "#pct-a") + ", " + q(i, "#pct-b"),
-          { autoAlpha: 0, duration: T.exitDur, ease: "power2.in" }, tE);
+          { autoAlpha: 0, duration: T.exit, ease: "power2.in" }, tE);
       });
 
       // End card: same two fields, copy only. The last frame carries the split
       // the first frame opened on, so the loop is seamless.
       tl.fromTo("#end-a", { y: -40, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" }, 42.7);
+        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" }, data.end_card_at + 0.2);
       tl.fromTo("#end-b", { y: 40, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" }, 42.8);
+        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" }, data.end_card_at + 0.3);
 
       window.__timelines["main"] = tl;
     </script>

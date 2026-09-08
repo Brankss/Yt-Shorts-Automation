@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the voiceover for an episode with Kokoro, offline.
+"""Generate an episode's voiceover with Kokoro, offline, and time the video to it.
 
 Why this engine. Every hosted TTS is unreachable from these sessions — HeyGen,
 Microsoft's Edge voices, Google Translate and ElevenLabs all return 403 through
@@ -12,14 +12,17 @@ The voiceover is not decoration. The screen shows two fragments and never the
 stem that joins them, so the setup line is the only place the dilemma exists as
 a question.
 
-Timing is checked, not assumed. The DNA lands the setup at +0.2s and the
-reaction at +4.4s inside an 8.5s block, with the reveal at +4.0s, so a setup
-longer than 3.8s would still be talking over its own answer. Anything that does
-not fit is reported and the script exits non-zero.
+One line per block, and only the setup. The reveal is silent: the percentages
+land with the chime and nothing talks over them or explains them away.
+
+The measured length of each clip is written back into the episode file as
+`vo.setup_duration`, because the video's timing is derived from it rather than
+fixed in advance — the timer starts when the question stops, never before, so a
+block is exactly as long as its own question needs.
 
 Usage:
     python3 scripts/make_voiceover.py content/episodes/ep001.json
-    python3 scripts/make_voiceover.py content/episodes/ep001.json --voice am_michael
+    python3 scripts/make_voiceover.py content/episodes/ep001.json --voice bm_george
 """
 
 import argparse
@@ -32,20 +35,19 @@ MODEL_DIR = Path.home() / ".cache" / "kokoro"
 MODEL = MODEL_DIR / "kokoro-v1.0.onnx"
 VOICES = MODEL_DIR / "voices-v1.0.bin"
 
-# From dna/video-dna.json → audio.voiceover and timeline.block_phases.
-SETUP_AT = 0.2
-REACTION_AT = 4.4
-REVEAL_AT = 4.0
-BLOCK = 8.5
-SETUP_BUDGET = REVEAL_AT - SETUP_AT      # 3.8s — must be done before the answer
-REACTION_BUDGET = BLOCK - REACTION_AT    # 4.1s — must be done before the block ends
+# From dna/video-dna.json → timeline. Everything after the question is fixed;
+# only the question's own length varies.
+LEAD_IN = 0.2      # silence before the voice starts
+TIMER = 5.0        # the supplied tick track, exactly
+HOLD = 2.5         # numbers on screen, no voice
+EXIT = 0.35
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("episode", help="path to content/episodes/epNNN.json")
-    ap.add_argument("--voice", default="af_heart", help="Kokoro voice id")
-    ap.add_argument("--speed", type=float, default=1.05, help="DNA audio.voiceover.rate")
+    ap.add_argument("--voice", default="am_adam", help="Kokoro voice id")
+    ap.add_argument("--speed", type=float, default=1.0, help="DNA audio.voiceover.rate")
     ap.add_argument("--out", default="videos/wyr-template/assets/vo")
     args = ap.parse_args()
 
@@ -62,40 +64,42 @@ def main() -> int:
     import soundfile as sf
     from kokoro_onnx import Kokoro
 
-    ep = json.loads(Path(args.episode).read_text())
+    ep_path = Path(args.episode)
+    ep = json.loads(ep_path.read_text())
     out = ROOT / args.out
     out.mkdir(parents=True, exist_ok=True)
 
     kokoro = Kokoro(str(MODEL), str(VOICES))
+    if args.voice not in kokoro.get_voices():
+        sys.exit(f"ERROR: unknown voice {args.voice!r}. Available: {sorted(kokoro.get_voices())}")
+
     tag = f"ep{ep['episode']:03d}"
-    overruns = []
-
     print(f"{tag}  voice={args.voice}  speed={args.speed}")
+
+    total = 0.0
     for i, block in enumerate(ep["blocks"], start=1):
-        for line, budget, at in (
-            ("setup", SETUP_BUDGET, SETUP_AT),
-            ("reaction", REACTION_BUDGET, REACTION_AT),
-        ):
-            text = block["vo"][line]
-            samples, rate = kokoro.create(text, voice=args.voice, speed=args.speed, lang="en-us")
-            dur = len(samples) / rate
-            name = f"{tag}-b{i}-{line}.wav"
-            sf.write(out / name, samples, rate)
+        text = block["vo"]["setup"]
+        samples, rate = kokoro.create(text, voice=args.voice, speed=args.speed, lang="en-us")
+        dur = len(samples) / rate
+        name = f"{tag}-b{i}-setup.wav"
+        sf.write(out / name, samples, rate)
 
-            flag = "  OK"
-            if dur > budget:
-                flag = f"  OVER by {dur - budget:.2f}s"
-                overruns.append((name, dur, budget, text))
-            print(f"  b{i} {line:<8} {dur:5.2f}s / {budget:.1f}s{flag}  {name}")
+        block["vo"]["setup_duration"] = round(dur, 3)
+        block["vo"].pop("reaction", None)  # the reveal is silent
 
-    if overruns:
-        print("\nThese lines do not fit their slot. Shorten the copy — do not")
-        print("speed the voice up, the rate is fixed by the DNA:")
-        for name, dur, budget, text in overruns:
-            print(f"  {name}: {dur:.2f}s > {budget:.1f}s — {text!r}")
-        return 1
+        block_len = LEAD_IN + dur + TIMER + HOLD + EXIT
+        total += block_len
+        print(f"  b{i}  question {dur:5.2f}s  →  block {block_len:5.2f}s   {name}")
 
-    print(f"\n{2 * len(ep['blocks'])} clips written to {Path(args.out)}")
+    ep_path.write_text(json.dumps(ep, indent=2, ensure_ascii=False) + "\n")
+
+    end_card = 3.5
+    print(f"\n  {len(ep['blocks'])} blocks {total:.2f}s + end card {end_card:.1f}s = {total + end_card:.2f}s")
+    if not 41 <= total + end_card <= 60:
+        # 41-60s is the only duration band that performs in this niche:
+        # median 26,239 views against 751 for 16-25s and 8,834 above 60s.
+        print("  WARNING: outside the 41-60s band this niche rewards.")
+    print(f"  durations written back to {ep_path}")
     return 0
 
 

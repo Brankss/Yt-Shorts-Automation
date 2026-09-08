@@ -33,8 +33,8 @@ def load_schema(name):
 
 
 def check_option(text, where, errors):
-    """The card is 850px wide with 76px Anton over at most two lines; 42 characters
-    is what fits. Longer text does not wrap, it overflows."""
+    """The caption box is 900px wide with 96px Nunito over at most two lines.
+    Longer text does not wrap gracefully, it overruns the field."""
     if len(text) > RULES["option_max_chars"]:
         errors.append(f"{where}: {len(text)} chars, max {RULES['option_max_chars']} — {text!r}")
     if text.rstrip().endswith((".", "!", "?")):
@@ -85,7 +85,7 @@ def validate_episode(path, errors):
         check_option(b["option_b"], where + ".option_b", errors)
 
         r = b["reveal"]
-        if r["source"] == "community_poll":
+        if r["source"] in ("community_poll", "comment_poll", "authored"):
             total = r["a"] + r["b"]
             if total != DNA["reveal_mechanic"]["percentages_must_sum_to"]:
                 # This is the failure viewers actually catch: the most-liked
@@ -99,20 +99,22 @@ def validate_episode(path, errors):
                     "(a coin flip provokes nothing, a blowout is not a dilemma)"
                 )
 
+        # Only the setup is spoken. The reveal is silent by design, so there is
+        # no second line to budget.
         vo = b["vo"]
+        cap = DNA["audio"]["voiceover"]["max_words_line_1"]
         n1 = len(vo["setup"].split())
-        n2 = len(vo["reaction"].split())
-        if n1 > DNA["audio"]["voiceover"]["max_words_line_1"]:
-            errors.append(f"{where}: vo.setup {n1} words, max {DNA['audio']['voiceover']['max_words_line_1']}")
-        if n2 > DNA["audio"]["voiceover"]["max_words_line_2"]:
-            errors.append(f"{where}: vo.reaction {n2} words, max {DNA['audio']['voiceover']['max_words_line_2']}")
+        if n1 > cap:
+            errors.append(f"{where}: vo.setup {n1} words, max {cap}")
+        if "reaction" in vo:
+            errors.append(f"{where}: vo.reaction is deprecated — the reveal carries no voiceover")
 
     ids = [b["dilemma_id"] for b in ep["blocks"]]
     if len(set(ids)) != len(ids):
         errors.append(f"{where0}: the same dilemma appears twice")
 
-    if not any(b["reveal"]["source"] == "community_poll" for b in ep["blocks"]) and ep["episode"] > 1:
-        errors.append(f"{where0}: no real poll numbers, but this is not episode 1")
+    # The split band is a design rule, not a data rule: authored numbers still
+    # have to look like a real dilemma rather than a coin flip or a blowout.
 
 
 def main():
