@@ -2,9 +2,13 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "format": "would-you-rather",
-    "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason."
+    "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
+    "changelog": [
+      { "version": "1.1.0", "change": "Three corrections found while building the template against a real renderer: fonts, winner surface alpha (1.0 -> 0.35), and option_max_chars (42 -> 36, max_lines 2 -> 3). The last two are recorded next to the values they govern; the font reason follows.", "reason": "Anton is not among the renderer's 18 pre-bundled families. It resolves through an implicit build-time fetch from Google Fonts, which is fail-closed in distributed/cloud renders: if Google is unreachable the render errors instead of substituting. Oswald is the bundled condensed sans closest to Anton and Archivo Black is a bundled heavy display face; both embed as local data URIs with no network fetch. Archivo Black ships weight 400 only, so the percentage style drops from 900 to 400." },
+      { "version": "1.0.0", "change": "Initial DNA." }
+    ]
   },
 
   "canvas": {
@@ -67,18 +71,19 @@
     "text_secondary": "#A8A8BE",
     "card_surface_alpha": 0.14,
     "card_border_width": 3,
-    "winner_surface_alpha": 1.0,
+    "winner_surface_alpha": 0.35,
+    "winner_surface_note": "Not 1.0. At full strength the white option text sits at 1.82:1 on cyan and fails WCAG AA, and recolouring the text instead only moves the failure into the middle of the crossfade — any fade between white-on-dark and dark-on-bright passes through an unreadable state. At 0.35 white clears 8.9:1 on cyan and 12.6:1 on pink at every frame of the tween. The reveal is carried by the gap between the two cards, not by the winner's saturation.",
     "loser_surface_alpha": 0.08,
     "loser_text": "#6E6E86",
     "note": "Two option colors, one urgency color, nothing else. A third option color would break recognizability at thumbnail size, which is where this palette does its work."
   },
 
   "typography": {
-    "display_font": { "family": "Anton", "fallback": "Impact, 'Arial Narrow', sans-serif", "weight": 400 },
-    "numeric_font": { "family": "Inter", "fallback": "'Helvetica Neue', Arial, sans-serif", "weight": 900 },
+    "display_font": { "family": "Oswald", "fallback": "'Arial Narrow', Impact, sans-serif", "weight": 700, "bundled": true },
+    "numeric_font": { "family": "Archivo Black", "fallback": "'Helvetica Neue', Arial, sans-serif", "weight": 400, "bundled": true, "weight_note": "Archivo Black ships weight 400 only. Requesting 700 or 900 yields a synthetic weight, not a real cut." },
     "styles": {
       "question":      { "font": "display", "size": 52, "case": "uppercase", "tracking": 0.02,  "color": "text_secondary", "line_height": 1.1 },
-      "option":        { "font": "display", "size": 76, "case": "uppercase", "tracking": -0.01, "color": "text_primary",   "line_height": 1.0, "max_lines": 2 },
+      "option":        { "font": "display", "size": 76, "case": "uppercase", "tracking": -0.01, "color": "text_primary",   "line_height": 1.0, "max_lines": 3 },
       "percent":       { "font": "numeric", "size": 120, "case": "none",     "tracking": -0.03, "color": "text_primary" },
       "episode_badge": { "font": "numeric", "size": 32,  "case": "uppercase", "tracking": 0.08, "color": "text_secondary" },
       "end_card":      { "font": "display", "size": 64,  "case": "uppercase", "tracking": 0.0,  "color": "text_primary" }
@@ -126,7 +131,8 @@
 
   "copy_rules": {
     "question_max_chars": 60,
-    "option_max_chars": 42,
+    "option_max_chars": 36,
+    "option_max_chars_note": "Measured against the type, not guessed. Oswald 700 at 76px in the 770px card sets about 13 characters per line: 36 characters lands in three lines, 42 goes to four and fills the card, which is too slow to read inside a 3.5s decision window. The opening bank's longest option is 36 and its median is 26, so this cap costs nothing.",
     "option_case": "uppercase",
     "option_end_punctuation": false,
     "forbidden_in_options": ["would you rather", "?", "or"],
@@ -171,7 +177,7 @@
     "Exactly 5 dilemma blocks of 8500ms each",
     "Option A is always on top and always #FF2D6F; option B is always below and always #00D1FF",
     "The timer is always the yellow ring at the centre, between the two cards, and always runs exactly 3500ms",
-    "Anton for options, Inter 900 for numbers",
+    "Oswald 700 for options, Archivo Black for numbers — both pre-bundled by the renderer",
     "No third option colour",
     "Percentages always sum to 100 and are never invented",
     "No intro: frame 1 is already a dilemma",

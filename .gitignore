@@ -25,3 +25,11 @@ reports/
 
 # Rendered videos — large, reproducible from the episode file plus the DNA.
 out/
+
+# HyperFrames project working files.
+# vendor/ is deliberately NOT ignored: gsap is committed so renders do not
+# depend on a network fetch, which the determinism rules forbid anyway.
+node_modules/
+videos/*/snapshots/
+videos/*/.hyperframes/
+videos/*/renders/
