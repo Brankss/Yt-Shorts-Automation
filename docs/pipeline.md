@@ -11,9 +11,10 @@ cadences on purpose: ideas are harvested in batches, videos are produced daily.
                               │  content/dilemmas.json
    ┌──────────────────────────▼──────────────────────────────────┐
    │  PIPELINE B — video (daily)                                 │
-   │  assemble → poll → script → render → publish → measure      │
+   │  assemble → split → script → voice → art → build → render   │
+   │  → publish → measure                                        │
    └──────────────────────────┬──────────────────────────────────┘
-                              │  real percentages + retention
+                              │  retention per block
                               └──────────────► back into scoring
 ```
 
@@ -75,24 +76,34 @@ Pick 5 banked dilemmas matching the difficulty ramp in the DNA
 one must be flagged `counterintuitive` — that is the block that produces the
 comments. Write the episode file against `content/schemas/episode.schema.json`.
 
-### B2. Poll
+### B2. Set the percentages
 
-Post the 5 dilemmas as Community-tab polls. This happens **one episode ahead**:
-while episode N renders, episode N+1's dilemmas are already collecting votes.
+Write a split on every block. They are authored rather than measured — the
+channel owner's call — and each block records `"source": "authored"` so a file
+never passes an invented figure off as a counted one.
 
-Episode 1 has no prior poll, so its blocks use `prediction_no_number` framing.
-From episode 2 on, percentages are real.
+Two rules, both enforced by `validate_content.py`:
 
-*This stage is manual for now — the YouTube Data API cannot create Community
-posts. It is roughly two minutes per episode in YouTube Studio.*
+- **Sum to 100.** This is the failure viewers actually catch. The most-liked
+  comment across every breakout video mined was people mocking a channel's
+  arithmetic: *"How tf is 90 % and 15%"*, 148 likes.
+- **Top share between 55 and 88.** Under that reads as a coin flip and provokes
+  nothing; over it is not a dilemma. At least one block per episode should sit
+  near the top of the band — a viewer discovering they are in an unexpected
+  minority is the whole engine.
+
+When the channel passes 500 subscribers the Community tab unlocks and counted
+numbers become available; `community_poll` and `comment_poll` are already
+accepted sources and are a straight upgrade.
 
 ### B3. Script
 
-Two lines per block, written into the episode file: ≤14 words on the setup at
-+0.2s, ≤10 words on the reaction at +4.4s. `validate_content.py` enforces both
-counts. The setup speaks the stem and both fragments — this is the only place
-the stem exists, since the screen shows the fragments alone. The reaction names
-the surprise in the result and never re-explains the dilemma.
+One line per block: the question, ≤14 words, written into the episode file.
+`validate_content.py` enforces the count. It speaks the stem and both fragments —
+the only place the stem exists, since the screen shows the fragments alone.
+
+**The reveal is silent.** Nothing is spoken over the percentages: a line there
+would tell the viewer what to think about a number they are still reading.
 
 Then voice it:
 
@@ -106,14 +117,13 @@ through the egress proxy — but GitHub release assets get through, and that is
 where Kokoro publishes its weights. They live in `~/.cache/kokoro` (338MB,
 outside the repo); generation itself touches no network.
 
-The script measures every clip against its slot and **exits non-zero rather than
-letting a line talk over its own answer**: a setup has 3.8s before the reveal, a
-reaction has 4.1s before the block ends. When a line overruns, shorten the copy —
-do not speed the voice up, the rate is fixed by the DNA.
+One clip per block, and only the question. The reveal is silent: the
+percentages land with the chime and nothing explains them away.
 
-The clips land as `<audio>` elements at the composition root, two per block.
+`make_voiceover.py` measures each clip and writes its length back into the
+episode file. That measurement is what the next stage times the video to.
 
-**The voice is identity, not a setting.** `af_heart` stays fixed across episodes
+**The voice is identity, not a setting.** `am_adam` stays fixed across episodes
 for the same reason the palette does — a channel is recognised by its sound
 before its layout. Swapping to a recorded human voice later is an upgrade worth
 making; swapping between synthetic voices episode to episode is just noise.
@@ -144,11 +154,41 @@ at the new files. Nothing in the composition changes.
 New fragments need a mapping before they can ship. `export_icons.mjs` exits
 non-zero and names any icon it cannot find.
 
+### B3c. Build
+
+```bash
+python3 scripts/build_episode.py content/episodes/ep001.json
+```
+
+Writes the content, the block timings, the audio placement and the root duration
+into the composition, between markers. Everything outside those markers — the
+split, the type, the motion — is untouched.
+
+**Block length is not fixed.** The timer starts when the question stops
+speaking, so each block runs `0.2s + question + 5.0s timer + 2.5s hold + 0.35s
+exit`. A fixed block would have the timer running while the question was still
+being asked, and the viewer would be timed on a choice they had not finished
+hearing. The cost is that the timings cannot be authored by hand, which is what
+this stage is for. It warns if the total leaves the 41–60s band.
+
 ### B4. Render
 
-Invoke the `hyperframes` skill on the `/general-video` route, handing it the
-episode file plus `dna/video-dna.json`. The DNA is binding: the render fills the
-content slots and nothing else. Output goes to `out/wyr-ep{NNN}-{slug}.mp4`.
+```bash
+cd videos/wyr-template && npx hyperframes check && npx hyperframes render
+```
+
+`ffmpeg` and `ffprobe` are not in the base image; the static binaries from the
+`ffmpeg-static` and `ffprobe-static` npm packages work and need no apt.
+
+Then normalise and land the publishable file:
+
+```bash
+ffmpeg -i renders/<latest>.mp4 -af "loudnorm=I=-14:TP=-1.5:LRA=11" \
+  -t <total> -c:v copy -c:a aac -b:a 192k out/wyr-ep001-food-edition.mp4
+```
+
+The explicit `-t` matters: `loudnorm` adds about 100ms of lookahead padding, and
+the last frame has to match the first for the Shorts loop to close.
 
 Before publishing, check the render against `dna/video-dna.json` → `invariants`.
 
