@@ -12,13 +12,21 @@ The voiceover is not decoration. The screen shows two fragments and never the
 stem that joins them, so the setup line is the only place the dilemma exists as
 a question.
 
-One line per block, and only the setup. The reveal is silent: the percentages
-land with the chime and nothing talks over them or explains them away.
+The question is synthesised in three segments — the stem, option A, and "or"
+plus option B — rather than as one utterance. Not for the audio's sake: it is
+what makes the moment each fragment is *named* an exact number instead of an
+estimate, so its caption and picture can appear on that word. Forced alignment
+would have been the alternative, and whisper's model download is blocked by the
+same egress policy as everything else here; this is better anyway, because a
+construction that cannot drift beats a measurement that can.
 
-The measured length of each clip is written back into the episode file as
-`vo.setup_duration`, because the video's timing is derived from it rather than
-fixed in advance — the timer starts when the question stops, never before, so a
-block is exactly as long as its own question needs.
+The reveal is silent. The percentages land with the chime and nothing talks over
+them or explains them away.
+
+Every duration is written back into the episode file, because the video's timing
+is derived from the speech rather than fixed in advance — the timer starts when
+the question stops, never before, so a block is exactly as long as its own
+question needs.
 
 Usage:
     python3 scripts/make_voiceover.py content/episodes/ep001.json
@@ -38,6 +46,7 @@ VOICES = MODEL_DIR / "voices-v1.0.bin"
 # From dna/video-dna.json → timeline. Everything after the question is fixed;
 # only the question's own length varies.
 LEAD_IN = 0.2      # silence before the voice starts
+GAP = 0.15         # the beat before each option is named
 TIMER = 3.5        # the supplied tick track, exactly
 HOLD = 2.5         # numbers on screen, no voice
 EXIT = 0.35
@@ -84,15 +93,27 @@ def main() -> int:
 
     total = 0.0
     for i, block in enumerate(ep["blocks"], start=1):
-        name = f"{tag}-b{i}-setup.wav"
-        dur = say(block["vo"]["setup"], name)
+        # Assembled from the block's own fields rather than a hand-written
+        # sentence: a separate line of prose could disagree with what the
+        # captions say, and this way it cannot.
+        parts = {
+            "stem": block["stem"],
+            "a": block["option_a"],
+            "b": "or " + block["option_b"],
+        }
+        durs = {k: say(text, f"{tag}-b{i}-{k}.wav") for k, text in parts.items()}
 
-        block["vo"]["setup_duration"] = round(dur, 3)
-        block["vo"].pop("reaction", None)  # the reveal is silent
-
-        block_len = LEAD_IN + dur + TIMER + HOLD + EXIT
+        vo = block["vo"] = {
+            "spoken": f"{parts['stem']} {parts['a']}, {parts['b']}.",
+            "stem_duration": round(durs["stem"], 3),
+            "a_duration": round(durs["a"], 3),
+            "b_duration": round(durs["b"], 3),
+        }
+        speech = LEAD_IN + durs["stem"] + GAP + durs["a"] + GAP + durs["b"]
+        block_len = speech + TIMER + HOLD + EXIT
         total += block_len
-        print(f"  b{i}  question {dur:5.2f}s  →  block {block_len:5.2f}s   {name}")
+        print(f"  b{i}  stem {durs['stem']:4.2f}s  a {durs['a']:4.2f}s  "
+              f"b {durs['b']:4.2f}s  →  block {block_len:5.2f}s")
 
     # The end card speaks too. The tick runs one second past the line, then the
     # chime closes the video, so the tail is measured rather than assumed.

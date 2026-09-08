@@ -175,23 +175,34 @@
           },
           "vo": {
             "type": "object",
-            "required": [
-              "setup"
-            ],
+            "required": [],
             "additionalProperties": false,
-            "description": "The spoken line. Only a setup: the reveal carries no voiceover, so the percentages land in silence and nothing explains them away.",
+            "description": "Timings of the spoken question, written back by make_voiceover.py. The line is synthesised in three segments — the stem, option A, and 'or' plus option B — so the moment each fragment is named is known exactly rather than estimated. Each caption and its image appear on that moment.",
             "properties": {
+              "spoken": {
+                "type": "string",
+                "description": "The full sentence as spoken, assembled from the three segments. Recorded for reference; the segments are what is synthesised."
+              },
+              "stem_duration": {
+                "type": "number"
+              },
+              "a_duration": {
+                "type": "number"
+              },
+              "b_duration": {
+                "type": "number"
+              },
               "setup": {
                 "type": "string",
-                "description": "Max 14 words. Poses the choice; never explains it."
-              },
-              "reaction": {
-                "type": "string",
-                "description": "Deprecated. The reveal is silent — a line here is ignored by the composition and by the timing."
+                "description": "Deprecated. The line is now assembled from stem, option_a and option_b, so a hand-written sentence here could disagree with what is actually said."
               },
               "setup_duration": {
                 "type": "number",
-                "description": "Measured length of the rendered setup clip, in seconds, written back by make_voiceover.py. The block's timing is derived from it: the timer starts when the question stops, never before."
+                "description": "Deprecated, superseded by the three segment durations."
+              },
+              "reaction": {
+                "type": "string",
+                "description": "Deprecated. The reveal carries no voiceover."
               }
             }
           }

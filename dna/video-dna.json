@@ -2,10 +2,15 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
+      {
+        "version": "3.3.0",
+        "change": "Captions and pictures appear on the word that names them, and the OR disc lands on the word 'or'. The question is synthesised in three segments to make those moments exact.",
+        "reason": "Owner's direction. It also removes a small dishonesty in the old timing: both options used to be on screen from the block's first frame while the voice was still working up to them, so the viewer could read ahead of the question and the countdown was measuring a decision they had already started making."
+      },
       {
         "version": "3.2.0",
         "change": "Typeface is Roboto Black Italic, embedded as a woff2 from @fontsource. The synthetic skew is removed and the outlines drop from 10-14px to 6-8px.",
@@ -68,7 +73,7 @@
   },
   "timeline": {
     "block_length": "variable — derived from the question, not fixed",
-    "formula_s": "lead_in 0.2 + spoken question (measured) + timer 3.5 + hold 2.5 + exit 0.35",
+    "formula_s": "lead_in 0.2 + stem + gap 0.15 + option A + gap 0.15 + 'or' + option B + timer 3.5 + hold 2.5 + exit 0.35",
     "lead_in_s": 0.2,
     "timer_s": 3.5,
     "hold_s": 2.5,
@@ -79,12 +84,8 @@
     "why_variable": "The timer starts when the question stops speaking, never before. A fixed block would either cut a long question short or leave a short one sitting in silence, and the viewer would be deciding while still being told what the choice is.",
     "phases": [
       {
-        "name": "enter",
-        "note": "captions and images push in over 0.35s; the colour fields do not animate"
-      },
-      {
         "name": "question",
-        "note": "the voice asks. Nothing moves and no timer runs — being told the choice and being timed on it are two different moments."
+        "note": "the voice asks and the screen fills as it goes: option A on its word, then the OR disc, then option B. Nothing is on screen that has not been said."
       },
       {
         "name": "timer",
@@ -112,6 +113,13 @@
       "chime_s": 2.769,
       "length": "vo_duration + 1.0 + 2.769 — measured, not fixed",
       "or_disc": "stops with the last block. The end card is one word, alone."
+    },
+    "gap_s": 0.15,
+    "reveal_on_word": {
+      "rule": "Each caption and its picture appear on the word that names them; the OR disc lands on the word 'or'.",
+      "how": "The question is synthesised in three segments — stem, option A, 'or' + option B — so the moment each fragment is named is exact by construction rather than estimated.",
+      "why_not_alignment": "Forced alignment was the alternative. Whisper's model download is blocked by the same egress policy as everything else here, but this is the better answer regardless: a construction that cannot drift beats a measurement that can, and the beat before each option is how these lines are read aloud anyway.",
+      "cost": "The frame is empty for the length of the stem — about 1.9s on the opening block. That is the one real risk in this design: a Shorts viewer decides inside the first second, and an empty split screen is a weaker hook than a dilemma already on screen. Shorten block 1's stem before shortening anything else."
     }
   },
   "layout": {
@@ -276,7 +284,7 @@
       "required": true,
       "tone": "fast, dry, mildly provocative; never explains the joke",
       "rate": 1.05,
-      "lines_per_block": 1,
+      "lines_per_block": "3 segments, one question",
       "line_1_at_ms": 200,
       "max_words_line_1": 14,
       "stem_note": "Line 1 speaks the stem and both fragments — 'would you rather never feel pain again, or sadness again'. The screen only ever shows the fragments, so the voiceover is what makes the dilemma a sentence. This is why voiceover is required rather than a nice-to-have: without it the two captions are not a question.",
@@ -292,7 +300,12 @@
       "voice_is_identity": "The voice is as binding as the palette. A channel is recognised by its sound before its layout, so af_heart does not change between episodes without the same argument any invariant would need.",
       "reveal_is_silent": true,
       "silence_note": "Nothing is spoken over the reveal. The percentages land with the chime and are not explained, defended, or joked about — a line there would tell the viewer what to think about a number they are still reading.",
-      "timing_check": "make_voiceover.py measures each question and writes its length back into the episode file; build_episode.py derives every block's timing from it. Nothing about the schedule is guessed."
+      "timing_check": "make_voiceover.py measures each question and writes its length back into the episode file; build_episode.py derives every block's timing from it. Nothing about the schedule is guessed.",
+      "segments": [
+        "stem",
+        "option_a",
+        "'or' + option_b"
+      ]
     },
     "music": {
       "source": "owner-supplied commercial track",

@@ -99,15 +99,19 @@ def validate_episode(path, errors):
                     "(a coin flip provokes nothing, a blowout is not a dilemma)"
                 )
 
-        # Only the setup is spoken. The reveal is silent by design, so there is
-        # no second line to budget.
+        # The spoken line is assembled from the stem and the two fragments, so
+        # the budget applies to that assembly rather than to a separate field.
+        # The reveal is silent by design; there is no second line to budget.
         vo = b["vo"]
         cap = DNA["audio"]["voiceover"]["max_words_line_1"]
-        n1 = len(vo["setup"].split())
+        spoken = f"{b['stem']} {b['option_a']} or {b['option_b']}"
+        n1 = len(spoken.split())
         if n1 > cap:
-            errors.append(f"{where}: vo.setup {n1} words, max {cap}")
-        if "reaction" in vo:
-            errors.append(f"{where}: vo.reaction is deprecated — the reveal carries no voiceover")
+            errors.append(f"{where}: spoken question is {n1} words, max {cap} — {spoken!r}")
+        for dead in ("setup", "reaction"):
+            if dead in vo:
+                errors.append(f"{where}: vo.{dead} is deprecated — the line is assembled "
+                              "from stem, option_a and option_b, and the reveal is silent")
 
     ids = [b["dilemma_id"] for b in ep["blocks"]]
     if len(set(ids)) != len(ids):

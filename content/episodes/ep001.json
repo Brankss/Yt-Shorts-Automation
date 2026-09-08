@@ -17,8 +17,10 @@
         "b": 32
       },
       "vo": {
-        "setup": "Would you rather eat pizza with pineapple, or with anchovies.",
-        "setup_duration": 3.349
+        "spoken": "Would you rather eat pizza with pineapple, or anchovies.",
+        "stem_duration": 1.6,
+        "a_duration": 0.725,
+        "b_duration": 1.003
       }
     },
     {
@@ -34,8 +36,10 @@
         "b": 43
       },
       "vo": {
-        "setup": "Would you rather give up chocolate forever, or give up cheese.",
-        "setup_duration": 3.157
+        "spoken": "Would you rather give up chocolate, or cheese.",
+        "stem_duration": 1.323,
+        "a_duration": 0.683,
+        "b_duration": 0.832
       }
     },
     {
@@ -51,8 +55,10 @@
         "b": 39
       },
       "vo": {
-        "setup": "Would you rather give up meat forever, or sugar forever.",
-        "setup_duration": 2.88
+        "spoken": "Would you rather give up meat forever, or sugar forever.",
+        "stem_duration": 1.323,
+        "a_duration": 0.917,
+        "b_duration": 1.152
       }
     },
     {
@@ -68,8 +74,10 @@
         "b": 77
       },
       "vo": {
-        "setup": "Would you rather lose your sense of taste, or your smell.",
-        "setup_duration": 2.688
+        "spoken": "Would you rather lose your sense of taste, or smell.",
+        "stem_duration": 1.6,
+        "a_duration": 0.512,
+        "b_duration": 0.619
       }
     },
     {
@@ -85,8 +93,10 @@
         "b": 21
       },
       "vo": {
-        "setup": "Would you rather never feel hunger again, or never feel full.",
-        "setup_duration": 3.221
+        "spoken": "Would you rather never feel hunger again, or full again.",
+        "stem_duration": 1.344,
+        "a_duration": 0.811,
+        "b_duration": 1.003
       }
     }
   ],

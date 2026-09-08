@@ -28,6 +28,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 LEAD_IN = 0.2
+GAP = 0.15         # the beat before each option is named
 TIMER = 3.5
 HOLD = 2.5
 EXIT = 0.35
@@ -46,19 +47,27 @@ def block_layout(blocks):
     """Absolute times for every block, derived from the measured questions."""
     out, t = [], 0.0
     for b in blocks:
-        d = b["vo"].get("setup_duration")
-        if d is None:
+        vo = b["vo"]
+        try:
+            ds, da, db = vo["stem_duration"], vo["a_duration"], vo["b_duration"]
+        except KeyError:
             sys.exit(
-                f"ERROR: {b['dilemma_id']} has no vo.setup_duration.\n"
+                f"ERROR: {b['dilemma_id']} has no segment durations.\n"
                 "  Run: python3 scripts/make_voiceover.py <episode>"
             )
-        speech_end = LEAD_IN + d
-        length = speech_end + TIMER + HOLD + EXIT
-        tick_at = t + speech_end
+        # Each fragment's caption and picture appear on the word that names it,
+        # so those two moments are the spine of the block.
+        stem_at = t + LEAD_IN
+        a_at = stem_at + ds + GAP
+        b_at = a_at + da + GAP
+        tick_at = b_at + db
+        length = (tick_at - t) + TIMER + HOLD + EXIT
         out.append({
             "start": round(t, 3),
             "length": round(length, 3),
-            "vo_at": round(t + LEAD_IN, 3),
+            "stem_at": round(stem_at, 3),
+            "a_at": round(a_at, 3),
+            "b_at": round(b_at, 3),
             "tick_at": round(tick_at, 3),                 # the instant the question stops
             "reveal_at": round(tick_at + TIMER, 3),
             # One pulse of the seam per second of the tick, so the countdown is
@@ -177,8 +186,9 @@ def main() -> int:
     audio = [f'      <audio id="music" src="assets/music-{tag}.wav" '
              f'data-start="0" data-volume="{VOL_MUSIC}"></audio>']
     for i, L in enumerate(layout, start=1):
-        audio.append(f'      <audio id="vo-b{i}" src="assets/vo/{tag}-b{i}-setup.wav" '
-                     f'data-start="{L["vo_at"]}" data-volume="{VOL_VO}"></audio>')
+        for seg, at in (("stem", L["stem_at"]), ("a", L["a_at"]), ("b", L["b_at"])):
+            audio.append(f'      <audio id="vo-b{i}-{seg}" src="assets/vo/{tag}-b{i}-{seg}.wav" '
+                         f'data-start="{at}" data-volume="{VOL_VO}"></audio>')
         audio.append(f'      <audio id="sfx-tick-{i}" src="assets/sfx-tick.wav" '
                      f'data-start="{L["tick_at"]}" data-volume="{VOL_TICK}"></audio>')
         audio.append(f'      <audio id="sfx-reveal-{i}" src="assets/sfx-reveal.wav" '
@@ -199,8 +209,8 @@ def main() -> int:
 
     print(f"{tag} → {args.project}/index.html")
     for i, L in enumerate(layout, start=1):
-        print(f"  b{i}  {L['start']:6.2f}s  question→{L['tick_at']:6.2f}s  "
-              f"timer→{L['reveal_at']:6.2f}s  reveal  ({L['length']:.2f}s)")
+        print(f"  b{i}  {L['start']:6.2f}s  A→{L['a_at']:6.2f}s  B→{L['b_at']:6.2f}s  "
+              f"timer→{L['tick_at']:6.2f}s  reveal→{L['reveal_at']:6.2f}s  ({L['length']:.2f}s)")
     print(f"  end  {blocks_total:6.2f}s  line→{blocks_total + ec_vo:6.2f}s  "
           f"tick→{chime_at:6.2f}s  chime  ({end_len:.2f}s)")
     print(f"  total {total:.2f}s   music from {MUSIC_FROM:.0f}s of source")
