@@ -140,10 +140,20 @@
   "images": {
     "required": true,
     "one_per_option": true,
-    "treatment": "cut-out subject on the flat colour field, no photographic background, no drop shadow",
+    "treatment": "single subject on the flat colour field, no photographic background, no drop shadow",
     "box": 420,
+    "render_note": "Fixed 420px with object-fit: contain. A max-width/max-height rule constrains without ever scaling up, and the source files carry small intrinsic dimensions.",
     "subject_placement": "upper half of the box, so the bottom field's image survives the Shorts UI band",
-    "note": "The image is what stops the scroll; the caption is what makes it a choice. A block with no image still renders — the field is simply flat — but it is a degraded video, not a stylistic option."
+    "source": {
+      "kind": "icon_set",
+      "set": "noto",
+      "package": "@iconify-json/noto",
+      "license": "Apache-2.0",
+      "export": "node scripts/export_icons.mjs",
+      "why": "This session's egress policy returns 403 for every image CDN, and the proxy README is explicit that a policy denial is to be reported rather than routed around. The npm registry sits in the proxy's noProxy list, so artwork comes from a package instead. Apache-2.0 was chosen over OpenMoji (CC-BY-SA, share-alike) and Twemoji (CC-BY, attribution) because neither sits comfortably on a monetised channel."
+    },
+    "upgrade_path": "Photographic cut-outs are the stronger treatment and what the reference videos use. They need either an egress policy that allows an image source, or files supplied directly. Swapping them in is a change to image_a/image_b in the bank — nothing in the composition changes.",
+    "note": "The image is what stops the scroll; the caption is what makes it a choice. A block with no image still renders — the field is simply flat, and the composition draws a dashed slot — but that is a missing asset, not a style."
   },
 
   "reveal_mechanic": {

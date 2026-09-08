@@ -95,18 +95,29 @@ to explain the dilemma.
 
 ### B3b. Source the images
 
-Ten cut-out subjects per episode, one per fragment. Load `/media-use` and follow
-its `references/resolve.md`; run `npx hyperframes auth status` before the first
-authenticated provider call. Background removal is `npx hyperframes remove-background`.
+Ten subjects per episode, one per fragment. Every dilemma in the bank already
+carries `image_a` / `image_b`, so this stage is normally just:
 
-Each one: single subject, no photographic background, no drop shadow, composed
-in the upper half of its box. Reuse is fine and cheap — `pizza` will come up
-often, and a stable picture for a recurring fragment makes the channel more
-recognisable, not less.
+```bash
+node scripts/export_icons.mjs
+```
 
-**This stage is the pipeline's real cost.** Ten images a day is the difference
-between this format and a text-only one, and it is also why the format works.
-Budget it honestly rather than discovering it at episode 3.
+which writes one SVG per referenced icon into `videos/wyr-template/assets/`.
+Reuse is the point — `pizza` comes up often, and a stable picture for a
+recurring fragment makes the channel more recognisable, not less.
+
+**On where the artwork comes from.** Photographic cut-outs are what the
+reference videos use and remain the stronger treatment. They need an image
+source, and this project's sessions run behind an egress policy that returns
+403 for every image CDN. Artwork therefore comes from the `@iconify-json/noto`
+npm package (Apache-2.0, 3,800 icons) — npm is reachable directly, the files
+land on disk, and nothing is fetched at render time.
+
+To move to photographs later: change `image_a` / `image_b` in the bank to point
+at the new files. Nothing in the composition changes.
+
+New fragments need a mapping before they can ship. `export_icons.mjs` exits
+non-zero and names any icon it cannot find.
 
 ### B4. Render
 

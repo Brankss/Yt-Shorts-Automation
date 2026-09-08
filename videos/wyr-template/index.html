@@ -84,7 +84,9 @@
       }
       #img-a-box { top: 210px; }
       #img-b-box { top: 1240px; }
-      .imgbox img { max-width: 420px; max-height: 420px; display: block; }
+      /* Fixed size, not max-*: the source SVGs carry small intrinsic
+         dimensions, and a max-only rule constrains without ever scaling up. */
+      .imgbox img { width: 420px; height: 420px; object-fit: contain; display: block; }
 
       /* Only drawn when a block has no image. The DNA requires one per option,
          so this is meant to be visible and wrong, not a shippable state.
@@ -144,33 +146,48 @@
         "episode": 7,
         "blocks": [
           {
-            "stem": "Would you rather never feel",
-            "option_a": "pain again",
-            "option_b": "sadness again",
+            "dilemma_id": "d0001",
+            "stem": "Would you rather eat pizza with",
+            "option_a": "pineapple",
+            "option_b": "anchovies",
+            "image_a": "assets/noto-pineapple.svg",
+            "image_b": "assets/noto-fish.svg",
             "reveal": { "source": "community_poll", "a": 71, "b": 29 }
           },
           {
-            "stem": "Would you rather have unlimited free",
-            "option_a": "pizza",
-            "option_b": "sushi",
+            "dilemma_id": "d0012",
+            "stem": "Would you rather give up",
+            "option_a": "chocolate",
+            "option_b": "cheese",
+            "image_a": "assets/noto-chocolate-bar.svg",
+            "image_b": "assets/noto-cheese-wedge.svg",
             "reveal": { "source": "community_poll", "a": 58, "b": 42 }
           },
           {
+            "dilemma_id": "d0022",
             "stem": "Would you rather give up",
             "option_a": "meat forever",
             "option_b": "sugar forever",
+            "image_a": "assets/noto-cut-of-meat.svg",
+            "image_b": "assets/noto-candy.svg",
             "reveal": { "source": "community_poll", "a": 64, "b": 36 }
           },
           {
+            "dilemma_id": "d0031",
             "stem": "Would you rather lose your sense of",
             "option_a": "taste",
             "option_b": "smell",
+            "image_a": "assets/noto-tongue.svg",
+            "image_b": "assets/noto-nose.svg",
             "reveal": { "source": "prediction_no_number", "prediction_favours": "b" }
           },
           {
-            "stem": "Would you rather be",
-            "option_a": "always hungry",
-            "option_b": "never hungry",
+            "dilemma_id": "d0041",
+            "stem": "Would you rather never feel",
+            "option_a": "hunger again",
+            "option_b": "full again",
+            "image_a": "assets/noto-drooling-face.svg",
+            "image_b": "assets/noto-face-savoring-food.svg",
             "reveal": { "source": "community_poll", "a": 83, "b": 17 }
           }
         ],

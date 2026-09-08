@@ -4,57 +4,989 @@
   "model": "stem + two fragments",
   "note": "Rewritten for DNA 2.0.0. The first version wrote whole sentences on both cards — median 26 characters — which is roughly double what the format actually uses. The reference the user supplied reads 'pain again' and 'sadness again': 10 and 13 characters sharing an unstated stem. The dilemma is one sentence split three ways, the stem is spoken and never rendered, and the two fragments are all the screen shows. Food first because it carries breakouts at every channel size and dominates the audience's own vocabulary (pizza 77, pineapple 61, chicken 31, fries 28 across 1,001 mined comments). Every fragment also has to name something photographable, since each one has to fill a colour field with a cut-out subject.",
   "dilemmas": [
-    { "id": "d0001", "stem": "Would you rather eat pizza with", "option_a": "pineapple", "option_b": "anchovies", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "own_comments", "ref": "pineapple appears 61x in mined comments" }, "status": "banked" },
-    { "id": "d0002", "stem": "Would you rather never eat", "option_a": "pizza again", "option_b": "fries again", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0003", "stem": "Would you rather pour", "option_a": "cereal first", "option_b": "milk first", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 5, "universality": 4, "instant_read": 5, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0004", "stem": "Would you rather be forced to put", "option_a": "ketchup on pasta", "option_b": "mayo on pizza", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 4, "universality": 4, "instant_read": 4, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0005", "stem": "Would you rather have your coffee", "option_a": "always cold", "option_b": "always burnt", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 4, "universality": 4, "instant_read": 5, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0006", "stem": "Would you rather eat", "option_a": "a whole lemon", "option_b": "a spoon of mustard", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0007", "stem": "Would you rather have chocolate that tastes like", "option_a": "fish", "option_b": "soap", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0008", "stem": "Would you rather cook with no", "option_a": "salt ever", "option_b": "pepper ever", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 2, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0009", "stem": "Would you rather eat a burger", "option_a": "like corn", "option_b": "with a spoon", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 5, "universality": 4, "instant_read": 4, "imageable": 4 }, "source": { "kind": "competitor_comments", "ref": "bagel/donut argument, 22 likes" }, "status": "banked" },
-    { "id": "d0010", "stem": "Would you rather have your fries", "option_a": "always soggy", "option_b": "always cold", "vertical": "food", "difficulty": "easy+funny", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-
-    { "id": "d0011", "stem": "Would you rather have unlimited free", "option_a": "pizza", "option_b": "sushi", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0012", "stem": "Would you rather give up", "option_a": "chocolate", "option_b": "cheese", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0013", "stem": "Would you rather only eat food that is", "option_a": "sweet", "option_b": "salty", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0014", "stem": "Would you rather get free", "option_a": "coffee forever", "option_b": "breakfast forever", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 4, "universality": 4, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0015", "stem": "Would you rather never drink", "option_a": "coffee again", "option_b": "energy drinks", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 3, "universality": 4, "instant_read": 5, "imageable": 5 }, "already_am_that": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0016", "stem": "Would you rather eat", "option_a": "one meal forever", "option_b": "never your favourite", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0017", "stem": "Would you rather cut out", "option_a": "bread forever", "option_b": "rice forever", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0018", "stem": "Would you rather have every meal be", "option_a": "too spicy", "option_b": "totally bland", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0019", "stem": "Would you rather never", "option_a": "order takeout", "option_b": "cook again", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 5, "universality": 4, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0020", "stem": "Would you rather be stuck with", "option_a": "stale chips", "option_b": "flat soda", "vertical": "food", "difficulty": "easy", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-
-    { "id": "d0021", "stem": "Would you rather only eat food cooked by", "option_a": "you", "option_b": "a stranger", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 4, "universality": 4, "instant_read": 5, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "competitor_comments", "ref": "fast food over home cooked outrage, 18 likes" }, "status": "banked" },
-    { "id": "d0022", "stem": "Would you rather give up", "option_a": "meat forever", "option_b": "sugar forever", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "already_am_that": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0023", "stem": "Would you rather", "option_a": "know every ingredient", "option_b": "never read a label", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 4, "universality": 4, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0024", "stem": "Would you rather", "option_a": "eat clean, live to 100", "option_b": "eat junk, live to 75", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0025", "stem": "Would you rather have food that is", "option_a": "free but slow", "option_b": "instant but triple", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 4, "universality": 4, "instant_read": 4, "imageable": 3 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0026", "stem": "Would you rather", "option_a": "taste nothing", "option_b": "eat only greens", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0027", "stem": "Would you rather have every meal be", "option_a": "a surprise", "option_b": "identical", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0028", "stem": "Would you rather never eat", "option_a": "with anyone", "option_b": "alone again", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 5 }, "already_am_that": true, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0029", "stem": "Would you rather have a fridge that is", "option_a": "always empty", "option_b": "always expired", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0030", "stem": "Would you rather have everything you eat be", "option_a": "cold", "option_b": "mushy", "vertical": "food", "difficulty": "medium", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-
-    { "id": "d0031", "stem": "Would you rather lose your sense of", "option_a": "taste", "option_b": "smell", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0032", "stem": "Would you rather have every meal picked by", "option_a": "your enemy", "option_b": "a random kid", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 5, "universality": 4, "instant_read": 5, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0033", "stem": "Would you rather live somewhere with", "option_a": "great food, high rent", "option_b": "cheap rent, bad food", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 5, "universality": 3, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0034", "stem": "Would you rather never", "option_a": "eat out with friends", "option_b": "cook for someone", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 4, "universality": 4, "instant_read": 4, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0035", "stem": "Would you rather", "option_a": "see how it is made", "option_b": "never think about it", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 5, "universality": 4, "instant_read": 4, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0036", "stem": "Would you rather be", "option_a": "full, tasting nothing", "option_b": "hungry, tasting all", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0037", "stem": "Would you rather", "option_a": "hate food for 100k", "option_b": "eat well, stay broke", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 4, "universality": 5, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0038", "stem": "Would you rather have every meal be", "option_a": "your old favourite", "option_b": "mildly disappointing", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 4, "universality": 4, "instant_read": 4, "imageable": 3 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0039", "stem": "Would you rather only eat food that is", "option_a": "from your childhood", "option_b": "completely new", "vertical": "food", "difficulty": "hard", "scores": { "polarization": 4, "universality": 4, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-
-    { "id": "d0040", "stem": "Would you rather give up", "option_a": "chewing", "option_b": "drinking", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 4, "universality": 5, "instant_read": 5, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0041", "stem": "Would you rather never feel", "option_a": "hunger again", "option_b": "full again", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 5, "universality": 5, "instant_read": 5, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0042", "stem": "Would you rather", "option_a": "pick for everyone", "option_b": "let everyone pick", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 5, "universality": 4, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0043", "stem": "Would you rather have food be free for", "option_a": "you only", "option_b": "everyone but you", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0044", "stem": "Would you rather", "option_a": "remember every meal", "option_b": "forget every meal", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 4, "universality": 5, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0045", "stem": "Would you rather be the only one who", "option_a": "eats anything safely", "option_b": "cannot", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 4, "universality": 5, "instant_read": 4, "imageable": 4 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0046", "stem": "Would you rather have", "option_a": "your favourite go bad", "option_b": "your worst turn best", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 4 }, "counterintuitive": true, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0047", "stem": "Would you rather", "option_a": "end world hunger", "option_b": "never be hungry", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" },
-    { "id": "d0048", "stem": "Would you rather eat", "option_a": "perfectly, alone", "option_b": "badly, with people", "vertical": "food", "difficulty": "hardest", "scores": { "polarization": 5, "universality": 5, "instant_read": 4, "imageable": 5 }, "source": { "kind": "written" }, "status": "banked" }
-  ]
+    {
+      "id": "d0001",
+      "stem": "Would you rather eat pizza with",
+      "option_a": "pineapple",
+      "option_b": "anchovies",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "own_comments",
+        "ref": "pineapple appears 61x in mined comments"
+      },
+      "status": "banked",
+      "image_a": "noto:pineapple",
+      "image_b": "noto:fish"
+    },
+    {
+      "id": "d0002",
+      "stem": "Would you rather never eat",
+      "option_a": "pizza again",
+      "option_b": "fries again",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:pizza",
+      "image_b": "noto:french-fries"
+    },
+    {
+      "id": "d0003",
+      "stem": "Would you rather pour",
+      "option_a": "cereal first",
+      "option_b": "milk first",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 5,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:bowl-with-spoon",
+      "image_b": "noto:glass-of-milk"
+    },
+    {
+      "id": "d0004",
+      "stem": "Would you rather be forced to put",
+      "option_a": "ketchup on pasta",
+      "option_b": "mayo on pizza",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:spaghetti",
+      "image_b": "noto:pizza"
+    },
+    {
+      "id": "d0005",
+      "stem": "Would you rather have your coffee",
+      "option_a": "always cold",
+      "option_b": "always burnt",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:hot-beverage",
+      "image_b": "noto:fire"
+    },
+    {
+      "id": "d0006",
+      "stem": "Would you rather eat",
+      "option_a": "a whole lemon",
+      "option_b": "a spoon of mustard",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:lemon",
+      "image_b": "noto:spoon"
+    },
+    {
+      "id": "d0007",
+      "stem": "Would you rather have chocolate that tastes like",
+      "option_a": "fish",
+      "option_b": "soap",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:fish",
+      "image_b": "noto:soap"
+    },
+    {
+      "id": "d0008",
+      "stem": "Would you rather cook with no",
+      "option_a": "salt ever",
+      "option_b": "pepper ever",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 2,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:salt",
+      "image_b": "noto:hot-pepper"
+    },
+    {
+      "id": "d0009",
+      "stem": "Would you rather eat a burger",
+      "option_a": "like corn",
+      "option_b": "with a spoon",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 5,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "competitor_comments",
+        "ref": "bagel/donut argument, 22 likes"
+      },
+      "status": "banked",
+      "image_a": "noto:ear-of-corn",
+      "image_b": "noto:spoon"
+    },
+    {
+      "id": "d0010",
+      "stem": "Would you rather have your fries",
+      "option_a": "always soggy",
+      "option_b": "always cold",
+      "vertical": "food",
+      "difficulty": "easy+funny",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:french-fries",
+      "image_b": "noto:ice"
+    },
+    {
+      "id": "d0011",
+      "stem": "Would you rather have unlimited free",
+      "option_a": "pizza",
+      "option_b": "sushi",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:pizza",
+      "image_b": "noto:sushi"
+    },
+    {
+      "id": "d0012",
+      "stem": "Would you rather give up",
+      "option_a": "chocolate",
+      "option_b": "cheese",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:chocolate-bar",
+      "image_b": "noto:cheese-wedge"
+    },
+    {
+      "id": "d0013",
+      "stem": "Would you rather only eat food that is",
+      "option_a": "sweet",
+      "option_b": "salty",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:candy",
+      "image_b": "noto:salt"
+    },
+    {
+      "id": "d0014",
+      "stem": "Would you rather get free",
+      "option_a": "coffee forever",
+      "option_b": "breakfast forever",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:hot-beverage",
+      "image_b": "noto:pancakes"
+    },
+    {
+      "id": "d0015",
+      "stem": "Would you rather never drink",
+      "option_a": "coffee again",
+      "option_b": "energy drinks",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 3,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "already_am_that": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:hot-beverage",
+      "image_b": "noto:battery"
+    },
+    {
+      "id": "d0016",
+      "stem": "Would you rather eat",
+      "option_a": "one meal forever",
+      "option_b": "never your favourite",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:bento-box",
+      "image_b": "noto:broken-heart"
+    },
+    {
+      "id": "d0017",
+      "stem": "Would you rather cut out",
+      "option_a": "bread forever",
+      "option_b": "rice forever",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:bread",
+      "image_b": "noto:cooked-rice"
+    },
+    {
+      "id": "d0018",
+      "stem": "Would you rather have every meal be",
+      "option_a": "too spicy",
+      "option_b": "totally bland",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:hot-pepper",
+      "image_b": "noto:face-without-mouth"
+    },
+    {
+      "id": "d0019",
+      "stem": "Would you rather never",
+      "option_a": "order takeout",
+      "option_b": "cook again",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 5,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:takeout-box",
+      "image_b": "noto:cooking"
+    },
+    {
+      "id": "d0020",
+      "stem": "Would you rather be stuck with",
+      "option_a": "stale chips",
+      "option_b": "flat soda",
+      "vertical": "food",
+      "difficulty": "easy",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:potato",
+      "image_b": "noto:cup-with-straw"
+    },
+    {
+      "id": "d0021",
+      "stem": "Would you rather only eat food cooked by",
+      "option_a": "you",
+      "option_b": "a stranger",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "competitor_comments",
+        "ref": "fast food over home cooked outrage, 18 likes"
+      },
+      "status": "banked",
+      "image_a": "noto:cook",
+      "image_b": "noto:busts-in-silhouette"
+    },
+    {
+      "id": "d0022",
+      "stem": "Would you rather give up",
+      "option_a": "meat forever",
+      "option_b": "sugar forever",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "already_am_that": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:cut-of-meat",
+      "image_b": "noto:candy"
+    },
+    {
+      "id": "d0023",
+      "stem": "Would you rather",
+      "option_a": "know every ingredient",
+      "option_b": "never read a label",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:magnifying-glass-tilted-left",
+      "image_b": "noto:label"
+    },
+    {
+      "id": "d0024",
+      "stem": "Would you rather",
+      "option_a": "eat clean, live to 100",
+      "option_b": "eat junk, live to 75",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:green-salad",
+      "image_b": "noto:hamburger"
+    },
+    {
+      "id": "d0025",
+      "stem": "Would you rather have food that is",
+      "option_a": "free but slow",
+      "option_b": "instant but triple",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 3
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:snail",
+      "image_b": "noto:high-voltage"
+    },
+    {
+      "id": "d0026",
+      "stem": "Would you rather",
+      "option_a": "taste nothing",
+      "option_b": "eat only greens",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:face-without-mouth",
+      "image_b": "noto:broccoli"
+    },
+    {
+      "id": "d0027",
+      "stem": "Would you rather have every meal be",
+      "option_a": "a surprise",
+      "option_b": "identical",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:wrapped-gift",
+      "image_b": "noto:repeat-button"
+    },
+    {
+      "id": "d0028",
+      "stem": "Would you rather never eat",
+      "option_a": "with anyone",
+      "option_b": "alone again",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "already_am_that": true,
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:people-hugging",
+      "image_b": "noto:person"
+    },
+    {
+      "id": "d0029",
+      "stem": "Would you rather have a fridge that is",
+      "option_a": "always empty",
+      "option_b": "always expired",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:empty-nest",
+      "image_b": "noto:wastebasket"
+    },
+    {
+      "id": "d0030",
+      "stem": "Would you rather have everything you eat be",
+      "option_a": "cold",
+      "option_b": "mushy",
+      "vertical": "food",
+      "difficulty": "medium",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:ice",
+      "image_b": "noto:bowl-with-spoon"
+    },
+    {
+      "id": "d0031",
+      "stem": "Would you rather lose your sense of",
+      "option_a": "taste",
+      "option_b": "smell",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:tongue",
+      "image_b": "noto:nose"
+    },
+    {
+      "id": "d0032",
+      "stem": "Would you rather have every meal picked by",
+      "option_a": "your enemy",
+      "option_b": "a random kid",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 5,
+        "universality": 4,
+        "instant_read": 5,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:angry-face",
+      "image_b": "noto:child"
+    },
+    {
+      "id": "d0033",
+      "stem": "Would you rather live somewhere with",
+      "option_a": "great food, high rent",
+      "option_b": "cheap rent, bad food",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 5,
+        "universality": 3,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:shallow-pan-of-food",
+      "image_b": "noto:house"
+    },
+    {
+      "id": "d0034",
+      "stem": "Would you rather never",
+      "option_a": "eat out with friends",
+      "option_b": "cook for someone",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:clinking-glasses",
+      "image_b": "noto:cooking"
+    },
+    {
+      "id": "d0035",
+      "stem": "Would you rather",
+      "option_a": "see how it is made",
+      "option_b": "never think about it",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 5,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:eye",
+      "image_b": "noto:see-no-evil-monkey"
+    },
+    {
+      "id": "d0036",
+      "stem": "Would you rather be",
+      "option_a": "full, tasting nothing",
+      "option_b": "hungry, tasting all",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:neutral-face",
+      "image_b": "noto:drooling-face"
+    },
+    {
+      "id": "d0037",
+      "stem": "Would you rather",
+      "option_a": "hate food for 100k",
+      "option_b": "eat well, stay broke",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:money-bag",
+      "image_b": "noto:green-salad"
+    },
+    {
+      "id": "d0038",
+      "stem": "Would you rather have every meal be",
+      "option_a": "your old favourite",
+      "option_b": "mildly disappointing",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 3
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:red-heart",
+      "image_b": "noto:slightly-frowning-face"
+    },
+    {
+      "id": "d0039",
+      "stem": "Would you rather only eat food that is",
+      "option_a": "from your childhood",
+      "option_b": "completely new",
+      "vertical": "food",
+      "difficulty": "hard",
+      "scores": {
+        "polarization": 4,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:teddy-bear",
+      "image_b": "noto:sparkles"
+    },
+    {
+      "id": "d0040",
+      "stem": "Would you rather give up",
+      "option_a": "chewing",
+      "option_b": "drinking",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:tooth",
+      "image_b": "noto:cup-with-straw"
+    },
+    {
+      "id": "d0041",
+      "stem": "Would you rather never feel",
+      "option_a": "hunger again",
+      "option_b": "full again",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 5,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:drooling-face",
+      "image_b": "noto:face-savoring-food"
+    },
+    {
+      "id": "d0042",
+      "stem": "Would you rather",
+      "option_a": "pick for everyone",
+      "option_b": "let everyone pick",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 5,
+        "universality": 4,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:crown",
+      "image_b": "noto:busts-in-silhouette"
+    },
+    {
+      "id": "d0043",
+      "stem": "Would you rather have food be free for",
+      "option_a": "you only",
+      "option_b": "everyone but you",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:person",
+      "image_b": "noto:globe-showing-europe-africa"
+    },
+    {
+      "id": "d0044",
+      "stem": "Would you rather",
+      "option_a": "remember every meal",
+      "option_b": "forget every meal",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:brain",
+      "image_b": "noto:dashing-away"
+    },
+    {
+      "id": "d0045",
+      "stem": "Would you rather be the only one who",
+      "option_a": "eats anything safely",
+      "option_b": "cannot",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 4,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:shield",
+      "image_b": "noto:skull"
+    },
+    {
+      "id": "d0046",
+      "stem": "Would you rather have",
+      "option_a": "your favourite go bad",
+      "option_b": "your worst turn best",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 4
+      },
+      "counterintuitive": true,
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:nauseated-face",
+      "image_b": "noto:star-struck"
+    },
+    {
+      "id": "d0047",
+      "stem": "Would you rather",
+      "option_a": "end world hunger",
+      "option_b": "never be hungry",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:globe-showing-europe-africa",
+      "image_b": "noto:person"
+    },
+    {
+      "id": "d0048",
+      "stem": "Would you rather eat",
+      "option_a": "perfectly, alone",
+      "option_b": "badly, with people",
+      "vertical": "food",
+      "difficulty": "hardest",
+      "scores": {
+        "polarization": 5,
+        "universality": 5,
+        "instant_read": 4,
+        "imageable": 5
+      },
+      "source": {
+        "kind": "written"
+      },
+      "status": "banked",
+      "image_a": "noto:fork-and-knife-with-plate",
+      "image_b": "noto:people-hugging"
+    }
+  ],
+  "images": {
+    "set": "noto",
+    "package": "@iconify-json/noto",
+    "license": "Apache-2.0",
+    "note": "Open-licensed artwork, resolved from npm because the session's egress policy blocks every image CDN. Apache-2.0 was chosen over OpenMoji (CC-BY-SA, share-alike) and Twemoji (CC-BY, attribution) because neither sits comfortably on a monetised channel. Photographic cut-outs remain the stronger treatment; this is what ships today."
+  }
 }
