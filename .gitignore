@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Credentials — never commit these.
+# The youtube-* skills store OAuth material in ~/.config/youtube-skills/,
+# outside the repo. These patterns are defensive, in case a file is ever
+# copied in here by mistake.
+client_secret*.json
+token.json
+token_write.json
+channel_write.json
+pending_auth.json
+.env
+.env.*
+
+# Skill output / working data
+*.local.json
