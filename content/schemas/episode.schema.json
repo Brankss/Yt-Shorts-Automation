@@ -201,18 +201,27 @@
     "end_card": {
       "type": "object",
       "required": [
-        "cta"
+        "cta",
+        "vo"
       ],
       "additionalProperties": false,
       "properties": {
         "cta": {
           "type": "string",
           "maxLength": 48,
-          "description": "One line, one ask, pointing at the poll. Never 'like and subscribe'."
+          "description": "The word on screen. One word, large — 'COMMENT'."
         },
         "next_teaser": {
           "type": "string",
           "maxLength": 48
+        },
+        "vo": {
+          "type": "string",
+          "description": "Spoken over the end card while the tick runs underneath."
+        },
+        "vo_duration": {
+          "type": "number",
+          "description": "Measured length of the rendered end-card clip, written back by make_voiceover.py. The tick runs one second past it, then the chime closes the video."
         }
       }
     },

@@ -165,11 +165,17 @@ into the composition, between markers. Everything outside those markers — the
 split, the type, the motion — is untouched.
 
 **Block length is not fixed.** The timer starts when the question stops
-speaking, so each block runs `0.2s + question + 5.0s timer + 2.5s hold + 0.35s
+speaking, so each block runs `0.2s + question + 3.5s timer + 2.5s hold + 0.35s
 exit`. A fixed block would have the timer running while the question was still
 being asked, and the viewer would be timed on a choice they had not finished
 hearing. The cost is that the timings cannot be authored by hand, which is what
 this stage is for. It warns if the total leaves the 41–60s band.
+
+The same stage cuts the two episode-length audio beds from the owner's source
+files in `assets/source/` (gitignored): the end-card tick, which runs one second
+past the closing line, and the music, from its cue point for exactly the length
+of the video. Neither can be a fixed asset because both depend on how long the
+episode turned out to be.
 
 ### B4. Render
 

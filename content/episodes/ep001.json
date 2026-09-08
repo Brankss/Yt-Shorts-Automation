@@ -91,12 +91,13 @@
     }
   ],
   "end_card": {
-    "cta": "which ones did you get",
-    "next_teaser": "new five tomorrow"
+    "cta": "COMMENT",
+    "vo": "Comment what you'd like to see in the next video.",
+    "vo_duration": 2.283
   },
   "publish": {
     "title": "Would You Rather... #1 FOOD EDITION",
-    "description": "5 impossible food choices. Which ones did you get?\n\nDrop your five in the comments.\n\n#wouldyourather #thisorthat #shorts",
+    "description": "5 impossible food choices. Which ones did you get?\n\nComment what you'd like to see in the next video.\n\n#wouldyourather #thisorthat #shorts",
     "tags": [
       "would you rather",
       "quiz",
@@ -108,7 +109,7 @@
       "would you rather food",
       "shorts"
     ],
-    "pinned_comment": "Which five did you get? Mine: pineapple, cheese, sugar, smell, hunger.",
+    "pinned_comment": "What should the next five be? Best ideas in the comments go into episode 2.",
     "hashtags_in_title": false,
     "settings": {
       "made_for_kids": false,

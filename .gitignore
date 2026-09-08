@@ -33,3 +33,9 @@ node_modules/
 videos/*/snapshots/
 videos/*/.hyperframes/
 videos/*/renders/
+
+# Owner-supplied source audio. Kept out of git: large, and the music is a
+# commercial track whose licence is the channel owner's to manage, not this
+# repository's to redistribute. The trimmed derivatives under assets/ are what
+# the composition uses.
+videos/*/assets/source/

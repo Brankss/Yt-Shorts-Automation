@@ -1,12 +1,12 @@
 # Publish sheet — episode 1
 
 File: `out/wyr-ep001-food-edition.mp4`
-1080×1920 · 30fps · 59.05s · H.264 + AAC · normalised to −14 LUFS
+1080×1920 · 30fps · 54.10s · H.264 + AAC · normalised to −14 LUFS
 
 Block length varies: the timer starts when each question stops speaking, so a
 block runs as long as its own question needs. Five of them plus the end card
-land at 59.05s — inside the 41–60s band, with about 3.4s of headroom per
-question before it would not be.
+land at 54.10s — inside the 41–60s band. The end card is measured too: the
+closing line, one second of tick alone, then the chime ringing out.
 
 ---
 
@@ -34,7 +34,7 @@ Paste as-is:
 ```
 5 impossible food choices. Which ones did you get?
 
-Drop your five in the comments.
+Comment what you'd like to see in the next video.
 
 #wouldyourather #thisorthat #shorts
 ```
@@ -88,11 +88,11 @@ new channel with no history, and that is the whole case for them.
 Post it, then pin it, immediately after upload:
 
 ```
-Which five did you get? Mine: pineapple, cheese, sugar, smell, hunger.
+What should the next five be? Best ideas in the comments go into episode 2.
 ```
 
-Naming your own five is what turns a comment section into an argument. A viewer
-who disagrees with one of them has a reason to say so.
+It asks for the same thing the video's last frame asks for. A pinned comment
+that contradicts the end card just splits the audience's attention.
 
 ## Upload settings
 
@@ -109,6 +109,13 @@ who disagrees with one of them has a reason to say so.
 | Playlist | Create **Would You Rather**, add every episode | Reinforces the series the title promises. |
 | Visibility | Public | |
 | Thumbnail | Pick a frame from the first block | Shorts rarely show it, but the browse surface sometimes does. |
+
+**One thing to know before you upload.** The music bed is a commercial track.
+YouTube's Content ID will almost certainly match it: the video stays up, but
+monetisation goes to the rights holder, and in some territories it can be
+blocked outright. That is the trade being made, not a surprise waiting to
+happen — swapping in a licensed or royalty-free bed later is a one-line change
+to the cue point in `build_episode.py`.
 
 ## What I could not settle from data
 

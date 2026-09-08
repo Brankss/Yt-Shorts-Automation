@@ -38,9 +38,10 @@ VOICES = MODEL_DIR / "voices-v1.0.bin"
 # From dna/video-dna.json → timeline. Everything after the question is fixed;
 # only the question's own length varies.
 LEAD_IN = 0.2      # silence before the voice starts
-TIMER = 5.0        # the supplied tick track, exactly
+TIMER = 3.5        # the supplied tick track, exactly
 HOLD = 2.5         # numbers on screen, no voice
 EXIT = 0.35
+CHIME = 2.769      # the supplied chime, full length — it closes the video
 
 
 def main() -> int:
@@ -76,13 +77,15 @@ def main() -> int:
     tag = f"ep{ep['episode']:03d}"
     print(f"{tag}  voice={args.voice}  speed={args.speed}")
 
+    def say(text, name):
+        samples, rate = kokoro.create(text, voice=args.voice, speed=args.speed, lang="en-us")
+        sf.write(out / name, samples, rate)
+        return len(samples) / rate
+
     total = 0.0
     for i, block in enumerate(ep["blocks"], start=1):
-        text = block["vo"]["setup"]
-        samples, rate = kokoro.create(text, voice=args.voice, speed=args.speed, lang="en-us")
-        dur = len(samples) / rate
         name = f"{tag}-b{i}-setup.wav"
-        sf.write(out / name, samples, rate)
+        dur = say(block["vo"]["setup"], name)
 
         block["vo"]["setup_duration"] = round(dur, 3)
         block["vo"].pop("reaction", None)  # the reveal is silent
@@ -91,10 +94,17 @@ def main() -> int:
         total += block_len
         print(f"  b{i}  question {dur:5.2f}s  →  block {block_len:5.2f}s   {name}")
 
+    # The end card speaks too. The tick runs one second past the line, then the
+    # chime closes the video, so the tail is measured rather than assumed.
+    ec = ep["end_card"]
+    ec_dur = say(ec["vo"], f"{tag}-end.wav")
+    ec["vo_duration"] = round(ec_dur, 3)
+    end_card = ec_dur + 1.0 + CHIME
+    print(f"  end  line     {ec_dur:5.2f}s  →  card  {end_card:5.2f}s   {tag}-end.wav")
+
     ep_path.write_text(json.dumps(ep, indent=2, ensure_ascii=False) + "\n")
 
-    end_card = 3.5
-    print(f"\n  {len(ep['blocks'])} blocks {total:.2f}s + end card {end_card:.1f}s = {total + end_card:.2f}s")
+    print(f"\n  {len(ep['blocks'])} blocks {total:.2f}s + end card {end_card:.2f}s = {total + end_card:.2f}s")
     if not 41 <= total + end_card <= 60:
         # 41-60s is the only duration band that performs in this niche:
         # median 26,239 views against 751 for 16-25s and 8,834 above 60s.
