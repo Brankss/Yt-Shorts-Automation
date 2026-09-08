@@ -6,6 +6,78 @@
       "sourceType": "github",
       "skillPath": "skills/hyperframes/SKILL.md",
       "computedHash": "62033282d5d971041cc2c879f6b5ec5805c0d156f25ba3f4455d6f874409f9a1"
+    },
+    "youtube-channel-breakdown": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-channel-breakdown/SKILL.md",
+      "computedHash": "ee48ecea5ea51878dbf6cab731d46f8b9cc5a9e867985b76c954619e369ac9b0"
+    },
+    "youtube-channel-insights": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-channel-insights/SKILL.md",
+      "computedHash": "3473354ed0d591ad301d4ddc2d6155b9a6fcf6f8a52c4328022eac0935f932d1"
+    },
+    "youtube-comment-miner": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-comment-miner/SKILL.md",
+      "computedHash": "27df3499a03e8d3daea63308b90f18b7512151a6aca3966b57e20f5252b905f7"
+    },
+    "youtube-competitor-analyzer": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-competitor-analyzer/SKILL.md",
+      "computedHash": "7d48a2da8561cc43e1733a1cc93846da890ad0e97c2c16a4df3c50efa7c7924e"
+    },
+    "youtube-content-strategist": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-content-strategist/SKILL.md",
+      "computedHash": "26673b1a09cb8ce5f4b4102e8c782e69b1346b0932d415f47ae10eb86a7dcb1c"
+    },
+    "youtube-metadata-updater": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-metadata-updater/SKILL.md",
+      "computedHash": "19cc4a4440b3a550120aad096b4b09c7e3010f3d971f1ee902f09a1248e0639f"
+    },
+    "youtube-own-channel-analyzer": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-own-channel-analyzer/SKILL.md",
+      "computedHash": "6fb8825b1fca7a292933a1632a0f4345e0aa37cc4dbb601247a363b772451f83"
+    },
+    "youtube-thumbnail-analyzer": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-thumbnail-analyzer/SKILL.md",
+      "computedHash": "874fd516b3764d458510172266243df41a7c3d1f074c90fd4e53bcfb32413dcc"
+    },
+    "youtube-thumbnails": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-thumbnails/SKILL.md",
+      "computedHash": "d4c1319afddb62ad51eac6a3108139aee5a9c117964beb44799d5bf80c43fb8b"
+    },
+    "youtube-title-tag-optimizer": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-title-tag-optimizer/SKILL.md",
+      "computedHash": "40111215d53c6169ceea27ed3e09cd1752735bda8de8db17b856e71ed98d7135"
+    },
+    "youtube-topic-researcher": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-topic-researcher/SKILL.md",
+      "computedHash": "750fa9c9d91fbab4c1d2a8bb5de7fae95d5a304a903dd85c2748ea0b92b005bd"
+    },
+    "youtube-trending-scanner": {
+      "source": "nikhilbhansali/youtube-data-skills",
+      "sourceType": "github",
+      "skillPath": "skills/youtube-trending-scanner/SKILL.md",
+      "computedHash": "1662e4f37d5456d4a3dfffbfa168270a922175d8fae67f0ff3a61bf62ee7680e"
     }
   }
 }
