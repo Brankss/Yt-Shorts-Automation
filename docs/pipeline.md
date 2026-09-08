@@ -94,24 +94,29 @@ counts. The setup speaks the stem and both fragments — this is the only place
 the stem exists, since the screen shows the fragments alone. The reaction names
 the surprise in the result and never re-explains the dilemma.
 
-**Voicing it is the one stage that cannot run in these sessions.** HeyGen's
-endpoints return 403 through the egress proxy, exactly like the image CDNs, so
-`npx hyperframes tts` has nothing to reach. Three ways forward, in order of how
-good the channel ends up sounding:
+Then voice it:
 
-1. **Record it yourself.** A recognisable human voice is worth more to a channel
-   building an identity than any synthetic one, and the script is 24 short lines.
-2. **HeyGen from a machine that can reach it** — `npx hyperframes auth login`,
-   then `npx hyperframes tts` against the episode file.
-3. **Kokoro, the offline local engine** — `pip install kokoro-onnx soundfile`,
-   free and no network at generation time, though its model weights have to be
-   fetched once from somewhere reachable.
+```bash
+python3 scripts/make_voiceover.py content/episodes/ep001.json
+```
 
-The rendered audio drops in as `<audio>` elements at the composition root
-alongside the sound effects, two per block, at the times above.
+Kokoro, offline, free. Every hosted TTS is unreachable from these sessions —
+HeyGen, Microsoft's Edge voices, Google Translate and ElevenLabs all answer 403
+through the egress proxy — but GitHub release assets get through, and that is
+where Kokoro publishes its weights. They live in `~/.cache/kokoro` (338MB,
+outside the repo); generation itself touches no network.
 
-**Until the voiceover exists the video is not shippable.** Two words on two
-colours are not a question — the sound effects give it rhythm, not meaning.
+The script measures every clip against its slot and **exits non-zero rather than
+letting a line talk over its own answer**: a setup has 3.8s before the reveal, a
+reaction has 4.1s before the block ends. When a line overruns, shorten the copy —
+do not speed the voice up, the rate is fixed by the DNA.
+
+The clips land as `<audio>` elements at the composition root, two per block.
+
+**The voice is identity, not a setting.** `af_heart` stays fixed across episodes
+for the same reason the palette does — a channel is recognised by its sound
+before its layout. Swapping to a recorded human voice later is an upgrade worth
+making; swapping between synthetic voices episode to episode is just noise.
 
 ### B3b. Source the images
 

@@ -2,10 +2,15 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
+      {
+        "version": "2.1.0",
+        "change": "Voiceover generated and wired in. Kokoro (af_heart, offline), two clips per block.",
+        "reason": "The format does not work without it: the screen shows two fragments and never the stem, so the setup line is the only place the dilemma exists as a question. Hosted providers are all blocked here, but Kokoro's weights ship as GitHub release assets, which the proxy allows."
+      },
       {
         "version": "2.0.1",
         "change": "Sound. Tick, reveal chime and transition swoosh synthesised and wired in; the tick is reinstated as audio only.",
@@ -224,7 +229,18 @@
       "line_2_at_ms": 4400,
       "max_words_line_1": 14,
       "max_words_line_2": 10,
-      "stem_note": "Line 1 speaks the stem and both fragments — 'would you rather never feel pain again, or sadness again'. The screen only ever shows the fragments, so the voiceover is what makes the dilemma a sentence. This is why voiceover is required rather than a nice-to-have: without it the two captions are not a question."
+      "stem_note": "Line 1 speaks the stem and both fragments — 'would you rather never feel pain again, or sadness again'. The screen only ever shows the fragments, so the voiceover is what makes the dilemma a sentence. This is why voiceover is required rather than a nice-to-have: without it the two captions are not a question.",
+      "engine": {
+        "name": "Kokoro",
+        "package": "kokoro-onnx",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "weights": "~/.cache/kokoro (338MB, outside the repo, never committed)",
+        "generate": "python3 scripts/make_voiceover.py content/episodes/epNNN.json",
+        "why": "Every hosted TTS is unreachable from these sessions — HeyGen, Microsoft's Edge voices, Google Translate and ElevenLabs all answer 403 through the egress proxy. GitHub release assets do get through, which is where Kokoro publishes its weights, so this is the one free route that works here. Generation itself touches no network."
+      },
+      "voice_is_identity": "The voice is as binding as the palette. A channel is recognised by its sound before its layout, so af_heart does not change between episodes without the same argument any invariant would need.",
+      "timing_check": "make_voiceover.py measures every clip against its slot — 3.8s for a setup before the reveal at +4.0s, 4.1s for a reaction inside the 8.5s block — and exits non-zero rather than letting a line talk over its own answer."
     },
     "music": {
       "bpm_range": [
