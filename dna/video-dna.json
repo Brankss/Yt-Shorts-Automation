@@ -1,0 +1,180 @@
+{
+  "$schema": "./video-dna.schema.md",
+  "meta": {
+    "id": "wyr-core",
+    "version": "1.0.0",
+    "format": "would-you-rather",
+    "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason."
+  },
+
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "aspect": "9:16",
+    "background": "#0B0B12",
+    "background_vignette": {
+      "type": "radial",
+      "from": "#1A1030",
+      "to": "#0B0B12",
+      "center": [540, 760],
+      "radius": 1100
+    }
+  },
+
+  "safe_areas": {
+    "note": "The Shorts player draws its own UI over the frame. Nothing that carries meaning may enter these bands.",
+    "top": 200,
+    "bottom": 380,
+    "right": 140,
+    "left": 40,
+    "content_box": { "x": 90, "y": 250, "w": 850, "h": 1290 }
+  },
+
+  "timeline": {
+    "block_ms": 8500,
+    "blocks": 5,
+    "end_card_ms": 3500,
+    "total_ms": 46000,
+    "total_frames": 1380,
+    "block_phases": [
+      { "name": "enter",    "start_ms": 0,    "end_ms": 500,  "note": "cards fly in, A then B, 80ms stagger" },
+      { "name": "decide",   "start_ms": 500,  "end_ms": 4000, "note": "timer ring depletes over exactly 3500ms" },
+      { "name": "reveal",   "start_ms": 4000, "end_ms": 4700, "note": "bars fill and numbers count up together" },
+      { "name": "hold",     "start_ms": 4700, "end_ms": 8100, "note": "result stays on screen; VO lands its line here" },
+      { "name": "exit",     "start_ms": 8100, "end_ms": 8500, "note": "both cards leave toward opposite edges" }
+    ],
+    "rationale": "41-60s is the only duration band that performs in this niche (median 26,239 views vs 751 for 16-25s). 5 blocks x 8.5s + 3.5s end card = 46s sits in the middle of it."
+  },
+
+  "layout": {
+    "episode_badge": { "x": 90,  "y": 180, "w": 260, "h": 64,  "align": "left" },
+    "question":      { "x": 90,  "y": 268, "w": 850, "h": 110, "align": "center", "max_lines": 2 },
+    "card_a":        { "x": 90,  "y": 400, "w": 850, "h": 420, "radius": 32 },
+    "divider":       { "x": 440, "y": 860, "w": 200, "h": 160, "note": "VS badge with the timer ring around it" },
+    "card_b":        { "x": 90,  "y": 1020, "w": 850, "h": 420, "radius": 32 },
+    "progress_dots": { "x": 90,  "y": 1480, "w": 850, "h": 24,  "align": "center", "count": 5 },
+    "percent_label": { "anchor": "card_bottom_right", "offset": [-40, -36] },
+    "fill_bar":      { "anchor": "card_bottom", "height": 12, "inset": 0 }
+  },
+
+  "color": {
+    "bg": "#0B0B12",
+    "option_a": "#FF2D6F",
+    "option_b": "#00D1FF",
+    "timer": "#FFD400",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A8A8BE",
+    "card_surface_alpha": 0.14,
+    "card_border_width": 3,
+    "winner_surface_alpha": 1.0,
+    "loser_surface_alpha": 0.08,
+    "loser_text": "#6E6E86",
+    "note": "Two option colors, one urgency color, nothing else. A third option color would break recognizability at thumbnail size, which is where this palette does its work."
+  },
+
+  "typography": {
+    "display_font": { "family": "Anton", "fallback": "Impact, 'Arial Narrow', sans-serif", "weight": 400 },
+    "numeric_font": { "family": "Inter", "fallback": "'Helvetica Neue', Arial, sans-serif", "weight": 900 },
+    "styles": {
+      "question":      { "font": "display", "size": 52, "case": "uppercase", "tracking": 0.02,  "color": "text_secondary", "line_height": 1.1 },
+      "option":        { "font": "display", "size": 76, "case": "uppercase", "tracking": -0.01, "color": "text_primary",   "line_height": 1.0, "max_lines": 2 },
+      "percent":       { "font": "numeric", "size": 120, "case": "none",     "tracking": -0.03, "color": "text_primary" },
+      "episode_badge": { "font": "numeric", "size": 32,  "case": "uppercase", "tracking": 0.08, "color": "text_secondary" },
+      "end_card":      { "font": "display", "size": 64,  "case": "uppercase", "tracking": 0.0,  "color": "text_primary" }
+    }
+  },
+
+  "motion": {
+    "ease_enter": "cubic-bezier(0.16, 1, 0.30, 1)",
+    "ease_exit":  "cubic-bezier(0.70, 0, 0.84, 0)",
+    "ease_fill":  "cubic-bezier(0.22, 1, 0.36, 1)",
+    "card_enter": { "from_x_a": -1000, "from_x_b": 1000, "duration_ms": 500, "stagger_ms": 80 },
+    "card_exit":  { "to_x_a": -1000, "to_x_b": 1000, "duration_ms": 400 },
+    "timer_ring": { "duration_ms": 3500, "easing": "linear", "stroke": 10, "radius": 74 },
+    "count_up":   { "duration_ms": 700, "easing": "linear", "from": 0 },
+    "bar_fill":   { "duration_ms": 700, "easing": "ease_fill" },
+    "loser_settle": { "scale": 0.96, "duration_ms": 300 },
+    "winner_pop":   { "scale": 1.03, "duration_ms": 220, "then_scale": 1.0 },
+    "forbidden": ["blur transitions", "3D rotation", "particle effects", "camera shake"],
+    "note": "Motion is functional here: it separates the two options in space and marks the reveal in time. Decoration competes with the decision."
+  },
+
+  "audio": {
+    "voiceover": {
+      "required": true,
+      "tone": "fast, dry, mildly provocative; never explains the joke",
+      "rate": 1.05,
+      "lines_per_block": 2,
+      "line_1_at_ms": 200,
+      "line_2_at_ms": 4300,
+      "max_words_line_1": 14,
+      "max_words_line_2": 10
+    },
+    "music": {
+      "bpm_range": [95, 110],
+      "loudness_lufs": -22,
+      "duck_under_vo_db": -9,
+      "note": "One track per 20-episode arc. Viewers ask for the song name in the comments; a stable track turns that into a recurring comment we can answer."
+    },
+    "sfx": {
+      "tick":       { "at": "each 1000ms of decide phase", "gain_db": -18 },
+      "reveal":     { "at": "reveal start", "gain_db": -10 },
+      "transition": { "at": "exit start", "gain_db": -14 }
+    }
+  },
+
+  "copy_rules": {
+    "question_max_chars": 60,
+    "option_max_chars": 42,
+    "option_case": "uppercase",
+    "option_end_punctuation": false,
+    "forbidden_in_options": ["would you rather", "?", "or"],
+    "preferred_framings": ["never ...", "unlimited ...", "always ...", "everyone knows ..."],
+    "framing_note": "Drawn from the audience's own vocabulary in 1,001 mined comments: never (103), unlimited (38), always (33). Words the audience already uses need no decoding time.",
+    "difficulty_ramp": ["easy+funny", "easy", "medium", "hard", "hardest"],
+    "ramp_note": "Block 1 is the hook and must land in under 2 seconds of reading. Block 5 is the one people argue about in the comments."
+  },
+
+  "reveal_mechanic": {
+    "percentages_must_sum_to": 100,
+    "source": "community_poll",
+    "allowed_sources": ["community_poll", "prediction_no_number"],
+    "fabrication": "forbidden",
+    "fabrication_note": "The top comment across every breakout video mined is people mocking percentages that do not add up ('How tf is 90 % and 15%', 148 likes). Invented survey numbers are both dishonest and, demonstrably, noticed. Percentages come from a real Community-tab poll on the previous episode, or the block states a prediction with no number at all.",
+    "target_split_range": [55, 88],
+    "split_note": "Under 55/45 reads as a coin flip and provokes nothing. Over 88/12 reads as a non-dilemma. The comment engine is the viewer discovering they are in a minority they did not expect to be in.",
+    "at_least_one_counterintuitive_block": true
+  },
+
+  "end_card": {
+    "duration_ms": 3500,
+    "elements": ["episode_number_next", "poll_cta", "channel_mark"],
+    "cta_copy_max_chars": 48,
+    "cta_rule": "One line, one ask, pointing at the poll. Never 'like and subscribe'.",
+    "loop_note": "Last frame matches the first frame's background exactly so the Shorts loop is seamless."
+  },
+
+  "render": {
+    "container": "mp4",
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "crf": 18,
+    "audio_codec": "aac",
+    "audio_bitrate_kbps": 192,
+    "loudness_target_lufs": -14,
+    "filename_pattern": "wyr-ep{episode:03d}-{slug}.mp4"
+  },
+
+  "invariants": [
+    "1080x1920 at 30fps",
+    "Exactly 5 dilemma blocks of 8500ms each",
+    "Option A is always on top and always #FF2D6F; option B is always below and always #00D1FF",
+    "The timer is always the yellow ring at the centre, between the two cards, and always runs exactly 3500ms",
+    "Anton for options, Inter 900 for numbers",
+    "No third option colour",
+    "Percentages always sum to 100 and are never invented",
+    "No intro: frame 1 is already a dilemma",
+    "No borrowed IP, characters, or footage"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Brankss/Yt-Shorts-Automation/content/schemas/dilemma.schema.json",
+  "title": "Dilemma",
+  "description": "One Would You Rather choice in the bank. Scores are assigned at harvest; measured_split is filled in only after a real Community poll closes.",
+  "type": "object",
+  "required": ["id", "option_a", "option_b", "vertical", "scores", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^d[0-9]{4}$",
+      "description": "Stable id, e.g. d0042. Never reused, even after the dilemma is used."
+    },
+    "option_a": {
+      "type": "string",
+      "maxLength": 42,
+      "description": "Top card, always #FF2D6F. Uppercase at render time; store it in natural case. No trailing punctuation, and never contains 'or'."
+    },
+    "option_b": {
+      "type": "string",
+      "maxLength": 42,
+      "description": "Bottom card, always #00D1FF. Same constraints as option_a."
+    },
+    "question": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Optional framing line above the cards. Omit when the two options speak for themselves — most of the time they do."
+    },
+    "vertical": {
+      "type": "string",
+      "enum": ["food", "money", "pain", "relationships", "abilities", "lifestyle", "internet"],
+      "description": "Food is the entry wedge: it carries breakout videos at every channel size and dominates the audience's own vocabulary."
+    },
+    "scores": {
+      "type": "object",
+      "required": ["polarization", "universality", "instant_read", "rendering"],
+      "additionalProperties": false,
+      "description": "Each 1-5. Rank is the product. A zero on any axis means discard, not fix.",
+      "properties": {
+        "polarization":  { "type": "integer", "minimum": 0, "maximum": 5, "description": "Will the split land between 55/45 and 88/12?" },
+        "universality":  { "type": "integer", "minimum": 0, "maximum": 5, "description": "Applies to everyone watching, with no precondition to own or be something." },
+        "instant_read":  { "type": "integer", "minimum": 0, "maximum": 5, "description": "Both options understood in under two seconds." },
+        "rendering":     { "type": "integer", "minimum": 0, "maximum": 5, "description": "Works as text alone, within 42 characters, with no image needed." }
+      }
+    },
+    "counterintuitive": {
+      "type": "boolean",
+      "default": false,
+      "description": "Marks a dilemma where the expected majority is wrong. Every episode needs at least one — this is the block that produces the comments."
+    },
+    "already_am_that": {
+      "type": "boolean",
+      "default": false,
+      "description": "Names a condition many viewers already live with. Reliably produces self-deprecating replies ('I already have bad eyesight lol', 49 likes)."
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy+funny", "easy", "medium", "hard", "hardest"],
+      "description": "Position in the episode's ramp. Each episode uses one of each, in this order."
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where it came from, so the harvest can be evaluated by yield.",
+      "properties": {
+        "kind": { "type": "string", "enum": ["own_comments", "competitor_comments", "trending", "topic_research", "written"] },
+        "ref":  { "type": "string", "description": "Video id, report path, or free text." }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["banked", "scheduled", "polled", "used", "discarded"],
+      "description": "banked -> scheduled into an episode -> polled on the Community tab -> used in a published episode."
+    },
+    "measured_split": {
+      "type": "object",
+      "required": ["a", "b", "votes", "closed_at"],
+      "additionalProperties": false,
+      "description": "Real Community-poll result. Absent until the poll closes; never estimated, never invented.",
+      "properties": {
+        "a":         { "type": "integer", "minimum": 0, "maximum": 100 },
+        "b":         { "type": "integer", "minimum": 0, "maximum": 100 },
+        "votes":     { "type": "integer", "minimum": 1 },
+        "closed_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

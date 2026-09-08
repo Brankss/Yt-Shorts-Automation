@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Brankss/Yt-Shorts-Automation/content/schemas/episode.schema.json",
+  "title": "Episode",
+  "description": "One published video: five dilemmas, their voiceover lines, and the metadata that ships with it. This file plus dna/video-dna.json is everything the render needs.",
+  "type": "object",
+  "required": ["episode", "blocks", "end_card", "publish"],
+  "additionalProperties": false,
+  "properties": {
+    "episode": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Episode number. Appears in the badge and in the title — the numbered series is what makes viewers come back."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Used in the output filename."
+    },
+    "edition": {
+      "type": "string",
+      "description": "Optional title tag, e.g. 'FOOD EDITION', 'HARD EDITION'. Measured to carry breakout videos at every channel size."
+    },
+    "blocks": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "description": "Exactly five, in ramp order: easy+funny, easy, medium, hard, hardest. The DNA's 8500ms block length assumes five.",
+      "items": {
+        "type": "object",
+        "required": ["dilemma_id", "option_a", "option_b", "reveal", "vo"],
+        "additionalProperties": false,
+        "properties": {
+          "dilemma_id": { "type": "string", "pattern": "^d[0-9]{4}$" },
+          "option_a":   { "type": "string", "maxLength": 42 },
+          "option_b":   { "type": "string", "maxLength": 42 },
+          "question":   { "type": "string", "maxLength": 60 },
+          "reveal": {
+            "type": "object",
+            "required": ["source"],
+            "additionalProperties": false,
+            "description": "How this block ends. Either real poll numbers, or an explicit prediction with no number. There is no third option.",
+            "properties": {
+              "source": { "type": "string", "enum": ["community_poll", "prediction_no_number"] },
+              "a":      { "type": "integer", "minimum": 0, "maximum": 100 },
+              "b":      { "type": "integer", "minimum": 0, "maximum": 100 },
+              "votes":  { "type": "integer", "minimum": 1 },
+              "prediction_favours": { "type": "string", "enum": ["a", "b"] }
+            },
+            "allOf": [
+              {
+                "if":   { "properties": { "source": { "const": "community_poll" } } },
+                "then": { "required": ["a", "b", "votes"] }
+              },
+              {
+                "if":   { "properties": { "source": { "const": "prediction_no_number" } } },
+                "then": { "required": ["prediction_favours"], "not": { "anyOf": [{ "required": ["a"] }, { "required": ["b"] }] } }
+              }
+            ]
+          },
+          "vo": {
+            "type": "object",
+            "required": ["setup", "reaction"],
+            "additionalProperties": false,
+            "description": "Two lines. Setup lands at 200ms, reaction at 4300ms once the numbers are on screen.",
+            "properties": {
+              "setup":    { "type": "string", "description": "Max 14 words. Poses the choice; never explains it." },
+              "reaction": { "type": "string", "description": "Max 10 words. Names the surprise in the result. Never restates the dilemma." }
+            }
+          }
+        }
+      }
+    },
+    "end_card": {
+      "type": "object",
+      "required": ["cta"],
+      "additionalProperties": false,
+      "properties": {
+        "cta":       { "type": "string", "maxLength": 48, "description": "One line, one ask, pointing at the poll. Never 'like and subscribe'." },
+        "next_teaser": { "type": "string", "maxLength": 48 }
+      }
+    },
+    "publish": {
+      "type": "object",
+      "required": ["title", "tags", "pinned_comment"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Pattern: 'Would You Rather... #N' plus the edition when there is one. The numbered series is the measured winner in this niche."
+        },
+        "description":    { "type": "string", "maxLength": 5000 },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 15,
+          "description": "From the measured tag cloud: would you rather, quiz, would you rather game, this or that, wyr, impossible choices."
+        },
+        "pinned_comment": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Carries the poll link and the question that converts viewers into commenters."
+        },
+        "published_at":   { "type": "string", "format": "date-time" },
+        "video_id":       { "type": "string", "description": "Filled after upload; used to pull retention in the measure stage." }
+      }
+    },
+    "dna_version": {
+      "type": "string",
+      "description": "The video-dna.json version this episode was rendered against, so a style change can be correlated with a retention change."
+    }
+  }
+}

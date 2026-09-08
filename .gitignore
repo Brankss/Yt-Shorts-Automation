@@ -22,3 +22,6 @@ pending_auth.json
 # Regenerable from the APIs, and a moving target — keep it out of history.
 reports/
 *.local.json
+
+# Rendered videos — large, reproducible from the episode file plus the DNA.
+out/
