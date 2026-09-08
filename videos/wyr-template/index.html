@@ -221,6 +221,38 @@
         <div id="or">OR</div>
       </section>
 
+      <!-- Sound. Authored at the root with absolute times rather than inside the
+           block sections: a plain timed wrapper does not rebase media, so a
+           local data-start there would be read as root time anyway and only
+           look like it meant something else.
+
+           Levels come from the DNA in dB and are applied through data-volume:
+           tick -18dB = 0.126, reveal -10dB = 0.316, swoosh -14dB = 0.200.
+
+           The voiceover is NOT here yet. It belongs at the same level, two
+           elements per block (setup at +0.2s, reaction at +4.4s), and until it
+           exists this video has no question in it — only two words on two
+           colours. See docs/pipeline.md B3. -->
+      <audio id="sfx-tick-1"   src="assets/sfx-tick.wav"   data-start="0.35"  data-volume="0.126"></audio>
+      <audio id="sfx-reveal-1" src="assets/sfx-reveal.wav" data-start="4"     data-volume="0.316"></audio>
+      <audio id="sfx-swoosh-1" src="assets/sfx-swoosh.wav" data-start="8.15"  data-volume="0.2"></audio>
+
+      <audio id="sfx-tick-2"   src="assets/sfx-tick.wav"   data-start="8.85"  data-volume="0.126"></audio>
+      <audio id="sfx-reveal-2" src="assets/sfx-reveal.wav" data-start="12.5"  data-volume="0.316"></audio>
+      <audio id="sfx-swoosh-2" src="assets/sfx-swoosh.wav" data-start="16.65" data-volume="0.2"></audio>
+
+      <audio id="sfx-tick-3"   src="assets/sfx-tick.wav"   data-start="17.35" data-volume="0.126"></audio>
+      <audio id="sfx-reveal-3" src="assets/sfx-reveal.wav" data-start="21"    data-volume="0.316"></audio>
+      <audio id="sfx-swoosh-3" src="assets/sfx-swoosh.wav" data-start="25.15" data-volume="0.2"></audio>
+
+      <audio id="sfx-tick-4"   src="assets/sfx-tick.wav"   data-start="25.85" data-volume="0.126"></audio>
+      <audio id="sfx-reveal-4" src="assets/sfx-reveal.wav" data-start="29.5"  data-volume="0.316"></audio>
+      <audio id="sfx-swoosh-4" src="assets/sfx-swoosh.wav" data-start="33.65" data-volume="0.2"></audio>
+
+      <audio id="sfx-tick-5"   src="assets/sfx-tick.wav"   data-start="34.35" data-volume="0.126"></audio>
+      <audio id="sfx-reveal-5" src="assets/sfx-reveal.wav" data-start="38"    data-volume="0.316"></audio>
+      <audio id="sfx-swoosh-5" src="assets/sfx-swoosh.wav" data-start="42.15" data-volume="0.2"></audio>
+
       <section id="end" class="clip" data-start="42.5" data-duration="3.5">
         <div id="end-a">vote on the next five</div>
         <div id="end-b">results in episode 8</div>

@@ -1,0 +1,93 @@
+{
+  "episode": 1,
+  "slug": "food-edition",
+  "edition": "FOOD EDITION",
+  "dna_version": "2.0.0",
+  "blocks": [
+    {
+      "dilemma_id": "d0001",
+      "stem": "Would you rather eat pizza with",
+      "option_a": "pineapple",
+      "option_b": "anchovies",
+      "image_a": "assets/noto-pineapple.svg",
+      "image_b": "assets/noto-fish.svg",
+      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "vo": {
+        "setup": "Would you rather eat pizza with pineapple, or with anchovies.",
+        "reaction": "Pineapple wins this. The anchovy people are loud."
+      }
+    },
+    {
+      "dilemma_id": "d0012",
+      "stem": "Would you rather give up",
+      "option_a": "chocolate",
+      "option_b": "cheese",
+      "image_a": "assets/noto-chocolate-bar.svg",
+      "image_b": "assets/noto-cheese-wedge.svg",
+      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "vo": {
+        "setup": "Would you rather give up chocolate forever, or give up cheese.",
+        "reaction": "Cheese survives every time. Nobody defends chocolate here."
+      }
+    },
+    {
+      "dilemma_id": "d0022",
+      "stem": "Would you rather give up",
+      "option_a": "meat forever",
+      "option_b": "sugar forever",
+      "image_a": "assets/noto-cut-of-meat.svg",
+      "image_b": "assets/noto-candy.svg",
+      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "vo": {
+        "setup": "Would you rather give up meat forever, or sugar forever.",
+        "reaction": "Sugar is the hard one. Most people underestimate it."
+      }
+    },
+    {
+      "dilemma_id": "d0031",
+      "stem": "Would you rather lose your sense of",
+      "option_a": "taste",
+      "option_b": "smell",
+      "image_a": "assets/noto-tongue.svg",
+      "image_b": "assets/noto-nose.svg",
+      "reveal": { "source": "prediction_no_number", "prediction_favours": "b" },
+      "vo": {
+        "setup": "Would you rather lose your sense of taste, or your smell.",
+        "reaction": "Everyone picks smell, then learns what smell does."
+      }
+    },
+    {
+      "dilemma_id": "d0041",
+      "stem": "Would you rather never feel",
+      "option_a": "hunger again",
+      "option_b": "full again",
+      "image_a": "assets/noto-drooling-face.svg",
+      "image_b": "assets/noto-face-savoring-food.svg",
+      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "vo": {
+        "setup": "Would you rather never feel hunger again, or never feel full.",
+        "reaction": "This one splits rooms. Say yours in the comments."
+      }
+    }
+  ],
+  "end_card": {
+    "cta": "vote on the next five",
+    "next_teaser": "real numbers in episode 2"
+  },
+  "publish": {
+    "title": "Would You Rather... #1 FOOD EDITION",
+    "description": "Five impossible food choices. Vote on the next five in the community tab — episode 2 reveals what everyone actually picked.",
+    "tags": [
+      "would you rather",
+      "quiz",
+      "would you rather game",
+      "this or that",
+      "wyr",
+      "would you rather questions",
+      "impossible choices",
+      "would you rather food",
+      "shorts"
+    ],
+    "pinned_comment": "Which ones did you get? Vote on the next five in the community tab and episode 2 reveals the real numbers."
+  }
+}

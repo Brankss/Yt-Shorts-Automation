@@ -88,10 +88,30 @@ posts. It is roughly two minutes per episode in YouTube Studio.*
 
 ### B3. Script
 
-The VO script is generated from the episode file by the DNA's audio rules: two
-lines per block, ≤14 words on the setup at 200ms, ≤10 words on the reaction at
-4300ms. The reaction line's job is to name the surprise in the percentage, never
-to explain the dilemma.
+Two lines per block, written into the episode file: ≤14 words on the setup at
++0.2s, ≤10 words on the reaction at +4.4s. `validate_content.py` enforces both
+counts. The setup speaks the stem and both fragments — this is the only place
+the stem exists, since the screen shows the fragments alone. The reaction names
+the surprise in the result and never re-explains the dilemma.
+
+**Voicing it is the one stage that cannot run in these sessions.** HeyGen's
+endpoints return 403 through the egress proxy, exactly like the image CDNs, so
+`npx hyperframes tts` has nothing to reach. Three ways forward, in order of how
+good the channel ends up sounding:
+
+1. **Record it yourself.** A recognisable human voice is worth more to a channel
+   building an identity than any synthetic one, and the script is 24 short lines.
+2. **HeyGen from a machine that can reach it** — `npx hyperframes auth login`,
+   then `npx hyperframes tts` against the episode file.
+3. **Kokoro, the offline local engine** — `pip install kokoro-onnx soundfile`,
+   free and no network at generation time, though its model weights have to be
+   fetched once from somewhere reachable.
+
+The rendered audio drops in as `<audio>` elements at the composition root
+alongside the sound effects, two per block, at the times above.
+
+**Until the voiceover exists the video is not shippable.** Two words on two
+colours are not a question — the sound effects give it rhythm, not meaning.
 
 ### B3b. Source the images
 

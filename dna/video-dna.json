@@ -2,20 +2,30 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
+      {
+        "version": "2.0.1",
+        "change": "Sound. Tick, reveal chime and transition swoosh synthesised and wired in; the tick is reinstated as audio only.",
+        "reason": "2.0.0 cut the tick together with the on-screen timer. The visual countdown had to go, but the urgency it carried did not: in the ear it fills the 3.65s decide phase, where nothing on screen moves, without competing with reading two options. The voiceover is still absent — HeyGen and every other provider sit behind the same blocked egress as the images — and it remains the one missing piece that makes the format work, since the stem lives only in the voice."
+      },
       {
         "version": "2.0.0",
         "change": "Full identity replacement. Two full-bleed colour fields split at the middle, one image and one caption per field, an OR badge on the seam, and nothing else. Removed: cards, borders, rounded corners, dark background, vignette, timer ring, VS badge, episode badge, progress dots, fill bars. Copy model changed from whole sentences to a shared spoken stem plus two short fragments.",
         "reason": "1.x was designed from reasoning about the mechanic rather than from what the winning videos in this niche actually look like, and it showed: chrome the format does not use, and options twice as long as the ones that work. The reference the user supplied shows the real shape — flat red over flat blue, one cut-out subject per side, heavy outlined lowercase captions, an OR disc on the seam. Its captions read 'pain again' and 'sadness again': 10 and 13 characters, sharing an unstated stem. The mined comment vocabulary corroborates it — pain (79), sadness (31), cold (36), single (33), glow (45) are those fragments, and that evidence was already in hand and read only as copy input."
       },
-      { "version": "1.1.0", "change": "Fonts, winner surface alpha, option length — all corrected against a real renderer. Superseded by 2.0.0." },
-      { "version": "1.0.0", "change": "Initial DNA." }
+      {
+        "version": "1.1.0",
+        "change": "Fonts, winner surface alpha, option length — all corrected against a real renderer. Superseded by 2.0.0."
+      },
+      {
+        "version": "1.0.0",
+        "change": "Initial DNA."
+      }
     ]
   },
-
   "canvas": {
     "width": 1080,
     "height": 1920,
@@ -24,7 +34,6 @@
     "seam_y": 960,
     "note": "There is no background colour. The two fields cover the frame edge to edge, split at the exact middle."
   },
-
   "safe_areas": {
     "note": "The Shorts player draws its own UI over the frame. Captions and percentages must stay clear of these bands. An image may bleed into the bottom band — it is composed so its subject sits in its upper half — because the caption, not the picture, carries the meaning.",
     "top": 200,
@@ -32,7 +41,6 @@
     "right": 140,
     "left": 40
   },
-
   "timeline": {
     "block_ms": 8500,
     "blocks": 5,
@@ -40,27 +48,87 @@
     "total_ms": 46000,
     "total_frames": 1380,
     "block_phases": [
-      { "name": "enter",  "start_ms": 0,    "end_ms": 350,  "note": "captions and images push in from opposite directions; the colour fields do not animate" },
-      { "name": "decide", "start_ms": 350,  "end_ms": 4000, "note": "nothing moves. The voiceover asks, and the viewer chooses. There is no on-screen timer." },
-      { "name": "reveal", "start_ms": 4000, "end_ms": 4400, "note": "percentages slam in, the losing field darkens" },
-      { "name": "hold",   "start_ms": 4400, "end_ms": 8150, "note": "result holds; the voiceover lands its reaction line here" },
-      { "name": "exit",   "start_ms": 8150, "end_ms": 8500, "note": "hard push out" }
+      {
+        "name": "enter",
+        "start_ms": 0,
+        "end_ms": 350,
+        "note": "captions and images push in from opposite directions; the colour fields do not animate"
+      },
+      {
+        "name": "decide",
+        "start_ms": 350,
+        "end_ms": 4000,
+        "note": "nothing moves. The voiceover asks, and the viewer chooses. There is no on-screen timer."
+      },
+      {
+        "name": "reveal",
+        "start_ms": 4000,
+        "end_ms": 4400,
+        "note": "percentages slam in, the losing field darkens"
+      },
+      {
+        "name": "hold",
+        "start_ms": 4400,
+        "end_ms": 8150,
+        "note": "result holds; the voiceover lands its reaction line here"
+      },
+      {
+        "name": "exit",
+        "start_ms": 8150,
+        "end_ms": 8500,
+        "note": "hard push out"
+      }
     ],
     "rationale": "41-60s is the only duration band that performs in this niche (median 26,239 views against 751 for 16-25s). 5 blocks x 8.5s + 3.5s end card = 46s sits in the middle of it."
   },
-
   "layout": {
-    "field_a":   { "x": 0, "y": 0,   "w": 1080, "h": 960 },
-    "field_b":   { "x": 0, "y": 960, "w": 1080, "h": 960 },
-    "or_badge":  { "cx": 540, "cy": 960, "r": 78, "fill": "#000000", "text": "OR" },
-    "image_a":   { "cx": 540, "cy": 420,  "size": 420 },
-    "caption_a": { "x": 90, "y": 680,  "w": 900, "h": 220 },
-    "caption_b": { "x": 90, "y": 1020, "w": 900, "h": 220 },
-    "image_b":   { "cx": 540, "cy": 1450, "size": 420 },
-    "percent":   { "anchor": "image_center", "note": "The percentage lands on the image, which dims under it." },
+    "field_a": {
+      "x": 0,
+      "y": 0,
+      "w": 1080,
+      "h": 960
+    },
+    "field_b": {
+      "x": 0,
+      "y": 960,
+      "w": 1080,
+      "h": 960
+    },
+    "or_badge": {
+      "cx": 540,
+      "cy": 960,
+      "r": 78,
+      "fill": "#000000",
+      "text": "OR"
+    },
+    "image_a": {
+      "cx": 540,
+      "cy": 420,
+      "size": 420
+    },
+    "caption_a": {
+      "x": 90,
+      "y": 680,
+      "w": 900,
+      "h": 220
+    },
+    "caption_b": {
+      "x": 90,
+      "y": 1020,
+      "w": 900,
+      "h": 220
+    },
+    "image_b": {
+      "cx": 540,
+      "cy": 1450,
+      "size": 420
+    },
+    "percent": {
+      "anchor": "image_center",
+      "note": "The percentage lands on the image, which dims under it."
+    },
     "mirror_note": "The two captions sit closest to the seam and the two images push outward. The viewer compares the words, so the words are what the eye finds first."
   },
-
   "color": {
     "field_a": "#FF1E1E",
     "field_b": "#0A84FF",
@@ -72,32 +140,80 @@
     "image_dim_under_percent": 0.35,
     "note": "Two colours, full strength, edge to edge, plus black for the outline and the badge. White on #FF1E1E is 3.85:1 and on #0A84FF is 3.65:1, both clearing AA for large text before the outline is even counted. The outline is what makes the caption survive whatever photograph sits behind it."
   },
-
   "typography": {
-    "font": { "family": "Nunito", "fallback": "'Trebuchet MS', Verdana, sans-serif", "weight": 900, "bundled": true },
+    "font": {
+      "family": "Nunito",
+      "fallback": "'Trebuchet MS', Verdana, sans-serif",
+      "weight": 900,
+      "bundled": true
+    },
     "font_note": "One family for everything. Nunito is the only rounded face among the renderer's 18 pre-bundled families, and rounded-heavy is what this genre uses. Bundled means it embeds as a local data URI — no build-time fetch, which is fail-closed in cloud renders.",
     "slant_deg": -8,
     "slant_note": "Applied as a CSS skew on a static inner element, not as synthetic italic, so the angle is exact and identical in every render. The animated wrapper is a different element, so no tween ever fights the skew.",
     "styles": {
-      "caption": { "size": 96,  "case": "lowercase", "line_height": 1.05, "max_lines": 2, "align": "center", "stroke": 10 },
-      "percent": { "size": 190, "case": "none",      "line_height": 1.0,  "align": "center", "stroke": 12 },
-      "or":      { "size": 54,  "case": "uppercase", "align": "center", "stroke": 0 },
-      "end_card":{ "size": 84,  "case": "lowercase", "line_height": 1.1,  "align": "center", "stroke": 10 }
+      "caption": {
+        "size": 96,
+        "case": "lowercase",
+        "line_height": 1.05,
+        "max_lines": 2,
+        "align": "center",
+        "stroke": 10
+      },
+      "percent": {
+        "size": 190,
+        "case": "none",
+        "line_height": 1.0,
+        "align": "center",
+        "stroke": 12
+      },
+      "or": {
+        "size": 54,
+        "case": "uppercase",
+        "align": "center",
+        "stroke": 0
+      },
+      "end_card": {
+        "size": 84,
+        "case": "lowercase",
+        "line_height": 1.1,
+        "align": "center",
+        "stroke": 10
+      }
     }
   },
-
   "motion": {
     "ease_enter": "power3.out",
     "ease_exit": "power2.in",
-    "caption_enter": { "from_y_a": -60, "from_y_b": 60, "duration_ms": 350 },
-    "image_enter":   { "from_scale": 0.88, "duration_ms": 350 },
-    "percent_slam":  { "from_scale": 1.35, "duration_ms": 400, "ease": "back.out(2)" },
-    "loser_dim":     { "duration_ms": 400 },
-    "exit":          { "duration_ms": 350 },
-    "forbidden": ["blur transitions", "3D rotation", "particle effects", "camera shake", "on-screen countdown timers", "progress indicators"],
+    "caption_enter": {
+      "from_y_a": -60,
+      "from_y_b": 60,
+      "duration_ms": 350
+    },
+    "image_enter": {
+      "from_scale": 0.88,
+      "duration_ms": 350
+    },
+    "percent_slam": {
+      "from_scale": 1.35,
+      "duration_ms": 400,
+      "ease": "back.out(2)"
+    },
+    "loser_dim": {
+      "duration_ms": 400
+    },
+    "exit": {
+      "duration_ms": 350
+    },
+    "forbidden": [
+      "blur transitions",
+      "3D rotation",
+      "particle effects",
+      "camera shake",
+      "on-screen countdown timers",
+      "progress indicators"
+    ],
     "note": "Four moves in the whole video: things arrive, the number slams, the loser darkens, things leave. Version 1.x had a depleting timer ring, a VS disc, progress dots and animated fill bars; none of them appear in the videos that win, and each one was another thing competing with a decision the viewer makes in three seconds."
   },
-
   "audio": {
     "voiceover": {
       "required": true,
@@ -111,17 +227,37 @@
       "stem_note": "Line 1 speaks the stem and both fragments — 'would you rather never feel pain again, or sadness again'. The screen only ever shows the fragments, so the voiceover is what makes the dilemma a sentence. This is why voiceover is required rather than a nice-to-have: without it the two captions are not a question."
     },
     "music": {
-      "bpm_range": [95, 110],
+      "bpm_range": [
+        95,
+        110
+      ],
       "loudness_lufs": -22,
       "duck_under_vo_db": -9,
       "note": "One track per 20-episode arc. Viewers ask for the song name in the comments; a stable track turns that into a recurring comment we can answer."
     },
     "sfx": {
-      "reveal":     { "at": "reveal start", "gain_db": -10 },
-      "transition": { "at": "exit start", "gain_db": -14 }
-    }
+      "source": "synthesised by scripts/make_sfx.py, standard library only",
+      "source_note": "No ffmpeg, no sound library, and the asset providers are behind the same blocked egress as the images. Generating them turned out to be the better answer anyway: three short synthetic sounds are deterministic, weigh under 500KB, carry no licence, and are reproducible from one script instead of fetched and forgotten.",
+      "tick": {
+        "at": "each 1000ms of the decide phase, four per block",
+        "gain_db": -18,
+        "file": "assets/sfx-tick.wav",
+        "note": "Reinstated in 2.0.1 after being cut with the on-screen timer. The visual countdown had to go — the reference videos have none — but the urgency it carried is worth keeping, and in the ear it does not compete with reading two options. It also fills the decide phase, which is 3.65 seconds in which nothing on screen moves."
+      },
+      "reveal": {
+        "at": "reveal start",
+        "gain_db": -10,
+        "file": "assets/sfx-reveal.wav",
+        "note": "A struck bell on a C major triad. The number landing is the payoff, so this is the brightest sound in the video and the only one that rings."
+      },
+      "transition": {
+        "at": "exit start",
+        "gain_db": -14,
+        "file": "assets/sfx-swoosh.wav"
+      }
+    },
+    "placement_note": "Audio is authored at the composition root with absolute times. A plain timed wrapper does not rebase media, so a scene-local data-start inside a block would still be read as root time and only look like it meant something else."
   },
-
   "copy_rules": {
     "model": "stem + two fragments",
     "model_note": "The dilemma is one sentence split three ways. The stem is spoken and never rendered; the two fragments are all the screen shows. 'Would you rather never feel PAIN AGAIN or SADNESS AGAIN' puts ten characters on one card and thirteen on the other, and that is why it reads in the half-second a viewer gives it.",
@@ -131,12 +267,21 @@
     "option_length_note": "22 is the hard cap: two lines of Nunito 900 at 96px across the 900px caption box. 16 or under lands on one line and is what the reference videos actually do — treat one line as the target and two as the exception.",
     "option_case": "lowercase",
     "option_end_punctuation": false,
-    "forbidden_in_options": ["would you rather", "?", "or"],
+    "forbidden_in_options": [
+      "would you rather",
+      "?",
+      "or"
+    ],
     "shared_tail_note": "The two fragments usually end on the same word ('pain again' / 'sadness again'). The repetition is what makes the pair scan as a single choice.",
-    "difficulty_ramp": ["easy+funny", "easy", "medium", "hard", "hardest"],
+    "difficulty_ramp": [
+      "easy+funny",
+      "easy",
+      "medium",
+      "hard",
+      "hardest"
+    ],
     "ramp_note": "Block 1 is the hook and must land in under two seconds of reading. Block 5 is the one people argue about in the comments."
   },
-
   "images": {
     "required": true,
     "one_per_option": true,
@@ -155,27 +300,33 @@
     "upgrade_path": "Photographic cut-outs are the stronger treatment and what the reference videos use. They need either an egress policy that allows an image source, or files supplied directly. Swapping them in is a change to image_a/image_b in the bank — nothing in the composition changes.",
     "note": "The image is what stops the scroll; the caption is what makes it a choice. A block with no image still renders — the field is simply flat, and the composition draws a dashed slot — but that is a missing asset, not a style."
   },
-
   "reveal_mechanic": {
     "percentages_must_sum_to": 100,
     "source": "community_poll",
-    "allowed_sources": ["community_poll", "prediction_no_number"],
+    "allowed_sources": [
+      "community_poll",
+      "prediction_no_number"
+    ],
     "fabrication": "forbidden",
     "fabrication_note": "The top comment across every breakout video mined is people mocking percentages that do not add up ('How tf is 90 % and 15%', 148 likes). Invented survey numbers are both dishonest and, demonstrably, noticed. Percentages come from a real Community-tab poll on the previous episode, or the block states a prediction with no number at all.",
-    "target_split_range": [55, 88],
+    "target_split_range": [
+      55,
+      88
+    ],
     "split_note": "Under 55/45 reads as a coin flip and provokes nothing. Over 88/12 reads as a non-dilemma. The comment engine is the viewer discovering they are in a minority they did not expect to be in.",
     "at_least_one_counterintuitive_block": true
   },
-
   "end_card": {
     "duration_ms": 3500,
-    "elements": ["poll_cta", "next_teaser"],
+    "elements": [
+      "poll_cta",
+      "next_teaser"
+    ],
     "cta_copy_max_chars": 48,
     "cta_rule": "One line, one ask, pointing at the poll. Never 'like and subscribe'.",
     "treatment": "The two fields stay. The end card is copy on the same split, not a new screen.",
     "loop_note": "Last frame carries the same two fields as the first, so the Shorts loop is seamless."
   },
-
   "render": {
     "container": "mp4",
     "video_codec": "h264",
@@ -186,7 +337,6 @@
     "loudness_target_lufs": -14,
     "filename_pattern": "wyr-ep{episode:03d}-{slug}.mp4"
   },
-
   "invariants": [
     "1080x1920 at 30fps",
     "Exactly 5 dilemma blocks of 8500ms each",
