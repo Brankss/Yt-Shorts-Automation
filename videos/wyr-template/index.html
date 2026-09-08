@@ -8,8 +8,22 @@
          determinism rules and fails closed in a sandboxed renderer. -->
     <script src="vendor/gsap.min.js"></script>
     <style>
-      /* Values mirror dna/video-dna.json 3.0.0. The DNA is authoritative:
+      /* Values mirror dna/video-dna.json 3.2.0. The DNA is authoritative:
          if these drift from it, these are wrong. */
+
+      /* Roboto Black Italic, embedded from the file rather than named. Roboto
+         is one of the renderer's bundled families, but the bundle carries the
+         weights it carries — asking for a cut it does not ship gives a
+         synthetic approximation, not the real one. The file removes the
+         question. It also means the slant is the typeface's own italic and not
+         a skew, which is why there is no transform on the text any more. */
+      @font-face {
+        font-family: "Roboto Black Italic";
+        src: url("assets/fonts/roboto-latin-900-italic.woff2") format("woff2");
+        font-weight: 900;
+        font-style: italic;
+        font-display: block;
+      }
       :root {
         --a: #ff1e1e;
         --b: #0a84ff;
@@ -79,7 +93,7 @@
         background: #000;
         display: grid;
         place-items: center;
-        font: 900 54px/1 Nunito, "Trebuchet MS", Verdana, sans-serif;
+        font: italic 900 54px/1 "Roboto Black Italic", Roboto, Arial, sans-serif;
         letter-spacing: 0.02em;
       }
 
@@ -94,16 +108,13 @@
       #cap-a-box { top: 680px; }
       #cap-b-box { top: 1020px; }
 
-      /* The skew is a static CSS transform on an inner element. The wrapper is
-         what animates, so no tween ever fights it. */
       .cap-text {
         display: block;
-        transform: skewX(-8deg);
-        font: 900 96px/1.05 Nunito, "Trebuchet MS", Verdana, sans-serif;
+        font: italic 900 96px/1.05 "Roboto Black Italic", Roboto, Arial, sans-serif;
         text-transform: lowercase;
         text-align: center;
         color: var(--text);
-        -webkit-text-stroke: 10px var(--stroke);
+        -webkit-text-stroke: 6px var(--stroke);
         paint-order: stroke fill;
       }
 
@@ -139,9 +150,9 @@
         left: 90px;
         width: 900px;
         text-align: center;
-        font: 900 190px/1 Nunito, "Trebuchet MS", Verdana, sans-serif;
+        font: italic 900 190px/1 "Roboto Black Italic", Roboto, Arial, sans-serif;
         color: var(--text);
-        -webkit-text-stroke: 12px var(--stroke);
+        -webkit-text-stroke: 8px var(--stroke);
         paint-order: stroke fill;
       }
       #pct-a { top: 325px; }
@@ -154,10 +165,10 @@
         top: 848px;
         width: 1000px;
         text-align: center;
-        font: 900 170px/1 Nunito, "Trebuchet MS", Verdana, sans-serif;
+        font: italic 900 170px/1 "Roboto Black Italic", Roboto, Arial, sans-serif;
         letter-spacing: -0.02em;
         color: var(--text);
-        -webkit-text-stroke: 14px var(--stroke);
+        -webkit-text-stroke: 8px var(--stroke);
         paint-order: stroke fill;
       }
     </style>

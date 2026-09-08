@@ -2,10 +2,15 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "3.1.1",
+    "version": "3.2.0",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
+      {
+        "version": "3.2.0",
+        "change": "Typeface is Roboto Black Italic, embedded as a woff2 from @fontsource. The synthetic skew is removed and the outlines drop from 10-14px to 6-8px.",
+        "reason": "The owner identified the reference face. Roboto ships a real Black Italic, so the skew that stood in for it on Nunito would now double the slant. The lighter outline is theirs too, and it is the right call: at 10-14px on a Black weight the stroke stopped reading as an outline and started reading as a second typeface drawn around the first."
+      },
       {
         "version": "3.1.1",
         "change": "The seam pulse moves from the line to a soft gradient glow: 3.4x scale and a white flash become 1.35x and a bloom that fades to nothing at both edges, over 0.28s in and 0.5s out with sine easing.",
@@ -191,14 +196,16 @@
   },
   "typography": {
     "font": {
-      "family": "Nunito",
-      "fallback": "'Trebuchet MS', Verdana, sans-serif",
+      "family": "Roboto Black Italic",
       "weight": 900,
-      "bundled": true
+      "style": "italic",
+      "file": "assets/fonts/roboto-latin-900-italic.woff2",
+      "package": "@fontsource/roboto",
+      "bundled": false,
+      "embedded": true
     },
-    "font_note": "One family for everything. Nunito is the only rounded face among the renderer's 18 pre-bundled families, and rounded-heavy is what this genre uses. Bundled means it embeds as a local data URI — no build-time fetch, which is fail-closed in cloud renders.",
-    "slant_deg": -8,
-    "slant_note": "Applied as a CSS skew on a static inner element, not as synthetic italic, so the angle is exact and identical in every render. The animated wrapper is a different element, so no tween ever fights the skew.",
+    "font_note": "Embedded from the file rather than named. Roboto is one of the renderer's bundled families, but a bundle carries the cuts it carries — asking for one it does not ship yields a synthetic approximation, not the real thing, and Black Italic is exactly the kind of cut that gets approximated. The woff2 comes from npm (@fontsource/roboto), which the egress policy allows, and sits in the project so nothing is fetched at render time.",
+    "slant_note": "The slant is the typeface's own italic, not a skew. 3.1.x faked it with skewX(-8deg) on Nunito; with a real italic cut that transform would double the angle, so it is gone. This is also why the font cannot be swapped for an upright family without revisiting the look.",
     "styles": {
       "caption": {
         "size": 96,
@@ -206,14 +213,14 @@
         "line_height": 1.05,
         "max_lines": 2,
         "align": "center",
-        "stroke": 10
+        "stroke": 6
       },
       "percent": {
         "size": 190,
         "case": "none",
         "line_height": 1.0,
         "align": "center",
-        "stroke": 12
+        "stroke": 8
       },
       "or": {
         "size": 54,
@@ -226,9 +233,10 @@
         "case": "lowercase",
         "line_height": 1.1,
         "align": "center",
-        "stroke": 10
+        "stroke": 8
       }
-    }
+    },
+    "stroke_note": "Thin relative to the letterform: the outline is there to keep the type readable over whatever sits behind it, not to be part of the lettering. 3.1.x ran 10-14px, which on Roboto Black read as a second typeface drawn around the first."
   },
   "motion": {
     "ease_enter": "power3.out",
