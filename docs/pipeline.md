@@ -47,8 +47,12 @@ the rank; anything with a zero on any axis is discarded rather than fixed.
 |---|---|---|
 | **Polarization** | Will the split land between 55/45 and 88/12? | Everyone picks the same option, or it is a pure coin flip |
 | **Universality** | Does it apply to essentially everyone watching? | Needs a sister, a car, a job — the `What happens if I don't have a sister` failure, 138 likes on that complaint |
-| **Instant read** | Both options understood in under 2 seconds? | Needs a clause, a condition, or an "unless" |
-| **Rendering** | Expressible in ≤42 uppercase characters with no image? | Requires a picture to make sense |
+| **Instant read** | Both fragments understood in under 2 seconds? | Needs a clause, a condition, or an "unless" |
+| **Imageable** | Does each fragment name one photographable thing? | Nothing to picture, so the field stays flat |
+
+Dilemmas are written as a **spoken stem plus two short fragments** — "would you
+rather never feel / pain again / sadness again". The stem never appears on
+screen. Fragments are capped at 22 characters and target 16, which is one line.
 
 ### A3. Bank
 
@@ -88,6 +92,21 @@ The VO script is generated from the episode file by the DNA's audio rules: two
 lines per block, ≤14 words on the setup at 200ms, ≤10 words on the reaction at
 4300ms. The reaction line's job is to name the surprise in the percentage, never
 to explain the dilemma.
+
+### B3b. Source the images
+
+Ten cut-out subjects per episode, one per fragment. Load `/media-use` and follow
+its `references/resolve.md`; run `npx hyperframes auth status` before the first
+authenticated provider call. Background removal is `npx hyperframes remove-background`.
+
+Each one: single subject, no photographic background, no drop shadow, composed
+in the upper half of its box. Reuse is fine and cheap — `pizza` will come up
+often, and a stable picture for a recurring fragment makes the channel more
+recognisable, not less.
+
+**This stage is the pipeline's real cost.** Ten images a day is the difference
+between this format and a text-only one, and it is also why the format works.
+Budget it honestly rather than discovering it at episode 3.
 
 ### B4. Render
 

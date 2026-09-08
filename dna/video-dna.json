@@ -2,11 +2,16 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
-      { "version": "1.1.0", "change": "Three corrections found while building the template against a real renderer: fonts, winner surface alpha (1.0 -> 0.35), and option_max_chars (42 -> 36, max_lines 2 -> 3). The last two are recorded next to the values they govern; the font reason follows.", "reason": "Anton is not among the renderer's 18 pre-bundled families. It resolves through an implicit build-time fetch from Google Fonts, which is fail-closed in distributed/cloud renders: if Google is unreachable the render errors instead of substituting. Oswald is the bundled condensed sans closest to Anton and Archivo Black is a bundled heavy display face; both embed as local data URIs with no network fetch. Archivo Black ships weight 400 only, so the percentage style drops from 900 to 400." },
+      {
+        "version": "2.0.0",
+        "change": "Full identity replacement. Two full-bleed colour fields split at the middle, one image and one caption per field, an OR badge on the seam, and nothing else. Removed: cards, borders, rounded corners, dark background, vignette, timer ring, VS badge, episode badge, progress dots, fill bars. Copy model changed from whole sentences to a shared spoken stem plus two short fragments.",
+        "reason": "1.x was designed from reasoning about the mechanic rather than from what the winning videos in this niche actually look like, and it showed: chrome the format does not use, and options twice as long as the ones that work. The reference the user supplied shows the real shape — flat red over flat blue, one cut-out subject per side, heavy outlined lowercase captions, an OR disc on the seam. Its captions read 'pain again' and 'sadness again': 10 and 13 characters, sharing an unstated stem. The mined comment vocabulary corroborates it — pain (79), sadness (31), cold (36), single (33), glow (45) are those fragments, and that evidence was already in hand and read only as copy input."
+      },
+      { "version": "1.1.0", "change": "Fonts, winner surface alpha, option length — all corrected against a real renderer. Superseded by 2.0.0." },
       { "version": "1.0.0", "change": "Initial DNA." }
     ]
   },
@@ -16,23 +21,16 @@
     "height": 1920,
     "fps": 30,
     "aspect": "9:16",
-    "background": "#0B0B12",
-    "background_vignette": {
-      "type": "radial",
-      "from": "#1A1030",
-      "to": "#0B0B12",
-      "center": [540, 760],
-      "radius": 1100
-    }
+    "seam_y": 960,
+    "note": "There is no background colour. The two fields cover the frame edge to edge, split at the exact middle."
   },
 
   "safe_areas": {
-    "note": "The Shorts player draws its own UI over the frame. Nothing that carries meaning may enter these bands.",
+    "note": "The Shorts player draws its own UI over the frame. Captions and percentages must stay clear of these bands. An image may bleed into the bottom band — it is composed so its subject sits in its upper half — because the caption, not the picture, carries the meaning.",
     "top": 200,
     "bottom": 380,
     "right": 140,
-    "left": 40,
-    "content_box": { "x": 90, "y": 250, "w": 850, "h": 1290 }
+    "left": 40
   },
 
   "timeline": {
@@ -42,67 +40,62 @@
     "total_ms": 46000,
     "total_frames": 1380,
     "block_phases": [
-      { "name": "enter",    "start_ms": 0,    "end_ms": 500,  "note": "cards fly in, A then B, 80ms stagger" },
-      { "name": "decide",   "start_ms": 500,  "end_ms": 4000, "note": "timer ring depletes over exactly 3500ms" },
-      { "name": "reveal",   "start_ms": 4000, "end_ms": 4700, "note": "bars fill and numbers count up together" },
-      { "name": "hold",     "start_ms": 4700, "end_ms": 8100, "note": "result stays on screen; VO lands its line here" },
-      { "name": "exit",     "start_ms": 8100, "end_ms": 8500, "note": "both cards leave toward opposite edges" }
+      { "name": "enter",  "start_ms": 0,    "end_ms": 350,  "note": "captions and images push in from opposite directions; the colour fields do not animate" },
+      { "name": "decide", "start_ms": 350,  "end_ms": 4000, "note": "nothing moves. The voiceover asks, and the viewer chooses. There is no on-screen timer." },
+      { "name": "reveal", "start_ms": 4000, "end_ms": 4400, "note": "percentages slam in, the losing field darkens" },
+      { "name": "hold",   "start_ms": 4400, "end_ms": 8150, "note": "result holds; the voiceover lands its reaction line here" },
+      { "name": "exit",   "start_ms": 8150, "end_ms": 8500, "note": "hard push out" }
     ],
-    "rationale": "41-60s is the only duration band that performs in this niche (median 26,239 views vs 751 for 16-25s). 5 blocks x 8.5s + 3.5s end card = 46s sits in the middle of it."
+    "rationale": "41-60s is the only duration band that performs in this niche (median 26,239 views against 751 for 16-25s). 5 blocks x 8.5s + 3.5s end card = 46s sits in the middle of it."
   },
 
   "layout": {
-    "episode_badge": { "x": 90,  "y": 180, "w": 260, "h": 64,  "align": "left" },
-    "question":      { "x": 90,  "y": 268, "w": 850, "h": 110, "align": "center", "max_lines": 2 },
-    "card_a":        { "x": 90,  "y": 400, "w": 850, "h": 420, "radius": 32 },
-    "divider":       { "x": 440, "y": 860, "w": 200, "h": 160, "note": "VS badge with the timer ring around it" },
-    "card_b":        { "x": 90,  "y": 1020, "w": 850, "h": 420, "radius": 32 },
-    "progress_dots": { "x": 90,  "y": 1480, "w": 850, "h": 24,  "align": "center", "count": 5 },
-    "percent_label": { "anchor": "card_bottom_right", "offset": [-40, -36] },
-    "fill_bar":      { "anchor": "card_bottom", "height": 12, "inset": 0 }
+    "field_a":   { "x": 0, "y": 0,   "w": 1080, "h": 960 },
+    "field_b":   { "x": 0, "y": 960, "w": 1080, "h": 960 },
+    "or_badge":  { "cx": 540, "cy": 960, "r": 78, "fill": "#000000", "text": "OR" },
+    "image_a":   { "cx": 540, "cy": 420,  "size": 420 },
+    "caption_a": { "x": 90, "y": 680,  "w": 900, "h": 220 },
+    "caption_b": { "x": 90, "y": 1020, "w": 900, "h": 220 },
+    "image_b":   { "cx": 540, "cy": 1450, "size": 420 },
+    "percent":   { "anchor": "image_center", "note": "The percentage lands on the image, which dims under it." },
+    "mirror_note": "The two captions sit closest to the seam and the two images push outward. The viewer compares the words, so the words are what the eye finds first."
   },
 
   "color": {
-    "bg": "#0B0B12",
-    "option_a": "#FF2D6F",
-    "option_b": "#00D1FF",
-    "timer": "#FFD400",
-    "text_primary": "#FFFFFF",
-    "text_secondary": "#A8A8BE",
-    "card_surface_alpha": 0.14,
-    "card_border_width": 3,
-    "winner_surface_alpha": 0.35,
-    "winner_surface_note": "Not 1.0. At full strength the white option text sits at 1.82:1 on cyan and fails WCAG AA, and recolouring the text instead only moves the failure into the middle of the crossfade — any fade between white-on-dark and dark-on-bright passes through an unreadable state. At 0.35 white clears 8.9:1 on cyan and 12.6:1 on pink at every frame of the tween. The reveal is carried by the gap between the two cards, not by the winner's saturation.",
-    "loser_surface_alpha": 0.08,
-    "loser_text": "#6E6E86",
-    "note": "Two option colors, one urgency color, nothing else. A third option color would break recognizability at thumbnail size, which is where this palette does its work."
+    "field_a": "#FF1E1E",
+    "field_b": "#0A84FF",
+    "or_badge": "#000000",
+    "text": "#FFFFFF",
+    "text_stroke": "#000000",
+    "text_stroke_width": 10,
+    "loser_scrim": "rgba(0,0,0,0.45)",
+    "image_dim_under_percent": 0.35,
+    "note": "Two colours, full strength, edge to edge, plus black for the outline and the badge. White on #FF1E1E is 3.85:1 and on #0A84FF is 3.65:1, both clearing AA for large text before the outline is even counted. The outline is what makes the caption survive whatever photograph sits behind it."
   },
 
   "typography": {
-    "display_font": { "family": "Oswald", "fallback": "'Arial Narrow', Impact, sans-serif", "weight": 700, "bundled": true },
-    "numeric_font": { "family": "Archivo Black", "fallback": "'Helvetica Neue', Arial, sans-serif", "weight": 400, "bundled": true, "weight_note": "Archivo Black ships weight 400 only. Requesting 700 or 900 yields a synthetic weight, not a real cut." },
+    "font": { "family": "Nunito", "fallback": "'Trebuchet MS', Verdana, sans-serif", "weight": 900, "bundled": true },
+    "font_note": "One family for everything. Nunito is the only rounded face among the renderer's 18 pre-bundled families, and rounded-heavy is what this genre uses. Bundled means it embeds as a local data URI — no build-time fetch, which is fail-closed in cloud renders.",
+    "slant_deg": -8,
+    "slant_note": "Applied as a CSS skew on a static inner element, not as synthetic italic, so the angle is exact and identical in every render. The animated wrapper is a different element, so no tween ever fights the skew.",
     "styles": {
-      "question":      { "font": "display", "size": 52, "case": "uppercase", "tracking": 0.02,  "color": "text_secondary", "line_height": 1.1 },
-      "option":        { "font": "display", "size": 76, "case": "uppercase", "tracking": -0.01, "color": "text_primary",   "line_height": 1.0, "max_lines": 3 },
-      "percent":       { "font": "numeric", "size": 120, "case": "none",     "tracking": -0.03, "color": "text_primary" },
-      "episode_badge": { "font": "numeric", "size": 32,  "case": "uppercase", "tracking": 0.08, "color": "text_secondary" },
-      "end_card":      { "font": "display", "size": 64,  "case": "uppercase", "tracking": 0.0,  "color": "text_primary" }
+      "caption": { "size": 96,  "case": "lowercase", "line_height": 1.05, "max_lines": 2, "align": "center", "stroke": 10 },
+      "percent": { "size": 190, "case": "none",      "line_height": 1.0,  "align": "center", "stroke": 12 },
+      "or":      { "size": 54,  "case": "uppercase", "align": "center", "stroke": 0 },
+      "end_card":{ "size": 84,  "case": "lowercase", "line_height": 1.1,  "align": "center", "stroke": 10 }
     }
   },
 
   "motion": {
-    "ease_enter": "cubic-bezier(0.16, 1, 0.30, 1)",
-    "ease_exit":  "cubic-bezier(0.70, 0, 0.84, 0)",
-    "ease_fill":  "cubic-bezier(0.22, 1, 0.36, 1)",
-    "card_enter": { "from_x_a": -1000, "from_x_b": 1000, "duration_ms": 500, "stagger_ms": 80 },
-    "card_exit":  { "to_x_a": -1000, "to_x_b": 1000, "duration_ms": 400 },
-    "timer_ring": { "duration_ms": 3500, "easing": "linear", "stroke": 10, "radius": 74 },
-    "count_up":   { "duration_ms": 700, "easing": "linear", "from": 0 },
-    "bar_fill":   { "duration_ms": 700, "easing": "ease_fill" },
-    "loser_settle": { "scale": 0.96, "duration_ms": 300 },
-    "winner_pop":   { "scale": 1.03, "duration_ms": 220, "then_scale": 1.0 },
-    "forbidden": ["blur transitions", "3D rotation", "particle effects", "camera shake"],
-    "note": "Motion is functional here: it separates the two options in space and marks the reveal in time. Decoration competes with the decision."
+    "ease_enter": "power3.out",
+    "ease_exit": "power2.in",
+    "caption_enter": { "from_y_a": -60, "from_y_b": 60, "duration_ms": 350 },
+    "image_enter":   { "from_scale": 0.88, "duration_ms": 350 },
+    "percent_slam":  { "from_scale": 1.35, "duration_ms": 400, "ease": "back.out(2)" },
+    "loser_dim":     { "duration_ms": 400 },
+    "exit":          { "duration_ms": 350 },
+    "forbidden": ["blur transitions", "3D rotation", "particle effects", "camera shake", "on-screen countdown timers", "progress indicators"],
+    "note": "Four moves in the whole video: things arrive, the number slams, the loser darkens, things leave. Version 1.x had a depleting timer ring, a VS disc, progress dots and animated fill bars; none of them appear in the videos that win, and each one was another thing competing with a decision the viewer makes in three seconds."
   },
 
   "audio": {
@@ -112,9 +105,10 @@
       "rate": 1.05,
       "lines_per_block": 2,
       "line_1_at_ms": 200,
-      "line_2_at_ms": 4300,
+      "line_2_at_ms": 4400,
       "max_words_line_1": 14,
-      "max_words_line_2": 10
+      "max_words_line_2": 10,
+      "stem_note": "Line 1 speaks the stem and both fragments — 'would you rather never feel pain again, or sadness again'. The screen only ever shows the fragments, so the voiceover is what makes the dilemma a sentence. This is why voiceover is required rather than a nice-to-have: without it the two captions are not a question."
     },
     "music": {
       "bpm_range": [95, 110],
@@ -123,23 +117,33 @@
       "note": "One track per 20-episode arc. Viewers ask for the song name in the comments; a stable track turns that into a recurring comment we can answer."
     },
     "sfx": {
-      "tick":       { "at": "each 1000ms of decide phase", "gain_db": -18 },
       "reveal":     { "at": "reveal start", "gain_db": -10 },
       "transition": { "at": "exit start", "gain_db": -14 }
     }
   },
 
   "copy_rules": {
-    "question_max_chars": 60,
-    "option_max_chars": 36,
-    "option_max_chars_note": "Measured against the type, not guessed. Oswald 700 at 76px in the 770px card sets about 13 characters per line: 36 characters lands in three lines, 42 goes to four and fills the card, which is too slow to read inside a 3.5s decision window. The opening bank's longest option is 36 and its median is 26, so this cap costs nothing.",
-    "option_case": "uppercase",
+    "model": "stem + two fragments",
+    "model_note": "The dilemma is one sentence split three ways. The stem is spoken and never rendered; the two fragments are all the screen shows. 'Would you rather never feel PAIN AGAIN or SADNESS AGAIN' puts ten characters on one card and thirteen on the other, and that is why it reads in the half-second a viewer gives it.",
+    "stem_max_chars": 52,
+    "option_max_chars": 22,
+    "option_preferred_max_chars": 16,
+    "option_length_note": "22 is the hard cap: two lines of Nunito 900 at 96px across the 900px caption box. 16 or under lands on one line and is what the reference videos actually do — treat one line as the target and two as the exception.",
+    "option_case": "lowercase",
     "option_end_punctuation": false,
     "forbidden_in_options": ["would you rather", "?", "or"],
-    "preferred_framings": ["never ...", "unlimited ...", "always ...", "everyone knows ..."],
-    "framing_note": "Drawn from the audience's own vocabulary in 1,001 mined comments: never (103), unlimited (38), always (33). Words the audience already uses need no decoding time.",
+    "shared_tail_note": "The two fragments usually end on the same word ('pain again' / 'sadness again'). The repetition is what makes the pair scan as a single choice.",
     "difficulty_ramp": ["easy+funny", "easy", "medium", "hard", "hardest"],
-    "ramp_note": "Block 1 is the hook and must land in under 2 seconds of reading. Block 5 is the one people argue about in the comments."
+    "ramp_note": "Block 1 is the hook and must land in under two seconds of reading. Block 5 is the one people argue about in the comments."
+  },
+
+  "images": {
+    "required": true,
+    "one_per_option": true,
+    "treatment": "cut-out subject on the flat colour field, no photographic background, no drop shadow",
+    "box": 420,
+    "subject_placement": "upper half of the box, so the bottom field's image survives the Shorts UI band",
+    "note": "The image is what stops the scroll; the caption is what makes it a choice. A block with no image still renders — the field is simply flat — but it is a degraded video, not a stylistic option."
   },
 
   "reveal_mechanic": {
@@ -155,10 +159,11 @@
 
   "end_card": {
     "duration_ms": 3500,
-    "elements": ["episode_number_next", "poll_cta", "channel_mark"],
+    "elements": ["poll_cta", "next_teaser"],
     "cta_copy_max_chars": 48,
     "cta_rule": "One line, one ask, pointing at the poll. Never 'like and subscribe'.",
-    "loop_note": "Last frame matches the first frame's background exactly so the Shorts loop is seamless."
+    "treatment": "The two fields stay. The end card is copy on the same split, not a new screen.",
+    "loop_note": "Last frame carries the same two fields as the first, so the Shorts loop is seamless."
   },
 
   "render": {
@@ -175,10 +180,12 @@
   "invariants": [
     "1080x1920 at 30fps",
     "Exactly 5 dilemma blocks of 8500ms each",
-    "Option A is always on top and always #FF2D6F; option B is always below and always #00D1FF",
-    "The timer is always the yellow ring at the centre, between the two cards, and always runs exactly 3500ms",
-    "Oswald 700 for options, Archivo Black for numbers — both pre-bundled by the renderer",
-    "No third option colour",
+    "Two full-bleed colour fields split at y=960 — no background, no cards, no borders, no corners",
+    "Field A is always on top and always #FF1E1E; field B is always below and always #0A84FF",
+    "A black OR disc always sits on the seam",
+    "Nunito 900, lowercase, white with a 10px black outline, skewed -8deg",
+    "One image per option, cut out, no photographic background",
+    "No timer, no progress dots, no episode badge, no fill bars",
     "Percentages always sum to 100 and are never invented",
     "No intro: frame 1 is already a dilemma",
     "No borrowed IP, characters, or footage"

@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Brankss/Yt-Shorts-Automation/content/schemas/dilemma.schema.json",
   "title": "Dilemma",
-  "description": "One Would You Rather choice in the bank. Scores are assigned at harvest; measured_split is filled in only after a real Community poll closes.",
+  "description": "One Would You Rather choice in the bank, written as a spoken stem plus two short fragments. The screen only ever shows the fragments; the stem is what the voiceover says to make them a question. Scores are assigned at harvest; measured_split is filled in only after a real Community poll closes.",
   "type": "object",
-  "required": ["id", "option_a", "option_b", "vertical", "scores", "status"],
+  "required": ["id", "stem", "option_a", "option_b", "vertical", "scores", "status"],
   "additionalProperties": false,
   "properties": {
     "id": {
@@ -12,20 +12,28 @@
       "pattern": "^d[0-9]{4}$",
       "description": "Stable id, e.g. d0042. Never reused, even after the dilemma is used."
     },
+    "stem": {
+      "type": "string",
+      "maxLength": 52,
+      "description": "The shared setup, spoken and never rendered: 'Would you rather never feel'. Together with the two fragments it has to read as one natural sentence."
+    },
     "option_a": {
       "type": "string",
-      "maxLength": 42,
-      "description": "Top card, always #FF2D6F. Uppercase at render time; store it in natural case. No trailing punctuation, and never contains 'or'."
+      "maxLength": 22,
+      "description": "Top field, always #FF1E1E. 22 is the hard cap (two lines of Nunito 900 at 96px); 16 or under lands on one line and is the target. Lowercase, no trailing punctuation, never contains 'or'."
     },
     "option_b": {
       "type": "string",
-      "maxLength": 42,
-      "description": "Bottom card, always #00D1FF. Same constraints as option_a."
+      "maxLength": 22,
+      "description": "Bottom field, always #0A84FF. Same constraints as option_a. The pair usually ends on the same word — the repetition is what makes them scan as a single choice."
     },
-    "question": {
+    "image_a": {
       "type": "string",
-      "maxLength": 60,
-      "description": "Optional framing line above the cards. Omit when the two options speak for themselves — most of the time they do."
+      "description": "Path to the cut-out subject for the top field: no photographic background, subject in the upper half of the frame. Required before the dilemma can ship, though the composition still renders without it."
+    },
+    "image_b": {
+      "type": "string",
+      "description": "Path to the cut-out subject for the bottom field. Same treatment as image_a."
     },
     "vertical": {
       "type": "string",
@@ -34,14 +42,14 @@
     },
     "scores": {
       "type": "object",
-      "required": ["polarization", "universality", "instant_read", "rendering"],
+      "required": ["polarization", "universality", "instant_read", "imageable"],
       "additionalProperties": false,
       "description": "Each 1-5. Rank is the product. A zero on any axis means discard, not fix.",
       "properties": {
-        "polarization":  { "type": "integer", "minimum": 0, "maximum": 5, "description": "Will the split land between 55/45 and 88/12?" },
-        "universality":  { "type": "integer", "minimum": 0, "maximum": 5, "description": "Applies to everyone watching, with no precondition to own or be something." },
-        "instant_read":  { "type": "integer", "minimum": 0, "maximum": 5, "description": "Both options understood in under two seconds." },
-        "rendering":     { "type": "integer", "minimum": 0, "maximum": 5, "description": "Works as text alone, within 42 characters, with no image needed." }
+        "polarization": { "type": "integer", "minimum": 0, "maximum": 5, "description": "Will the split land between 55/45 and 88/12?" },
+        "universality": { "type": "integer", "minimum": 0, "maximum": 5, "description": "Applies to everyone watching, with no precondition to own or be something." },
+        "instant_read": { "type": "integer", "minimum": 0, "maximum": 5, "description": "Both fragments understood in under two seconds. One line each scores highest." },
+        "imageable":    { "type": "integer", "minimum": 0, "maximum": 5, "description": "Each fragment names one thing that can be photographed as a cut-out subject. This replaced the old 'renders as text alone' axis: the format is image-led, and a fragment with nothing to picture cannot carry a field." }
       }
     },
     "counterintuitive": {

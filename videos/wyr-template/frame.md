@@ -6,65 +6,76 @@ the reasoning behind those values, which JSON cannot carry.
 
 ## Concept angle
 
-Two doors, one clock, and a number that tells you which side of the room you are
-standing on. The frame is a voting booth, not a game show: dark, quiet, and
-built so that the only bright thing on screen is the choice you have not made yet.
+Two colours, split down the middle, one thing in each. The frame is a ballot,
+not a game show: the viewer should be able to answer before they have finished
+reading, and there should be nothing else on screen to look at.
+
+## What this replaced, and why
+
+Version 1.x wrapped the two options in rounded cards on a dark background, with
+a depleting timer ring, a VS disc, an episode badge, progress dots and animated
+fill bars. It was designed from reasoning about the mechanic rather than from
+what the winning videos in this niche look like.
+
+They look like this instead: flat saturated red over flat saturated blue, edge
+to edge, one cut-out subject per side, heavy outlined lowercase captions, and a
+black OR disc on the seam. Nothing else. Every element 1.x added was one more
+thing competing with a decision the viewer makes in three seconds.
+
+The copy was wrong in the same way. 1.x wrote whole sentences on both cards, a
+median of 26 characters. The reference reads `pain again` and `sadness again`:
+10 and 13 characters, sharing a stem that is never shown. That stem is what the
+voiceover says, and it is why the voiceover is required rather than optional —
+without it, two fragments on two colours are not a question.
 
 ## Focal element
 
-The two option cards, stacked. Top is always `#FF2D6F`, bottom always `#00D1FF`
-— never swapped, never re-coloured per episode. The viewer learns the geometry
-in one video and reads every later one without decoding it. Vertical stacking
-rather than side-by-side because a phone held in one hand reads top-to-bottom,
-and because 42 characters of condensed type needs the full 850px width.
+The two captions, and only because they sit closest to the seam. Top is always
+`#FF1E1E`, bottom always `#0A84FF`, never swapped. The images push outward and
+the words meet in the middle, so the eye lands on the comparison first and the
+pictures are what it drifts to afterwards.
 
-## Edge anchors
+## Type
 
-Episode badge top-left, progress dots bottom-centre. Both sit inside the Shorts
-safe bands, and both exist for the same reason: they tell the viewer this is
-episode 7 of something, and dilemma 3 of five. A viewer who knows how much is
-left stays for the rest.
+Nunito 900, lowercase, white, with a 10px black outline, skewed -8°.
 
-## Supporting detail
+Nunito is the only rounded face among the renderer's 18 pre-bundled families,
+and rounded-heavy is what the genre uses. Bundled matters: a non-bundled family
+resolves through an implicit build-time fetch from Google Fonts that is
+fail-closed in cloud renders — the render errors rather than substituting.
 
-The timer ring between the cards, in `#FFD400` — the only warm colour in the
-frame, used once, on the one element that means "decide now". Its 3.5s sweep is
-the whole tension of the format. When it empties, the answer arrives.
+The skew is a static CSS transform on an inner element rather than synthetic
+italic, so the angle is exact and identical in every render, and the animated
+wrapper is a different element so no tween ever fights it.
 
-## Background
+The outline is not decoration. White on `#FF1E1E` is 3.85:1 and on `#0A84FF` is
+3.65:1 — both clear AA for large text on the flat field alone. The outline is
+what keeps the caption readable once a photograph is sitting behind it.
 
-Near-black `#0B0B12` with a single radial lift toward `#1A1030` behind the cards.
-Flat black would make the cards float; the lift gives them a room to sit in
-without introducing a texture that competes with type.
+## Images
 
-## Typography
+One cut-out subject per option, no photographic background, no drop shadow,
+subject composed in the upper half of its box so the bottom field's image
+survives the Shorts UI band.
 
-- **Oswald 700** for options at 76px uppercase. Condensed, so 42 characters fit
-  two lines inside the card without shrinking.
-- **Archivo Black** for percentages at 120px. The number is the payoff and gets
-  the heaviest face in the system.
-
-Both are pre-bundled by the renderer and embed as local data URIs. The DNA
-originally specified Anton, which is not bundled: it resolves through an implicit
-build-time fetch from Google Fonts that is **fail-closed in cloud renders** — the
-render errors rather than substituting. DNA 1.1.0 records that change and why.
-
-Archivo Black ships weight 400 only. Asking for 700 or 900 produces a synthetic
-weight, not a real cut.
+The image is what stops the scroll; the caption is what makes it a choice. A
+block without one still renders — the field is simply flat — and the composition
+draws a dashed slot in its place. That slot is meant to be visible and wrong: it
+is a missing asset, not a minimal style.
 
 ## Motion
 
-Motion is functional. Cards enter from opposite edges because they are opposites.
-The ring depletes because time is running out. The bar fills and the number
-counts because the result is being measured in front of you. Nothing else moves.
+Four moves in the whole video. Things arrive, the number slams, the loser
+darkens, things leave. There is no on-screen timer: the decide phase is 3.65
+seconds in which nothing at all moves, because the voice is asking the question
+and a countdown would only compete with it.
 
-Explicitly excluded: blur transitions, 3D rotation, particles, camera shake.
-Each of them would compete with a decision the viewer is trying to make in
-three and a half seconds.
+Explicitly excluded: blur transitions, 3D rotation, particles, camera shake, and
+any progress indicator.
 
 ## What the reveal has to do
 
-The reveal is the product. It carries the strongest accent in the block: the
-winning card goes to full colour and pops 3%, the losing card desaturates and
-settles back 4%. If a viewer looks away for one second, this is the second they
-must not miss.
+The reveal is the product. The percentage slams in over the picture at 190px
+with a back-ease overshoot, the picture drops to 35% so the number reads, and
+the losing field takes a 45% black scrim. Both numbers stay legible — the viewer
+on the losing side is the one who comments.

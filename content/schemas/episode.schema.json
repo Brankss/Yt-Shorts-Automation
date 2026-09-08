@@ -28,13 +28,15 @@
       "description": "Exactly five, in ramp order: easy+funny, easy, medium, hard, hardest. The DNA's 8500ms block length assumes five.",
       "items": {
         "type": "object",
-        "required": ["dilemma_id", "option_a", "option_b", "reveal", "vo"],
+        "required": ["dilemma_id", "stem", "option_a", "option_b", "reveal", "vo"],
         "additionalProperties": false,
         "properties": {
           "dilemma_id": { "type": "string", "pattern": "^d[0-9]{4}$" },
-          "option_a":   { "type": "string", "maxLength": 42 },
-          "option_b":   { "type": "string", "maxLength": 42 },
-          "question":   { "type": "string", "maxLength": 60 },
+          "stem":       { "type": "string", "maxLength": 52, "description": "Spoken, never rendered. The screen shows only the two fragments." },
+          "option_a":   { "type": "string", "maxLength": 22 },
+          "option_b":   { "type": "string", "maxLength": 22 },
+          "image_a":    { "type": "string", "description": "Cut-out subject for the top field." },
+          "image_b":    { "type": "string", "description": "Cut-out subject for the bottom field." },
           "reveal": {
             "type": "object",
             "required": ["source"],

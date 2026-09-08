@@ -8,218 +8,175 @@
          determinism rules and fails closed in a sandboxed renderer. -->
     <script src="vendor/gsap.min.js"></script>
     <style>
-      /* Values mirror dna/video-dna.json 1.1.0. The DNA is authoritative:
+      /* Values mirror dna/video-dna.json 2.0.0. The DNA is authoritative:
          if these drift from it, these are wrong. */
       :root {
-        --bg: #0b0b12;
-        --lift: #1a1030;
-        --a: #ff2d6f;
-        --b: #00d1ff;
-        --timer: #ffd400;
-        --text: #ffffff;
-        --text-dim: #a8a8be;
-        --loser: #6e6e86;
-        --display: Oswald, "Arial Narrow", Impact, sans-serif;
-        --numeric: "Archivo Black", "Helvetica Neue", Arial, sans-serif;
+        --a: #ff1e1e;
+        --b: #0a84ff;
+        --text: #fff;
+        --stroke: #000;
       }
 
-      body { margin: 0; background: var(--bg); }
+      body { margin: 0; background: #000; }
 
       #root {
         position: relative;
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: var(--bg);
         color: var(--text);
       }
 
-      /* A single radial lift behind the cards. Flat black makes them float. */
-      #vignette {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(1100px 1100px at 540px 760px, var(--lift) 0%, var(--bg) 100%);
-      }
+      /* Two fields, edge to edge, split at the middle. No background sits
+         behind them and nothing frames them. */
+      .field { position: absolute; left: 0; width: 1080px; height: 960px; }
+      #field-a { top: 0;    background: var(--a); }
+      #field-b { top: 960px; background: var(--b); }
 
       .clip { position: absolute; inset: 0; }
 
-      /* Persistent chrome. Not a clip: no data-start means always on. */
-      #badge {
+      /* The disc on the seam is the only chrome in the format. */
+      #or {
         position: absolute;
-        left: 90px;
-        top: 180px;
-        width: 260px;
-        height: 64px;
-        font: 400 32px/64px var(--numeric);
-        letter-spacing: 0.08em;
-        color: var(--text-dim);
-      }
-
-      .question {
-        position: absolute;
-        left: 90px;
-        top: 268px;
-        width: 850px;
-        height: 110px;
-        font: 700 52px/1.1 var(--display);
-        text-transform: uppercase;
+        left: 462px;
+        top: 882px;
+        width: 156px;
+        height: 156px;
+        border-radius: 999px;
+        background: #000;
+        display: grid;
+        place-items: center;
+        font: 900 54px/1 Nunito, "Trebuchet MS", Verdana, sans-serif;
         letter-spacing: 0.02em;
-        color: var(--text-dim);
-        text-align: center;
       }
 
-      /* Cards are block-level and explicitly sized: required for transforms. */
-      .card {
+      .cap {
         position: absolute;
         left: 90px;
-        width: 850px;
-        height: 420px;
-        border-radius: 32px;
-        border: 3px solid;
-        box-sizing: border-box;
-        overflow: hidden;
+        width: 900px;
+        height: 220px;
+        display: grid;
+        place-items: center;
       }
-      .card-a { top: 400px;  border-color: var(--a); background: rgba(255, 45, 111, 0.14); }
-      .card-b { top: 1020px; border-color: var(--b); background: rgba(0, 209, 255, 0.14); }
+      #cap-a-box { top: 680px; }
+      #cap-b-box { top: 1020px; }
 
-      .opt {
-        position: absolute;
-        left: 40px;
-        top: 40px;
-        width: 770px;
-        font: 700 76px/1.0 var(--display);
-        text-transform: uppercase;
-        letter-spacing: -0.01em;
+      /* The skew is a static CSS transform on an inner element. The wrapper is
+         what animates, so no tween ever fights it. */
+      .cap-text {
+        display: block;
+        transform: skewX(-8deg);
+        font: 900 96px/1.05 Nunito, "Trebuchet MS", Verdana, sans-serif;
+        text-transform: lowercase;
+        text-align: center;
         color: var(--text);
+        -webkit-text-stroke: 10px var(--stroke);
+        paint-order: stroke fill;
       }
+
+      .imgbox {
+        position: absolute;
+        left: 330px;
+        width: 420px;
+        height: 420px;
+        display: grid;
+        place-items: center;
+      }
+      #img-a-box { top: 210px; }
+      #img-b-box { top: 1240px; }
+      .imgbox img { max-width: 420px; max-height: 420px; display: block; }
+
+      /* Only drawn when a block has no image. The DNA requires one per option,
+         so this is meant to be visible and wrong, not a shippable state.
+         Deliberately textless: a label here would sit under the percentage and
+         trip the overlap and contrast gates on a condition that cannot occur
+         once a real image is in the slot. */
+      .slot {
+        width: 380px;
+        height: 380px;
+        border: 6px dashed rgba(255, 255, 255, 0.55);
+        border-radius: 24px;
+      }
+
+      .scrim { position: absolute; left: 0; width: 1080px; height: 960px; background: #000; }
+      #scrim-a { top: 0; }
+      #scrim-b { top: 960px; }
 
       .pct {
         position: absolute;
-        right: 40px;
-        bottom: 36px;
-        font: 400 120px/0.85 var(--numeric);
-        letter-spacing: -0.03em;
-        color: var(--text);
-      }
-      /* Episode 1 has no poll behind it, so the block states a prediction and
-         shows no number at all rather than inventing one. */
-      .pct--label { font-size: 44px; letter-spacing: 0.06em; }
-
-      .bar {
-        position: absolute;
-        /* left+right rather than a fixed 850px: the card is border-box with a
-           3px border, so its padding box is 844px and a fixed width overflows. */
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 12px;
-        transform-origin: left center;
-      }
-      .card-a .bar { background: var(--a); }
-      .card-b .bar { background: var(--b); }
-
-      /* Timer: the only warm colour in the frame, on the only element that
-         means "decide now". */
-      .timer {
-        position: absolute;
-        left: 440px;
-        top: 860px;
-        width: 200px;
-        height: 160px;
-      }
-      .ring-track { fill: none; stroke: rgba(255, 255, 255, 0.10); stroke-width: 10; }
-      .ring {
-        fill: none;
-        stroke: var(--timer);
-        stroke-width: 10;
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: 100px 80px;
-      }
-      .vs {
-        font: 400 34px/1 var(--numeric);
-        fill: var(--text-dim);
-        letter-spacing: 0.06em;
-      }
-
-      .dots {
-        position: absolute;
         left: 90px;
-        top: 1480px;
-        width: 850px;
-        height: 24px;
-        display: flex;
-        gap: 14px;
-        justify-content: center;
-        align-items: center;
-      }
-      .dot { width: 16px; height: 16px; border-radius: 999px; background: rgba(255, 255, 255, 0.18); }
-      .dot.on { width: 44px; background: var(--text); }
-
-      #end-inner {
-        position: absolute;
-        left: 90px;
-        top: 700px;
-        width: 850px;
+        width: 900px;
         text-align: center;
-      }
-      #end-cta {
-        font: 700 64px/1.15 var(--display);
-        text-transform: uppercase;
+        font: 900 190px/1 Nunito, "Trebuchet MS", Verdana, sans-serif;
         color: var(--text);
-        margin: 0;
+        -webkit-text-stroke: 12px var(--stroke);
+        paint-order: stroke fill;
       }
-      #end-teaser {
-        margin: 28px 0 0;
-        font: 400 40px/1.2 var(--numeric);
-        color: var(--timer);
+      #pct-a { top: 325px; }
+      #pct-b { top: 1355px; }
+      .pct--label { font-size: 76px; -webkit-text-stroke-width: 8px; }
+
+      #end-a, #end-b {
+        position: absolute;
+        left: 90px;
+        width: 900px;
+        text-align: center;
+        font: 900 84px/1.1 Nunito, "Trebuchet MS", Verdana, sans-serif;
+        text-transform: lowercase;
+        color: var(--text);
+        -webkit-text-stroke: 10px var(--stroke);
+        paint-order: stroke fill;
       }
-      #end-mark {
-        margin: 44px 0 0;
-        font: 400 30px/1 var(--numeric);
-        letter-spacing: 0.18em;
-        color: var(--text-dim);
-      }
+      #end-a { top: 600px; }
+      #end-b { top: 1120px; }
     </style>
   </head>
   <body>
     <!-- Content slots. A build step replaces this island and nothing else;
-         structure, timing and motion never vary between episodes.
-         Shape: content/schemas/episode.schema.json -->
+         the split, the timing and the type never vary between episodes.
+         Shape: content/schemas/episode.schema.json
+
+         The screen shows only the two fragments. The stem that makes them a
+         question is spoken, never rendered — which is why the voiceover is
+         required rather than optional. -->
     <script type="application/json" id="episode-data">
       {
         "episode": 7,
         "blocks": [
           {
-            "option_a": "Pizza with pineapple",
-            "option_b": "Pizza with anchovies",
+            "stem": "Would you rather never feel",
+            "option_a": "pain again",
+            "option_b": "sadness again",
             "reveal": { "source": "community_poll", "a": 71, "b": 29 }
           },
           {
-            "question": "Free forever",
-            "option_a": "Unlimited free pizza",
-            "option_b": "Unlimited free sushi",
+            "stem": "Would you rather have unlimited free",
+            "option_a": "pizza",
+            "option_b": "sushi",
             "reveal": { "source": "community_poll", "a": 58, "b": 42 }
           },
           {
-            "option_a": "Never eat meat again",
-            "option_b": "Never eat sugar again",
+            "stem": "Would you rather give up",
+            "option_a": "meat forever",
+            "option_b": "sugar forever",
             "reveal": { "source": "community_poll", "a": 64, "b": 36 }
           },
           {
-            "option_a": "Know exactly how your food was made",
-            "option_b": "Never think about it again",
+            "stem": "Would you rather lose your sense of",
+            "option_a": "taste",
+            "option_b": "smell",
             "reveal": { "source": "prediction_no_number", "prediction_favours": "b" }
           },
           {
-            "option_a": "Never feel hunger again",
-            "option_b": "Never feel full again",
+            "stem": "Would you rather be",
+            "option_a": "always hungry",
+            "option_b": "never hungry",
             "reveal": { "source": "community_poll", "a": 83, "b": 17 }
           }
         ],
         "end_card": {
-          "cta": "Vote on the next five",
-          "next_teaser": "Results in episode 8"
+          "cta": "vote on the next five",
+          "next_teaser": "results in episode 8"
         }
       }
     </script>
@@ -232,8 +189,8 @@
       data-height="1920"
       data-duration="46"
     >
-      <div id="vignette"></div>
-      <div id="badge">EP 00</div>
+      <div id="field-a" class="field"></div>
+      <div id="field-b" class="field"></div>
 
       <!-- Five blocks of 8.5s. The duration is not a style choice: 16-25s
            videos median 751 views in this niche against 26,239 for 41-60s. -->
@@ -243,206 +200,165 @@
       <section id="b4" class="clip" data-start="25.5" data-duration="8.5"></section>
       <section id="b5" class="clip" data-start="34"   data-duration="8.5"></section>
 
+      <section id="or-holder" class="clip" data-start="0" data-duration="42.5">
+        <div id="or">OR</div>
+      </section>
+
       <section id="end" class="clip" data-start="42.5" data-duration="3.5">
-        <div id="end-inner">
-          <p id="end-cta">Vote on the next five</p>
-          <p id="end-teaser">Results in episode 8</p>
-          <p id="end-mark">WOULD YOU RATHER</p>
-        </div>
+        <div id="end-a">vote on the next five</div>
+        <div id="end-b">results in episode 8</div>
       </section>
     </div>
 
     <script>
       // Static JSON in, fixed DOM out. No clocks, no randomness, no network:
       // the same episode file always produces the same frames.
-      const DNA = {
-        blockMs: 8500,
-        enter: 500,
-        stagger: 80,
-        decide: 3500,
-        revealAt: 4000,
-        revealDur: 700,
-        exitAt: 8100,
-        exitDur: 400,
-        easeEnter: "expo.out",
-        easeExit: "power3.in",
-        easeFill: "power4.out",
-        ringR: 74,
+      const T = {
+        block: 8.5,
+        enter: 0.35,
+        revealAt: 4.0,
+        revealDur: 0.4,
+        exitAt: 8.15,
+        exitDur: 0.35,
       };
-      const RING_LEN = 2 * Math.PI * DNA.ringR;
 
       const data = JSON.parse(document.getElementById("episode-data").textContent);
-      document.getElementById("badge").textContent =
-        "EP " + String(data.episode).padStart(2, "0");
-      document.getElementById("end-cta").textContent = data.end_card.cta;
-      document.getElementById("end-teaser").textContent = data.end_card.next_teaser || "";
+      document.getElementById("end-a").textContent = data.end_card.cta;
+      document.getElementById("end-b").textContent = data.end_card.next_teaser || "";
 
-      function card(side, block, i) {
+      function caption(side, i, text) {
+        const box = document.createElement("div");
+        box.className = "cap";
+        box.id = "cap-" + side + "-box";
+        const span = document.createElement("span");
+        span.className = "cap-text";
+        span.dataset.slot = "block" + (i + 1) + ".option_" + side;
+        span.textContent = text;
+        box.appendChild(span);
+        return box;
+      }
+
+      function image(side, i, src) {
+        const box = document.createElement("div");
+        box.className = "imgbox";
+        box.id = "img-" + side + "-box";
+        if (src) {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "";
+          box.appendChild(img);
+        } else {
+          // Loud on purpose: the DNA requires an image per option.
+          const slot = document.createElement("div");
+          slot.className = "slot";
+          box.appendChild(slot);
+        }
+        return box;
+      }
+
+      function scrim(side) {
         const el = document.createElement("div");
-        el.className = "card card-" + side;
-        el.id = "b" + (i + 1) + side;
-
-        const opt = document.createElement("div");
-        opt.className = "opt";
-        opt.dataset.slot = "block" + (i + 1) + ".option_" + side;
-        opt.textContent = side === "a" ? block.option_a : block.option_b;
-
-        const pct = document.createElement("div");
-        pct.className = "pct";
-        pct.id = el.id + "-pct";
-
-        const bar = document.createElement("div");
-        bar.className = "bar";
-        bar.id = el.id + "-bar";
-
-        el.append(opt, pct, bar);
+        el.className = "scrim";
+        el.id = "scrim-" + side;
         return el;
       }
 
-      function timer(i) {
-        const NS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(NS, "svg");
-        svg.setAttribute("class", "timer");
-        svg.setAttribute("viewBox", "0 0 200 160");
-
-        const track = document.createElementNS(NS, "circle");
-        track.setAttribute("class", "ring-track");
-        track.setAttribute("cx", "100");
-        track.setAttribute("cy", "80");
-        track.setAttribute("r", String(DNA.ringR));
-
-        const ring = document.createElementNS(NS, "circle");
-        ring.setAttribute("class", "ring");
-        ring.setAttribute("id", "b" + (i + 1) + "-ring");
-        ring.setAttribute("cx", "100");
-        ring.setAttribute("cy", "80");
-        ring.setAttribute("r", String(DNA.ringR));
-        ring.setAttribute("stroke-dasharray", String(RING_LEN));
-
-        const vs = document.createElementNS(NS, "text");
-        vs.setAttribute("class", "vs");
-        vs.setAttribute("x", "100");
-        vs.setAttribute("y", "92");
-        vs.setAttribute("text-anchor", "middle");
-        vs.textContent = "VS";
-
-        svg.append(track, ring, vs);
-        return svg;
-      }
-
-      function dots(active) {
-        const wrap = document.createElement("div");
-        wrap.className = "dots";
-        for (let d = 0; d < 5; d++) {
-          const dot = document.createElement("div");
-          dot.className = "dot" + (d === active ? " on" : "");
-          wrap.appendChild(dot);
-        }
-        return wrap;
+      function percent(side) {
+        const el = document.createElement("div");
+        el.className = "pct";
+        el.id = "pct-" + side;
+        return el;
       }
 
       data.blocks.forEach((block, i) => {
-        const section = document.getElementById("b" + (i + 1));
-        if (block.question) {
-          const q = document.createElement("div");
-          q.className = "question";
-          q.textContent = block.question;
-          section.appendChild(q);
-        }
-        section.append(card("a", block, i), timer(i), card("b", block, i), dots(i));
+        const s = document.getElementById("b" + (i + 1));
+        // DOM order is z-order: pictures, then words, then the darkening, then
+        // the numbers — which stay readable on the losing side too.
+        s.append(
+          image("a", i, block.image_a),
+          caption("a", i, block.option_a),
+          image("b", i, block.image_b),
+          caption("b", i, block.option_b),
+          scrim("a"),
+          scrim("b"),
+          percent("a"),
+          percent("b")
+        );
       });
 
       const tl = gsap.timeline({ paused: true });
+      const q = (i, sel) => "#b" + (i + 1) + " " + sel;
 
       data.blocks.forEach((block, i) => {
-        const t0 = (i * DNA.blockMs) / 1000;
-        const A = "#b" + (i + 1) + "a";
-        const B = "#b" + (i + 1) + "b";
+        const t0 = i * T.block;
         const poll = block.reveal.source === "community_poll";
-        const winner = poll ? (block.reveal.a >= block.reveal.b ? "a" : "b")
-                            : block.reveal.prediction_favours;
+        const winner = poll
+          ? block.reveal.a >= block.reveal.b ? "a" : "b"
+          : block.reveal.prediction_favours;
 
-        // Enter: opposites arrive from opposite edges. fromTo, never a CSS
-        // transform plus a tween on the same property.
-        tl.fromTo(A, { x: -1000 }, { x: 0, duration: DNA.enter / 1000, ease: DNA.easeEnter }, t0);
-        tl.fromTo(B, { x: 1000 },  { x: 0, duration: DNA.enter / 1000, ease: DNA.easeEnter },
-          t0 + DNA.stagger / 1000);
+        // Enter: words push toward the seam, pictures settle in.
+        tl.fromTo(q(i, "#cap-a-box"), { y: -60, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: T.enter, ease: "power3.out" }, t0);
+        tl.fromTo(q(i, "#cap-b-box"), { y: 60, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: T.enter, ease: "power3.out" }, t0);
+        tl.fromTo(q(i, "#img-a-box") + ", " + q(i, "#img-b-box"),
+          { scale: 0.88, autoAlpha: 0 },
+          { scale: 1, autoAlpha: 1, duration: T.enter, ease: "power3.out" }, t0);
 
-        // Decide: the ring empties over exactly 3.5s. This is the tension.
-        tl.fromTo("#b" + (i + 1) + "-ring",
-          { strokeDashoffset: 0 },
-          { strokeDashoffset: RING_LEN, duration: DNA.decide / 1000, ease: "none" },
-          t0 + DNA.enter / 1000);
+        // Nothing moves during the decide phase. The voice asks the question;
+        // an on-screen timer would only compete with it.
+        gsap.set([q(i, "#scrim-a"), q(i, "#scrim-b")], { autoAlpha: 0 });
 
-        const tR = t0 + DNA.revealAt / 1000;
-        const dur = DNA.revealDur / 1000;
+        const tR = t0 + T.revealAt;
 
         ["a", "b"].forEach((side) => {
-          const sel = side === "a" ? A : B;
           const won = side === winner;
-          const pctEl = document.querySelector(sel + "-pct");
+          const pctEl = document.querySelector(q(i, "#pct-" + side));
           const value = poll ? (side === "a" ? block.reveal.a : block.reveal.b) : null;
 
-          // Bar fills to the real share; on a prediction block it fills the
-          // favoured card only, and no number is ever shown. A bar with
-          // nothing to fill is left alone rather than tweened from 0 to 0.
-          const to = poll ? value / 100 : won ? 1 : 0;
-          if (to > 0) {
-            tl.fromTo(sel + "-bar", { scaleX: 0 }, { scaleX: to, duration: dur, ease: DNA.easeFill }, tR);
-          } else {
-            gsap.set(sel + "-bar", { scaleX: 0 });
-          }
+          // The picture drops back so the number reads over it.
+          tl.to(q(i, "#img-" + side + "-box"),
+            { autoAlpha: 0.35, duration: T.revealDur, ease: "power2.out" }, tR);
 
           if (poll) {
             const counter = { v: 0 };
+            tl.fromTo(pctEl, { scale: 1.35, autoAlpha: 0 },
+              { scale: 1, autoAlpha: 1, duration: T.revealDur, ease: "back.out(2)" }, tR);
             tl.to(counter, {
               v: value,
-              duration: dur,
+              duration: T.revealDur,
               ease: "none",
               onUpdate: () => { pctEl.textContent = Math.round(counter.v) + "%"; },
             }, tR);
           } else if (won) {
-            // Prediction block: only the favoured card gets a label, and it is
-            // never a number. The other card stays blank — tweening its empty
-            // label from 0 to 0 would just be a dead tween on the timeline.
+            // Episode 1 has no poll behind it, so the block names a favourite
+            // and shows no number rather than inventing one.
             pctEl.className = "pct pct--label";
-            pctEl.textContent = "MOST PEOPLE";
-            tl.fromTo(pctEl, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "none" }, tR);
+            pctEl.textContent = "most people";
+            tl.fromTo(pctEl, { scale: 1.35, autoAlpha: 0 },
+              { scale: 1, autoAlpha: 1, duration: T.revealDur, ease: "back.out(2)" }, tR);
           }
 
-          if (won) {
-            // The winner lifts to a 35% tint, not to full strength. White type
-            // on full cyan is 1.82:1 and fails AA, and recolouring the type
-            // instead just moves the failure into the middle of the crossfade —
-            // any fade between white-on-dark and dark-on-bright passes through
-            // an unreadable state. At 35% the background stays dark enough for
-            // white to clear 8.9:1 on cyan and 12.6:1 on pink at every frame of
-            // the tween. The reveal is carried by the gap between the two
-            // cards, which is what the viewer actually reads.
-            tl.to(sel, {
-              backgroundColor: side === "a" ? "rgba(255,45,111,0.35)" : "rgba(0,209,255,0.35)",
-              duration: dur,
-            }, tR);
-            tl.to(sel, { scale: 1.03, duration: 0.22, ease: "power2.out" }, tR + dur);
-            tl.to(sel, { scale: 1.0, duration: 0.22, ease: "power2.inOut" }, tR + dur + 0.22);
-          } else {
-            tl.to(sel, { backgroundColor: "rgba(255,255,255,0.08)", duration: dur }, tR);
-            tl.to(sel + " .opt", { color: "#6e6e86", duration: dur }, tR);
-            tl.to(sel, { scale: 0.96, duration: 0.3, ease: "power2.out" }, tR);
+          if (!won) {
+            tl.to(q(i, "#scrim-" + side),
+              { autoAlpha: 0.45, duration: T.revealDur, ease: "power2.out" }, tR);
           }
         });
 
-        // Exit: back out the way they came in.
-        const tE = t0 + DNA.exitAt / 1000;
-        tl.to(A, { x: -1000, duration: DNA.exitDur / 1000, ease: DNA.easeExit }, tE);
-        tl.to(B, { x: 1000,  duration: DNA.exitDur / 1000, ease: DNA.easeExit }, tE);
+        // Exit: hard push, no transition effect.
+        const tE = t0 + T.exitAt;
+        tl.to(q(i, "#cap-a-box"), { y: -60, autoAlpha: 0, duration: T.exitDur, ease: "power2.in" }, tE);
+        tl.to(q(i, "#cap-b-box"), { y: 60, autoAlpha: 0, duration: T.exitDur, ease: "power2.in" }, tE);
+        tl.to(q(i, "#img-a-box") + ", " + q(i, "#img-b-box") + ", " + q(i, "#pct-a") + ", " + q(i, "#pct-b"),
+          { autoAlpha: 0, duration: T.exitDur, ease: "power2.in" }, tE);
       });
 
-      // End card. The last frame carries the same background as the first so
-      // the Shorts loop is seamless.
-      tl.fromTo("#end-cta", { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: "expo.out" }, 42.7);
-      tl.fromTo("#end-teaser", { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: "expo.out" }, 42.95);
-      tl.fromTo("#end-mark", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: "none" }, 43.3);
+      // End card: same two fields, copy only. The last frame carries the split
+      // the first frame opened on, so the loop is seamless.
+      tl.fromTo("#end-a", { y: -40, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" }, 42.7);
+      tl.fromTo("#end-b", { y: 40, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" }, 42.8);
 
       window.__timelines["main"] = tl;
     </script>
