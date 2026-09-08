@@ -34,8 +34,10 @@ videos/*/snapshots/
 videos/*/.hyperframes/
 videos/*/renders/
 
-# Owner-supplied source audio. Kept out of git: large, and the music is a
-# commercial track whose licence is the channel owner's to manage, not this
-# repository's to redistribute. The trimmed derivatives under assets/ are what
-# the composition uses.
+# Owner-supplied music, and anything cut from it. Kept out of git: it is a
+# commercial recording, and a 54-second excerpt is still that recording — its
+# licence is the channel owner's to manage, not this repository's to
+# redistribute. build_episode.py re-cuts the bed from assets/source/ on every
+# build, so nothing is lost by keeping it untracked.
 videos/*/assets/source/
+videos/*/assets/music-*.wav
