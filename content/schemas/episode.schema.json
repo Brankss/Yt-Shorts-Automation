@@ -4,7 +4,12 @@
   "title": "Episode",
   "description": "One published video: five dilemmas, their voiceover lines, and the metadata that ships with it. This file plus dna/video-dna.json is everything the render needs.",
   "type": "object",
-  "required": ["episode", "blocks", "end_card", "publish"],
+  "required": [
+    "episode",
+    "blocks",
+    "end_card",
+    "publish"
+  ],
   "additionalProperties": false,
   "properties": {
     "episode": {
@@ -28,46 +33,147 @@
       "description": "Exactly five, in ramp order: easy+funny, easy, medium, hard, hardest. The DNA's 8500ms block length assumes five.",
       "items": {
         "type": "object",
-        "required": ["dilemma_id", "stem", "option_a", "option_b", "reveal", "vo"],
+        "required": [
+          "dilemma_id",
+          "stem",
+          "option_a",
+          "option_b",
+          "reveal",
+          "vo"
+        ],
         "additionalProperties": false,
         "properties": {
-          "dilemma_id": { "type": "string", "pattern": "^d[0-9]{4}$" },
-          "stem":       { "type": "string", "maxLength": 52, "description": "Spoken, never rendered. The screen shows only the two fragments." },
-          "option_a":   { "type": "string", "maxLength": 22 },
-          "option_b":   { "type": "string", "maxLength": 22 },
-          "image_a":    { "type": "string", "description": "Cut-out subject for the top field." },
-          "image_b":    { "type": "string", "description": "Cut-out subject for the bottom field." },
+          "dilemma_id": {
+            "type": "string",
+            "pattern": "^d[0-9]{4}$"
+          },
+          "stem": {
+            "type": "string",
+            "maxLength": 52,
+            "description": "Spoken, never rendered. The screen shows only the two fragments."
+          },
+          "option_a": {
+            "type": "string",
+            "maxLength": 22
+          },
+          "option_b": {
+            "type": "string",
+            "maxLength": 22
+          },
+          "image_a": {
+            "type": "string",
+            "description": "Cut-out subject for the top field."
+          },
+          "image_b": {
+            "type": "string",
+            "description": "Cut-out subject for the bottom field."
+          },
           "reveal": {
             "type": "object",
-            "required": ["source"],
+            "required": [
+              "source"
+            ],
             "additionalProperties": false,
             "description": "How this block ends. Either real poll numbers, or an explicit prediction with no number. There is no third option.",
             "properties": {
-              "source": { "type": "string", "enum": ["community_poll", "prediction_no_number"] },
-              "a":      { "type": "integer", "minimum": 0, "maximum": 100 },
-              "b":      { "type": "integer", "minimum": 0, "maximum": 100 },
-              "votes":  { "type": "integer", "minimum": 1 },
-              "prediction_favours": { "type": "string", "enum": ["a", "b"] }
+              "source": {
+                "type": "string",
+                "enum": [
+                  "community_poll",
+                  "comment_poll",
+                  "prediction_no_number"
+                ],
+                "description": "Where the numbers came from. community_poll needs the Community tab, which YouTube gates at 500 subscribers; comment_poll counts A/B replies on the previous episode and works at any channel size; prediction_no_number carries no figure at all."
+              },
+              "a": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "b": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "votes": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "prediction_favours": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              }
             },
             "allOf": [
               {
-                "if":   { "properties": { "source": { "const": "community_poll" } } },
-                "then": { "required": ["a", "b", "votes"] }
+                "if": {
+                  "properties": {
+                    "source": {
+                      "enum": [
+                        "community_poll",
+                        "comment_poll"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "a",
+                    "b",
+                    "votes"
+                  ]
+                }
               },
               {
-                "if":   { "properties": { "source": { "const": "prediction_no_number" } } },
-                "then": { "required": ["prediction_favours"], "not": { "anyOf": [{ "required": ["a"] }, { "required": ["b"] }] } }
+                "if": {
+                  "properties": {
+                    "source": {
+                      "const": "prediction_no_number"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "prediction_favours"
+                  ],
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "a"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "b"
+                        ]
+                      }
+                    ]
+                  }
+                }
               }
             ]
           },
           "vo": {
             "type": "object",
-            "required": ["setup", "reaction"],
+            "required": [
+              "setup",
+              "reaction"
+            ],
             "additionalProperties": false,
             "description": "Two lines. Setup lands at 200ms, reaction at 4300ms once the numbers are on screen.",
             "properties": {
-              "setup":    { "type": "string", "description": "Max 14 words. Poses the choice; never explains it." },
-              "reaction": { "type": "string", "description": "Max 10 words. Names the surprise in the result. Never restates the dilemma." }
+              "setup": {
+                "type": "string",
+                "description": "Max 14 words. Poses the choice; never explains it."
+              },
+              "reaction": {
+                "type": "string",
+                "description": "Max 10 words. Names the surprise in the result. Never restates the dilemma."
+              }
             }
           }
         }
@@ -75,16 +181,29 @@
     },
     "end_card": {
       "type": "object",
-      "required": ["cta"],
+      "required": [
+        "cta"
+      ],
       "additionalProperties": false,
       "properties": {
-        "cta":       { "type": "string", "maxLength": 48, "description": "One line, one ask, pointing at the poll. Never 'like and subscribe'." },
-        "next_teaser": { "type": "string", "maxLength": 48 }
+        "cta": {
+          "type": "string",
+          "maxLength": 48,
+          "description": "One line, one ask, pointing at the poll. Never 'like and subscribe'."
+        },
+        "next_teaser": {
+          "type": "string",
+          "maxLength": 48
+        }
       }
     },
     "publish": {
       "type": "object",
-      "required": ["title", "tags", "pinned_comment"],
+      "required": [
+        "title",
+        "tags",
+        "pinned_comment"
+      ],
       "additionalProperties": false,
       "properties": {
         "title": {
@@ -92,10 +211,15 @@
           "maxLength": 100,
           "description": "Pattern: 'Would You Rather... #N' plus the edition when there is one. The numbered series is the measured winner in this niche."
         },
-        "description":    { "type": "string", "maxLength": 5000 },
+        "description": {
+          "type": "string",
+          "maxLength": 5000
+        },
         "tags": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "maxItems": 15,
           "description": "From the measured tag cloud: would you rather, quiz, would you rather game, this or that, wyr, impossible choices."
         },
@@ -104,8 +228,56 @@
           "maxLength": 200,
           "description": "Carries the poll link and the question that converts viewers into commenters."
         },
-        "published_at":   { "type": "string", "format": "date-time" },
-        "video_id":       { "type": "string", "description": "Filled after upload; used to pull retention in the measure stage." }
+        "published_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "video_id": {
+          "type": "string",
+          "description": "Filled after upload; used to pull retention in the measure stage."
+        },
+        "hashtags_in_title": {
+          "type": "boolean",
+          "description": "Measured: titles carrying real hashtags underperform in this niche. Kept as an explicit field so the decision is recorded per episode rather than forgotten."
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "The YouTube upload settings this episode ships with, so a re-upload or a second channel reproduces them exactly instead of relying on whatever the studio remembered.",
+          "properties": {
+            "made_for_kids": {
+              "type": "boolean",
+              "description": "Must be false. Made-for-kids disables comments, and comments are this format's engine."
+            },
+            "age_restricted": {
+              "type": "boolean"
+            },
+            "category": {
+              "type": "string"
+            },
+            "language": {
+              "type": "string"
+            },
+            "license": {
+              "type": "string"
+            },
+            "comments": {
+              "type": "string"
+            },
+            "allow_remixing": {
+              "type": "boolean"
+            },
+            "paid_promotion": {
+              "type": "boolean"
+            },
+            "playlist": {
+              "type": "string"
+            },
+            "visibility": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "dna_version": {

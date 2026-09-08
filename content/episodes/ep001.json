@@ -11,7 +11,10 @@
       "option_b": "anchovies",
       "image_a": "assets/noto-pineapple.svg",
       "image_b": "assets/noto-fish.svg",
-      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "reveal": {
+        "source": "prediction_no_number",
+        "prediction_favours": "a"
+      },
       "vo": {
         "setup": "Would you rather eat pizza with pineapple, or with anchovies.",
         "reaction": "Pineapple wins this. The anchovy people are loud."
@@ -24,7 +27,10 @@
       "option_b": "cheese",
       "image_a": "assets/noto-chocolate-bar.svg",
       "image_b": "assets/noto-cheese-wedge.svg",
-      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "reveal": {
+        "source": "prediction_no_number",
+        "prediction_favours": "a"
+      },
       "vo": {
         "setup": "Would you rather give up chocolate forever, or give up cheese.",
         "reaction": "Cheese survives every time. Nobody defends chocolate here."
@@ -37,7 +43,10 @@
       "option_b": "sugar forever",
       "image_a": "assets/noto-cut-of-meat.svg",
       "image_b": "assets/noto-candy.svg",
-      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "reveal": {
+        "source": "prediction_no_number",
+        "prediction_favours": "a"
+      },
       "vo": {
         "setup": "Would you rather give up meat forever, or sugar forever.",
         "reaction": "Sugar is the hard one. Most people underestimate it."
@@ -50,7 +59,10 @@
       "option_b": "smell",
       "image_a": "assets/noto-tongue.svg",
       "image_b": "assets/noto-nose.svg",
-      "reveal": { "source": "prediction_no_number", "prediction_favours": "b" },
+      "reveal": {
+        "source": "prediction_no_number",
+        "prediction_favours": "b"
+      },
       "vo": {
         "setup": "Would you rather lose your sense of taste, or your smell.",
         "reaction": "Everyone picks smell, then learns what smell does."
@@ -63,7 +75,10 @@
       "option_b": "full again",
       "image_a": "assets/noto-drooling-face.svg",
       "image_b": "assets/noto-face-savoring-food.svg",
-      "reveal": { "source": "prediction_no_number", "prediction_favours": "a" },
+      "reveal": {
+        "source": "prediction_no_number",
+        "prediction_favours": "a"
+      },
       "vo": {
         "setup": "Would you rather never feel hunger again, or never feel full.",
         "reaction": "This one splits rooms. Say yours in the comments."
@@ -76,7 +91,7 @@
   },
   "publish": {
     "title": "Would You Rather... #1 FOOD EDITION",
-    "description": "Five impossible food choices. Vote on the next five in the community tab — episode 2 reveals what everyone actually picked.",
+    "description": "5 impossible food choices. Which ones did you get?\n\nReply A or B on each one in the comments — the next episode reveals what everyone actually picked.\n\n#wouldyourather #thisorthat #shorts",
     "tags": [
       "would you rather",
       "quiz",
@@ -88,6 +103,19 @@
       "would you rather food",
       "shorts"
     ],
-    "pinned_comment": "Which ones did you get? Vote on the next five in the community tab and episode 2 reveals the real numbers."
+    "pinned_comment": "Reply with your five: A or B. Episode 2 shows the real numbers — no made-up percentages on this channel.",
+    "hashtags_in_title": false,
+    "settings": {
+      "made_for_kids": false,
+      "age_restricted": false,
+      "category": "Entertainment",
+      "language": "English (United States)",
+      "license": "Standard YouTube License",
+      "comments": "on, sorted by top, no hold-for-review",
+      "allow_remixing": true,
+      "paid_promotion": false,
+      "playlist": "Would You Rather",
+      "visibility": "public"
+    }
   }
 }

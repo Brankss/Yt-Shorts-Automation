@@ -118,14 +118,20 @@ dishonest and, as the comments show, actively noticed. We do the opposite, and
 turn it into the growth loop:
 
 ```
-Episode N     asks the 5 dilemmas, and pins a comment linking a Community poll
+Episode N     asks the 5 dilemmas, and pins a comment asking for A/B replies
               ↓
-Community     real viewers vote on those exact 5 dilemmas
-poll
+Comments      real viewers answer, in public, where other viewers see them
               ↓
 Episode N+1   opens with "here is what YOU picked" and reveals the REAL numbers,
               then asks 5 new dilemmas
 ```
+
+**Correction:** this loop originally ran on Community-tab polls. **YouTube gates
+the Community tab at 500 subscribers**, and the channel has 1 — I designed
+around a surface that is not available yet, and should have checked first. The
+comment poll above replaces it and is arguably better at this size: no gate, and
+it forces the comment behaviour the channel lacks outright. Move to Community
+polls at 500 subscribers, when tallying gets cleaner.
 
 This gives us four things no competitor has:
 
