@@ -2,10 +2,15 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
+      {
+        "version": "3.1.1",
+        "change": "The seam pulse moves from the line to a soft gradient glow: 3.4x scale and a white flash become 1.35x and a bloom that fades to nothing at both edges, over 0.28s in and 0.5s out with sine easing.",
+        "reason": "The first version strobed. A hard-edged flash on the one line in the frame pulls the eye off the two options at exactly the moment the viewer is supposed to be choosing between them, which is the opposite of what the pulse is for."
+      },
       {
         "version": "3.1.0",
         "change": "Timer 5.0s → 3.5s. The seam pulses once per second of every tick. New end card: the word COMMENT, a spoken line, the tick continuing one second past it, then the chime. A licensed music bed under the whole video from the owner's cue point.",
@@ -158,11 +163,18 @@
       "full_width": true,
       "pulse": {
         "at": "every second of every tick, including the end card",
-        "scale_y": 3.4,
-        "to": "#FFFFFF",
-        "up_ms": 100,
-        "down_ms": 240,
-        "note": "Written as a pair of tweens rather than a repeating one: a repeat does not survive seeking, and the renderer seeks every frame."
+        "carried_by": "a vertical gradient glow, not the line",
+        "glow": {
+          "height": 70,
+          "peak_opacity": 0.85,
+          "gradient": "transparent → rgba(255,255,255,0.75) at centre → transparent"
+        },
+        "line_scale_y": 1.35,
+        "in_ms": 280,
+        "out_ms": 500,
+        "ease": "sine.inOut both ways",
+        "note": "A gradient fading to nothing at both edges has no edge to catch the eye, so the beat registers as light rather than as movement. The line itself barely thickens — 3.4x with a white flash, as in 3.1.0, read as a strobe rather than a breath. Asymmetric in/out and sine easing at both ends leave no corner in the motion, and 0.78s total sits well inside the one-second gap so two pulses never overlap.",
+        "implementation": "A pair of tweens, never a repeating one: a repeat does not survive seeking, and the renderer seeks every frame."
       }
     }
   },

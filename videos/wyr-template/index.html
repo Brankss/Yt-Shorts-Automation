@@ -36,7 +36,7 @@
       .clip { position: absolute; inset: 0; }
 
       /* The seam. It is the only line in the frame, and during a timer it
-         pulses once per second — the countdown made visible without a
+         breathes once per second — the countdown made visible without a
          countdown being drawn. */
       #seam {
         position: absolute;
@@ -46,6 +46,26 @@
         height: 10px;
         background: #000;
         transform-origin: center center;
+      }
+
+      /* The pulse is carried by this, not by the line. A vertical gradient
+         fading to nothing at both edges has no edge to catch the eye, so the
+         beat registers as light rather than as movement. The line itself barely
+         moves — thickening it is what made the first version feel like a flash
+         instead of a breath. */
+      #seam-glow {
+        position: absolute;
+        left: 0;
+        top: 925px;
+        width: 1080px;
+        height: 70px;
+        opacity: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.75) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
       }
 
       /* The disc on the seam is the only other chrome in the format. */
@@ -323,6 +343,7 @@
       <section id="b4" class="clip" data-start="29.036" data-duration="9.238"></section>
       <section id="b5" class="clip" data-start="38.274" data-duration="9.771"></section>
       <section id="seam-holder" class="clip" data-start="0" data-duration="54.097">
+        <div id="seam-glow"></div>
         <div id="seam"></div>
       </section>
       <section id="or-holder" class="clip" data-start="0" data-duration="48.045">
@@ -373,10 +394,14 @@
       // tweens rather than a repeating one: a repeat would not survive seeking,
       // and the renderer seeks every frame.
       function pulse(at) {
-        tlPulse.to("#seam", { scaleY: 3.4, backgroundColor: "#ffffff", duration: 0.1,
-          ease: "power2.out" }, at);
-        tlPulse.to("#seam", { scaleY: 1, backgroundColor: "#000000", duration: 0.24,
-          ease: "power2.in" }, at + 0.1);
+        // Asymmetric and slow enough to read as breathing: in over 0.28s, out
+        // over 0.5s, sine both ways so neither end has a corner in it. Well
+        // inside the one-second gap, so two pulses never overlap.
+        tlPulse.fromTo("#seam-glow", { opacity: 0 },
+          { opacity: 0.85, duration: 0.28, ease: "sine.inOut" }, at);
+        tlPulse.to("#seam-glow", { opacity: 0, duration: 0.5, ease: "sine.inOut" }, at + 0.28);
+        tlPulse.to("#seam", { scaleY: 1.35, duration: 0.28, ease: "sine.inOut" }, at);
+        tlPulse.to("#seam", { scaleY: 1, duration: 0.5, ease: "sine.inOut" }, at + 0.28);
       }
 
       function caption(side, text) {

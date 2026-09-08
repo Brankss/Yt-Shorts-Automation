@@ -160,6 +160,7 @@ def main() -> int:
     # The seam runs the whole video because it pulses through the end card too.
     # The OR disc stops with the last block: the end card is one word, alone.
     lines.append(f'      <section id="seam-holder" class="clip" data-start="0" data-duration="{total}">')
+    lines.append('        <div id="seam-glow"></div>')
     lines.append('        <div id="seam"></div>')
     lines.append('      </section>')
     lines.append(f'      <section id="or-holder" class="clip" data-start="0" data-duration="{blocks_total}">')
