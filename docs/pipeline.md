@@ -141,15 +141,25 @@ which writes one SVG per referenced icon into `videos/wyr-template/assets/`.
 Reuse is the point — `pizza` comes up often, and a stable picture for a
 recurring fragment makes the channel more recognisable, not less.
 
-**On where the artwork comes from.** Photographic cut-outs are what the
-reference videos use and remain the stronger treatment. They need an image
-source, and this project's sessions run behind an egress policy that returns
-403 for every image CDN. Artwork therefore comes from the `@iconify-json/noto`
-npm package (Apache-2.0, 3,800 icons) — npm is reachable directly, the files
-land on disk, and nothing is fetched at render time.
+**This stage is unresolved — see `dna/video-dna.json` → `images.open_decision`.**
 
-To move to photographs later: change `image_a` / `image_b` in the bank to point
-at the new files. Nothing in the composition changes.
+The current source is the `@iconify-json/noto` npm package (Apache-2.0, 3,800
+icons). That was not a design choice: the session that built this pipeline ran
+behind an egress policy that returned 403 for every image CDN *and* every image
+API, while leaving the npm registry reachable, so the artwork had to come from a
+package. Off that sandbox the constraint is gone.
+
+It half works. Emoji are strong for concrete nouns — pizza, a lemon, a battery —
+and weak for people, feelings and actions, which render as a yellow face.
+"Sadness" becomes a circle. About a third of the bank's fragments are in that
+weak class, and the channel owner rejected the result.
+
+The DNA sets out three options — generate them, buy stock, or keep emoji for
+nouns and add a second source for people — and recommends generating, with the
+style prompt frozen into the DNA so all 96 fragments share one look. Whatever is
+chosen, adopting it is a change to `image_a` / `image_b` in the bank plus a new
+export step. **Nothing in the composition changes**: the box is 420px with
+`object-fit: contain` and does not care what it is handed.
 
 New fragments need a mapping before they can ship. `export_icons.mjs` exits
 non-zero and names any icon it cannot find.
@@ -240,8 +250,10 @@ video tell us nothing this early.
 ## Repository layout
 
 ```
+README.md                     setup from a clean machine, and how to run it
+CLAUDE.md                     orientation + the hard rules, for an agent
 dna/
-  video-dna.json              binding style + structure spec
+  video-dna.json              binding style + structure spec — normative
   README.md                   how to read and change it
 content/
   schemas/
@@ -252,9 +264,17 @@ content/
 docs/
   strategy.md                 why this niche, backed by the pulled data
   pipeline.md                 this file
+  publish-ep001.md            title, description, tags, settings, rights notes
 scripts/
+  validate_content.py         schema + DNA-rule check
+  make_voiceover.py           Kokoro TTS, measures clip durations
+  build_episode.py            episode JSON → composition, between markers
+  export_icons.mjs            image refs in the bank → SVGs on disk
+  make_sfx.py                 legacy synthetic SFX (superseded)
   niche_scorecard.py          niche comparison, conditioned on channel size
   auth_write_manual.py        two-step OAuth for the write scope
+videos/wyr-template/          the HyperFrames composition
+  assets/source/              owner-supplied audio (gitignored, required)
 out/                          rendered mp4s (gitignored)
 reports/                      skill output (gitignored)
 ```

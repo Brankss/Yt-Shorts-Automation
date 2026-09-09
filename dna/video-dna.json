@@ -2,7 +2,7 @@
   "$schema": "./video-dna.schema.md",
   "meta": {
     "id": "wyr-core",
-    "version": "3.3.0",
+    "version": "3.4.0",
     "format": "would-you-rather",
     "note": "Every value here is binding. A render that deviates from any of it is a bug, not a variation. Change the version before changing a value, and never change an entry under `invariants` without a measured reason.",
     "changelog": [
@@ -53,6 +53,11 @@
       {
         "version": "1.0.0",
         "change": "Initial DNA."
+      },
+      {
+        "version": "3.4.0",
+        "change": "Rewrote the invariants list to match the spec it sits in, and re-framed the image source as an explicitly unresolved fallback rather than a settled choice.",
+        "reason": "The invariants had drifted three versions behind the sections above them: they still named Nunito 900 skewed -8deg and fixed 8500ms blocks, both of which 3.1.x and 3.2.0 replaced. An invariant that contradicts the spec is worse than a missing one — it is the shortest file in the repo and the first thing read, so a contradiction there propagates straight into the composition. Separately, images.source.why argued from one session's egress policy, which reads as a design rationale once that session is gone; the constraint and the decision are now stated apart, and the decision is marked open."
       }
     ]
   },
@@ -381,10 +386,35 @@
       "package": "@iconify-json/noto",
       "license": "Apache-2.0",
       "export": "node scripts/export_icons.mjs",
-      "why": "This session's egress policy returns 403 for every image CDN, and the proxy README is explicit that a policy denial is to be reported rather than routed around. The npm registry sits in the proxy's noProxy list, so artwork comes from a package instead. Apache-2.0 was chosen over OpenMoji (CC-BY-SA, share-alike) and Twemoji (CC-BY, attribution) because neither sits comfortably on a monetised channel."
+      "why": "Chosen under a hard constraint rather than on merit: the session that built this pipeline ran behind an egress policy that returned 403 for every image CDN and every image API, while leaving the npm registry reachable. Artwork therefore had to come from a package. Within that constraint Apache-2.0 beat OpenMoji (CC-BY-SA, share-alike) and Twemoji (CC-BY, attribution), neither of which sits comfortably on a monetised channel.",
+      "status": "fallback — not the intended destination; see images.open_decision",
+      "known_limit": "Emoji are strong for concrete nouns — pizza, a lemon, a battery — and weak for people, feelings and actions, which render as a yellow face. 'Sadness' becomes a circle. Roughly a third of the bank's fragments are in that weak class, and the channel owner rejected the result on sight."
     },
     "upgrade_path": "Photographic cut-outs are the stronger treatment and what the reference videos use. They need either an egress policy that allows an image source, or files supplied directly. Swapping them in is a change to image_a/image_b in the bank — nothing in the composition changes.",
-    "note": "The image is what stops the scroll; the caption is what makes it a choice. A block with no image still renders — the field is simply flat, and the composition draws a dashed slot — but that is a missing asset, not a style."
+    "note": "The image is what stops the scroll; the caption is what makes it a choice. A block with no image still renders — the field is simply flat, and the composition draws a dashed slot — but that is a missing asset, not a style.",
+    "open_decision": {
+      "question": "Where do the images for people, feelings and actions come from?",
+      "blocked_by": "resolved — the constraint was the sandbox, and it is gone off it",
+      "options": [
+        {
+          "option": "Generated (Gemini image API, or any image model)",
+          "for": "Exact subject on demand — 'a man crying', 'a superhero flying'. One frozen style prompt gives all 96 fragments a single look, which is what makes a channel recognisable. No third-party rights.",
+          "against": "Costs per image (order of a few cents) and needs billing enabled. Style drift between runs unless the prompt is pinned in this file."
+        },
+        {
+          "option": "Stock photo API (Pexels, Unsplash)",
+          "for": "Photographic cut-outs are what the reference videos use, and the strongest treatment of the three. Free, commercially licensed.",
+          "against": "No guarantee the exact subject exists; cut-out step needed (hyperframes remove-background) to meet the no-background rule."
+        },
+        {
+          "option": "Keep Noto for concrete nouns, add a second source for people",
+          "for": "Emoji genuinely win on objects; only the weak class needs replacing.",
+          "against": "Two visual languages in one frame unless the second source is chosen to sit beside flat emoji. Tried with unDraw and rejected: its illustrations carry their own background scenery."
+        }
+      ],
+      "recommendation": "Generate. It is the only option that answers 'a man crying' with a man crying, and the only one where a pinned style prompt makes the whole bank consistent. Freeze the winning prompt into this section as images.style_prompt so the look is reproducible, exactly as the voice is pinned to am_adam.",
+      "on_adopting": "Change image_a/image_b in content/dilemmas.json to point at the new files and re-run the export step. Nothing in the composition changes — the box is 420px with object-fit: contain and does not care what it is given."
+    }
   },
   "reveal_mechanic": {
     "percentages_must_sum_to": 100,
@@ -427,14 +457,17 @@
   },
   "invariants": [
     "1080x1920 at 30fps",
-    "Exactly 5 dilemma blocks of 8500ms each",
+    "Exactly 5 dilemma blocks, then the end card",
+    "Block length is variable, derived from the spoken question (timeline.formula_s) — never a fixed duration",
     "Two full-bleed colour fields split at y=960 — no background, no cards, no borders, no corners",
     "Field A is always on top and always #FF1E1E; field B is always below and always #0A84FF",
-    "A black OR disc always sits on the seam",
-    "Nunito 900, lowercase, white with a 10px black outline, skewed -8deg",
-    "One image per option, cut out, no photographic background",
-    "No timer, no progress dots, no episode badge, no fill bars",
-    "Percentages always sum to 100 and are never invented",
+    "A black OR disc sits on the seam for the dilemma blocks, and is gone for the end card",
+    "Roboto Black Italic, white with a thin black outline — the slant is the typeface's own italic, never a skew transform",
+    "One image per option: single subject, no photographic background, no drop shadow",
+    "No on-screen timer, no progress dots, no episode badge, no fill bars",
+    "Nothing appears on screen before the voice has said it",
+    "The reveal is silent — the percentages land with the chime and nothing explains them",
+    "Percentages always sum to 100, sit in the 55–88 band, and declare their source",
     "No intro: frame 1 is already a dilemma",
     "No borrowed IP, characters, or footage"
   ]
