@@ -12,6 +12,12 @@ closing line, one second of tick alone, then the chime ringing out.
 
 ## Title
 
+> **SUPERSEDED 2026-09-12.** The series title format is now
+> `Would You Rather 1 — FOOD EDITION 🍕 #wouldyourather #food`, set once for all
+> five episodes in `docs/publish-plan-ep001-005.md`. Nothing is published yet, so
+> the convention was cheaper to fix now than at episode 2. The numbering
+> rationale below still stands — it is the one finding that replicated.
+
 ```
 Would You Rather... #1 FOOD EDITION
 ```
@@ -41,8 +47,17 @@ Comment what you'd like to see in the next video.
 
 ## Hashtags — where they go, and why
 
-You asked whether they belong in the title, the description, or both. **The
-description only.**
+> **SUPERSEDED 2026-09-12 — this section's conclusion is reversed.** A re-pull
+> with roughly 6× the sample (260 videos from channels under 100K subs, against
+> the 76 below) puts *zero* hashtags in the title in the worst-performing cell,
+> not the best, and the proven channels in the niche all carry them. The current
+> recommendation — **2 hashtags in the title** — and the reasoning for changing
+> it are in `docs/publish-plan-ep001-005.md`. The table below is kept because
+> the disagreement between the two samples is itself the useful finding: on a
+> metric this skewed, samples this small are not reliable evidence in either
+> direction.
+
+The original conclusion follows. **The description only.**
 
 Measured across 76 English Shorts in this niche, counting real hashtags and
 excluding `#9`-style episode numbers:

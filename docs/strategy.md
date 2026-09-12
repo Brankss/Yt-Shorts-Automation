@@ -42,6 +42,16 @@ that short and there is no payoff, so there is no reason to watch or comment.
 
 **Target duration: 45–55 seconds.**
 
+> **QUALIFIED 2026-09-12.** This table does not replicate. On a fresh pull of 156
+> videos from channels under 10K subs, there is no clean duration signal at all —
+> 0–15s shows the highest median (n=7) and 41–60s sits mid-pack, with breakout
+> examples running from 24s to 141s. Both tables have small, unstable cells.
+> The 45–55s target is being **kept anyway**, on format logic rather than on this
+> table: the mechanic needs room to ask, let the viewer commit, and reveal.
+> Revisit it against our own retention data after 10 episodes, which is evidence
+> about our videos rather than about strangers'. See
+> `docs/publish-plan-ep001-005.md`.
+
 ### Food is the highest-converting sub-vertical
 
 "Food edition" appears in the title of breakout videos at every channel size —
