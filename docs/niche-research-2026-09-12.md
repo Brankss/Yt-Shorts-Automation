@@ -236,10 +236,60 @@ Retained from prior research, not re-verified in this pull:
 `never …` and `unlimited …` are the two recurring framings. `both` is people
 refusing to choose — a signal the dilemma was not sharp enough.
 
-The highest-liked comments across mined breakouts were people **mocking
-percentages that do not add to 100** (top comment: 148 likes). If a format shows
-percentages, they must sum correctly — this is the one packaging detail the
-audience demonstrably polices.
+### Why people comment on this format — three triggers
+
+From 1,001 comments mined across the breakout videos of small channels
+(2026-09-08 pull). Not re-verified here, but nothing in the within-channel study
+contradicts it, and it is the most actionable material in the earlier research.
+
+1. **Counterintuitive split.** The majority picks the option the viewer considers
+   obviously wrong. Sample comment: `0:23 WHAT THE FU- FAST FOOD OVER HOME
+   COOKED MEALS? 😨`
+2. **"I already am that."** A dilemma naming a condition the viewer already lives
+   with produces instant self-deprecating replies. `I already have bad eyesight
+   lol` — 49 likes, with a near-duplicate at 18 likes on the same video.
+3. **Broken edge case.** A dilemma that does not apply to the viewer at all.
+   `What happens if I don't have a sister and bad hearing 😅` — **138 likes**.
+
+Trigger 3 is the cheapest engagement and the most expensive to rely on: it works
+by being wrong, so it buys comments at the cost of credibility. Triggers 1 and 2
+are the ones worth engineering.
+
+The most-liked comment across every breakout mined was people mocking arithmetic:
+
+> **"How tf is 90 % and 15% 💀💀💀"** — 148 likes
+>
+> "Love how half of these are misspelled and the numbers don't quite add up to 100%" — 49 likes
+
+Whatever a video claims numerically, the audience checks it. This is the one
+detail they demonstrably police.
+
+### Existence proofs — small channels that broke out
+
+From the search-derived sample, so **not** a basis for rates or comparisons. They
+are valid as existence claims: these specific channels, at these specific sizes,
+did reach these numbers.
+
+| Views | Subs | Dur | Title |
+|---|---|---|---|
+| 1,275,343 | 3,890 | 24s | `Would you rather: southern baddie edition😋😩#meme #funny #wouldyourather` |
+| 1,220,098 | 7,180 | 38s | `Would You Rather Quiz – Hard Questions! 🤯😰` |
+| 971,371 | 8,250 | 68s | `Unhinged would you rathers mix. #shorts #funnyshorts #wouldyourather` |
+| 680,430 | 6,710 | 125s | `Would You Rather: The Boys Or Your Girlfriend!? #shorts #girlfriend` |
+| 328,350 | 1,210 | 51s | `Nike or adidas #reaction #funny #wouldyourather #quiz` |
+
+And one at a size worth studying — *Skydaaguy*, 127,000 subs, 53 Shorts in the
+catalogue pull, **median 667,813 views**, best video 18,783,515:
+`Would You Rather 21!? ✅❌ #minecraft #funny`
+
+Note what that title actually does: it attaches a generic format to **Minecraft**.
+That is the fandom-attachment mechanism, and it is the same reason the niche's
+biggest velocity outlier in the 2026-09-08 trending scan was a Minecraft-skinned
+WYR at **436K views/day**. The durations in the table above span 24s to 125s,
+which is further evidence that duration is not the lever.
+
+*(Borrowing someone else's IP is what makes this work. It is effective and it is
+not ours to take — noted as an observed mechanism, not a recommendation.)*
 
 ---
 
@@ -284,6 +334,57 @@ evidence that a longer format will fail. It *is* a concrete, measured baseline:
 at ~12s of default attention, a long video must earn every second past the first
 block, and average view percentage is worth watching closely on the first
 uploads of any longer format.
+
+---
+
+## Niche-selection evidence (2026-09-08, cross-channel)
+
+Cross-channel, so weak by this document's own standard — but the question it was
+answering is *which niche to enter*, where comparing across channels is the
+natural unit. Treat as directional.
+
+| Signal | Value |
+|---|---|
+| Median views, channels <100K subs | 9,628 — 2nd highest of 16 niches tested (~5,400 videos) |
+| Small channels among results | 60 of 76 |
+| Rising channels in a 30-day scan | 29, including accounts at **22, 26 and 27 subs** |
+| Best small-channel result observed | **904,865 views from 937 subs** |
+
+The runner-up niche considered was **psychology facts** — higher median (234K)
+but a text-and-voiceover format whose only lever is hook writing. WYR was chosen
+because it is a *mechanic*: templatable, repeatable, renderable without a face.
+Given the skew finding above, "repeatable at volume" matters more than the
+original reasoning credited it for.
+
+## Weak and untested signals
+
+Kept because they are cheap to act on, flagged because none was tested
+within-channel. Do not spend anything to satisfy them.
+
+- **Emoji in the title: neutral.** 24,857 median with, 26,574 without (n=260,
+  cross-channel). Consistent with everything else here — packaging is noise. Use
+  them for legibility, not reach.
+- **Very heavy hashtag stuffing in the description looks bad.** Cross-channel:
+  0 hashtags 47,370 · 1–3 28,416 · 4–9 25,678 · **10+ 6,726**. Direction only.
+- **Niche tag vocabulary.** `would you rather` appeared on 41 of 76 videos,
+  `this or that` on 24.
+- **Food as the entry sub-vertical.** The 2026-09-08 research claimed food
+  converts best, citing a 324-sub channel at 135,487 views and an 865-sub channel
+  at 446,781. Cross-channel and cherry-picked; listed under open questions below.
+
+## Platform constraints that shape the format
+
+Factual platform behaviour, not packaging preferences. Each one can silently
+break a comment-driven format.
+
+- **"Made for kids" disables comments entirely.** For any format whose engine is
+  the comment section, this single upload flag is the difference between the
+  strategy working and being impossible.
+- **The Community tab is gated at 500 subscribers.** Any growth loop built on
+  Community polls does not exist below that threshold. Comment-reply tallying is
+  the only poll mechanism available to a small channel.
+- **`#shorts` is not required for Shorts classification.** Aspect ratio and
+  duration decide it. The tag is conventional and harmless, not functional.
 
 ---
 
