@@ -108,6 +108,13 @@ dilemma was not sharp enough.
 
 ### Serialization works
 
+> **RETRACTED 2026-09-12.** Within-channel analysis (40 full catalogues, 4,341
+> Shorts) shows numbering has no effect: 5 wins / 4 losses across the channels
+> that do both, median ratio 1.08x. The large cross-channel gaps cited here are
+> channel-size confounding. Keep numbering for viewer convenience, expect no
+> reach from it. See `docs/niche-research-2026-09-12.md`.
+
+
 The largest channel in the niche runs numbered episodes — `Would You Rather...? #9`
 at 75M views, `#39` at 18.6M, `#43` at 15.1M. A 89,900-sub channel does the same
 with `HARD EDITION! (Episode 5)`. And in the comments of one of them:

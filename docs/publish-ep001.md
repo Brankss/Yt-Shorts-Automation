@@ -15,14 +15,20 @@ closing line, one second of tick alone, then the chime ringing out.
 > **SUPERSEDED 2026-09-12.** The series title format is now
 > `Would You Rather 1 — FOOD EDITION 🍕 #wouldyourather #food`, set once for all
 > five episodes in `docs/publish-plan-ep001-005.md`. Nothing is published yet, so
-> the convention was cheaper to fix now than at episode 2. The numbering
-> rationale below still stands — it is the one finding that replicated.
+> the convention was cheaper to fix now than at episode 2. (The numbering
+> rationale below was also retracted later the same day — see the next note.)
 
 ```
 Would You Rather... #1 FOOD EDITION
 ```
 
 35 characters. Two decisions in it, both measured.
+
+> **RETRACTED 2026-09-12.** Within-channel analysis (40 full catalogues, 4,341
+> Shorts) shows numbering has no effect: 5 wins / 4 losses across the channels
+> that do both, median ratio 1.08x. The large cross-channel gaps cited here are
+> channel-size confounding. Keep numbering for viewer convenience, expect no
+> reach from it. See `docs/niche-research-2026-09-12.md`.
 
 **The series number stays.** Titles in this niche carrying `#N`, `part N` or
 `episode N` have a median of **9,734,657** views against **10,430** without

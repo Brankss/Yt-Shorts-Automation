@@ -76,6 +76,19 @@ which is evidence about your videos rather than about strangers'.
 
 ### What did replicate
 
+> **RETRACTED 2026-09-12, same day.** This section called numbering "the one
+> finding that replicated". A within-channel re-analysis — 40 full catalogues,
+> 4,341 Shorts, each channel compared only against itself — shows numbering does
+> **nothing**: among the 9 channels that publish both numbered and plain titles,
+> numbered wins on 5 and loses on 4, median ratio **1.08×**. The 21× gap below is
+> entirely channel-size confounding: series channels are established channels.
+> Replication did not fix the confound, it reproduced it.
+>
+> Keep the numbering — it costs nothing and helps a returning viewer — but expect
+> no reach from it. Full analysis: `docs/niche-research-2026-09-12.md`.
+
+The retracted reasoning follows.
+
 **Numbered series titles.** The one finding that holds across both samples,
 in the same direction, with a large gap:
 
